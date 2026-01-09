@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/space-grotesk";
+
+@theme {
+  --color-purple: #8a38f5;
+  --color-lime-green: #93d85a;
+  --color-dark: #333;
+
+  --font-dm-sans: "DM Sans Variable";
+  --font-space-grotesk: "Space Grotesk Variable";
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-dm-sans text-dark;
+}
+
+h1,
+h2,
+h3 {
+  @apply font-space-grotesk;
+}
+
+.wrapper {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 1) 80%,
+    rgba(0, 0, 0, 0)
+  );
+}
+
+@keyframes scrollLeft {
+  to {
+    left: -100px;
+  }
+}
+
+.item {
+  width: 100px;
+  position: absolute;
+  animation-name: scrollLeft;
+  animation-duration: 30s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
