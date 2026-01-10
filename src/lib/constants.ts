@@ -163,7 +163,7 @@ export const PROJECTS_LIST: Project[] = [
         icon: Link,
       },
     ],
-    order: "order-0",
+    order: "md:order-0",
   },
   {
     title: "Web de Gestión de Ventas",
@@ -202,7 +202,7 @@ export const PROJECTS_LIST: Project[] = [
         icon: Link,
       },
     ],
-    order: "order-1",
+    order: "md:order-1",
   },
 ];
 

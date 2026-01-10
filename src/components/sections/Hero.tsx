@@ -13,13 +13,13 @@ export function Hero() {
 
   return (
     <>
-      <section className="flex items-center justify-between mt-16 max-w-9/12 mx-auto">
-        <div className="flex flex-col gap-4 hero-container">
+      <section className="flex flex-col xl:flex-row items-center justify-between mt-4 2xl:mt-16 max-w-11/12 xl:max-w-9/12 mx-auto">
+        <div className="flex flex-col gap-2 2xl:gap-4 hero-container">
           <h1 className="text-6xl 2xl:text-8xl text-dark font-extrabold hero-content">
             Hola! Soy <br />
             <span className="text-purple">Orlando López</span>
           </h1>
-          <h2 className="text-4xl 2xl:text-5xl text-lime-green font-semibold hero-content">
+          <h2 className="text-3xl 2xl:text-5xl text-lime-green font-semibold hero-content">
             Desarrollador Frontend
           </h2>
           <h3 className="text-2xl 2xl:text-3xl text-dark font-medium hero-content">
@@ -55,7 +55,7 @@ export function Hero() {
           <img src="/avatar.png" className="avatar" alt="Avatar" />
         </div>
       </section>
-      <ul className="flex items-center justify-between gap-8 mt-16 h-30 max-w-9/12 mx-auto w-full relative wrapper">
+      <ul className="flex items-center justify-between gap-8 mt-16 h-30 max-w-11/12 xl:max-w-9/12 mx-auto w-full relative wrapper">
         {BRANDS_LIST.map(({ name, icon: Icon }, index) => (
           <li
             className="item"

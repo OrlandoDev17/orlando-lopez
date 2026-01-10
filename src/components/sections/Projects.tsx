@@ -12,7 +12,7 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="flex flex-col gap-4 mt-16 mb-4 max-w-9/12 mx-auto w-full"
+      className="flex flex-col gap-4 mt-16 mb-4 max-w-11/12 xl:max-w-9/12 mx-auto w-full"
     >
       <header className="flex flex-col gap-2 projects-title">
         <h2 className="text-3xl 2xl:text-4xl text-purple font-semibold">

@@ -9,17 +9,19 @@ export function ProjectCard({
   order,
 }: Project) {
   return (
-    <article className="flex gap-8 p-6 bg-dark/10 rounded-xl">
-      <div className={order}>
+    <article className="flex flex-col md:flex-row gap-8 p-6 bg-dark/10 rounded-xl items-center">
+      <div className={`w-full md:w-1/2 ${order}`}>
         <img
-          className="rounded-lg w-full h-full object-cover"
+          className="rounded-lg w-full h-full object-cover shadow-lg"
           src={image}
           alt={title}
         />
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="w-full md:w-1/2 flex flex-col gap-4">
         <header className="flex justify-between items-center">
-          <h3 className="text-3xl text-purple font-semibold">{title}</h3>
+          <h3 className="text-2xl 2xl:text-3xl text-purple font-semibold">
+            {title}
+          </h3>
           <div className="flex items-center gap-3">
             {links.map((link) => (
               <a
@@ -33,7 +35,7 @@ export function ProjectCard({
             ))}
           </div>
         </header>
-        <p className="text-lg text-dark/90">{description}</p>
+        <p className="text-base 2xl:text-lg text-dark/90">{description}</p>
         <ul className="flex items-center gap-2 flex-wrap">
           {techs.map((tech) => (
             <li
@@ -41,7 +43,9 @@ export function ProjectCard({
               key={tech.name}
             >
               <tech.icon className="size-6 text-dark/90" />
-              <span className="font-medium text-lg">{tech.name}</span>
+              <span className="font-medium text-base 2xl:text-lg">
+                {tech.name}
+              </span>
             </li>
           ))}
         </ul>

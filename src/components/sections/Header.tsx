@@ -20,7 +20,7 @@ export function Header() {
 
   return (
     <>
-      <header className="flex justify-between items-center h-20 max-w-9/12 mx-auto">
+      <header className="flex justify-between items-center h-20 max-w-11/12 xl:max-w-9/12 mx-auto">
         <picture>
           <img
             className="w-16 logo"
@@ -35,7 +35,7 @@ export function Header() {
                 <a
                   onClick={() => handleActive(href)}
                   href={href}
-                  className={`text-lg font-space-grotesk px-1 group-hover:text-purple group-hover:font-medium transition-all duration-300 ${
+                  className={`text-base 2xl:text-lg font-space-grotesk px-1 group-hover:text-purple group-hover:font-medium transition-all duration-300 ${
                     isActive === href ? "text-purple font-medium" : ""
                   }`}
                 >

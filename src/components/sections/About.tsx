@@ -12,7 +12,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="max-w-9/12 mx-auto w-full py-24 flex flex-col md:flex-row gap-16 items-start"
+      className="max-w-11/12 xl:max-w-9/12 mx-auto w-full py-24 flex flex-col md:flex-row gap-16 items-start"
     >
       <div className="w-full md:w-5/12 flex flex-col gap-10">
         <header className="title">

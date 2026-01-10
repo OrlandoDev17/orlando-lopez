@@ -24,7 +24,7 @@ export function Button({
   type = "button",
   className = "",
 }: ButtonProps) {
-  const baseClasses = `inline-flex px-6 py-2.5 text-lg font-medium font-space-grotesk rounded-lg hover:-translate-y-1 transition-all cursor-pointer ${styles[style]} ${className}`;
+  const baseClasses = `inline-flex px-6 py-2.5 text-base 2xl:text-lg font-medium font-space-grotesk rounded-lg hover:-translate-y-1 transition-all cursor-pointer ${styles[style]} ${className}`;
 
   if (href) {
     return (
