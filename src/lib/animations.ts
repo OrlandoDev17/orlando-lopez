@@ -53,12 +53,10 @@ export const fadeTop = (target: string, delay: number = 0) => {
     {
       opacity: 0,
       y: 100,
-      scale: 0.8,
     },
     {
       opacity: 1,
       y: 0,
-      scale: 1,
       duration: 0.5,
       ease: "back.out(1.7)",
       delay: delay,
@@ -169,4 +167,28 @@ export const fadeBottomStagger = (
       },
     }
   );
+};
+
+export const animateModalIn = (
+  container: HTMLElement | null,
+  modal: HTMLDialogElement | null
+) => {
+  if (container) {
+    gsap.fromTo(container, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+  }
+
+  if (modal) {
+    gsap.fromTo(
+      modal,
+      { scale: 0.9, opacity: 0, y: 20 },
+      {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        ease: "back.out(1.7)",
+        delay: 0.1,
+      }
+    );
+  }
 };

@@ -28,8 +28,8 @@ export function Hero() {
           <p className="text-lg 2xl:text-2xl text-balance max-w-2xl hero-content">
             Construyo experiencias web{" "}
             <span className="text-purple font-semibold">un pixel a la vez</span>{" "}
-            para obtener siempre los mejores resultados posibles. soy un
-            apasionado al diseño y experiencias digitales excepcionales, que
+            para obtener siempre los mejores resultados posibles. Soy un
+            apasionado del diseño y experiencias digitales excepcionales, que
             sean{" "}
             <span className="text-purple font-semibold">
               intuitivas, eficientes y agradables
