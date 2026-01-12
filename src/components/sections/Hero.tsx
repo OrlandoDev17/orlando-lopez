@@ -65,7 +65,7 @@ export function Hero() {
               left: "100%",
             }}
           >
-            <Icon className="size-16 text-purple" />
+            <Icon className="size-10 sm:size-12 md:size-16 text-purple" />
           </li>
         ))}
       </ul>
