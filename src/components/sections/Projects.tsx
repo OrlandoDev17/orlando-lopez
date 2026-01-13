@@ -6,7 +6,7 @@ import { ProjectCard } from "@ui/ProjectCard";
 
 export function Projects() {
   useEffect(() => {
-    fadeTopStagger(".project-item", ".projects", 0.1);
+    fadeTopStagger(".project-item", ".projects", 0.1, 1);
     fadeTop(".projects-title");
   }, []);
   return (

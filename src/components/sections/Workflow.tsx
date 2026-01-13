@@ -6,7 +6,7 @@ import { WORKFLOW } from "@/lib/constants";
 export function Workflow() {
   useEffect(() => {
     fadeBottom(".workflow-title");
-    fadeTopStagger(".workflow-item", ".workflow-list");
+    fadeTopStagger(".workflow-item", ".workflow-list", 0, 0.8);
   }, []);
 
   return (

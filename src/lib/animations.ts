@@ -5,7 +5,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Animaciones
 
-export const fadeRight = (target: string, delay: number = 0) => {
+export const fadeRight = (
+  target: string,
+  duration: number = 0.5,
+  delay: number = 0
+) => {
   return gsap.fromTo(
     target,
     {
@@ -15,7 +19,7 @@ export const fadeRight = (target: string, delay: number = 0) => {
     {
       opacity: 1,
       x: 0,
-      duration: 0.5,
+      duration: duration,
       ease: "back.out(1.7)",
       delay: delay,
       scrollTrigger: {
@@ -26,7 +30,11 @@ export const fadeRight = (target: string, delay: number = 0) => {
   );
 };
 
-export const fadeLeft = (target: string, delay: number = 0) => {
+export const fadeLeft = (
+  target: string,
+  duration: number = 0.5,
+  delay: number = 0
+) => {
   return gsap.fromTo(
     target,
     {
@@ -36,7 +44,7 @@ export const fadeLeft = (target: string, delay: number = 0) => {
     {
       opacity: 1,
       x: 0,
-      duration: 0.5,
+      duration: duration,
       ease: "back.out(1.7)",
       delay: delay,
       scrollTrigger: {
@@ -47,7 +55,11 @@ export const fadeLeft = (target: string, delay: number = 0) => {
   );
 };
 
-export const fadeTop = (target: string, delay: number = 0) => {
+export const fadeTop = (
+  target: string,
+  duration: number = 0.5,
+  delay: number = 0
+) => {
   return gsap.fromTo(
     target,
     {
@@ -57,7 +69,7 @@ export const fadeTop = (target: string, delay: number = 0) => {
     {
       opacity: 1,
       y: 0,
-      duration: 0.5,
+      duration: duration,
       ease: "back.out(1.7)",
       delay: delay,
       scrollTrigger: {
@@ -68,7 +80,11 @@ export const fadeTop = (target: string, delay: number = 0) => {
   );
 };
 
-export const fadeBottom = (target: string, delay: number = 0) => {
+export const fadeBottom = (
+  target: string,
+  duration: number = 0.5,
+  delay: number = 0
+) => {
   return gsap.fromTo(
     target,
     {
@@ -78,7 +94,7 @@ export const fadeBottom = (target: string, delay: number = 0) => {
     {
       opacity: 1,
       y: 0,
-      duration: 0.5,
+      duration: duration,
       ease: "back.out(1.7)",
       delay: delay,
       scrollTrigger: {
@@ -92,7 +108,8 @@ export const fadeBottom = (target: string, delay: number = 0) => {
 export const fadeTopStagger = (
   target: string,
   trigger: string,
-  delay: number = 0
+  delay: number = 0,
+  duration: number = 0.5
 ) => {
   return gsap.fromTo(
     target,
@@ -105,7 +122,7 @@ export const fadeTopStagger = (
       opacity: 1,
       y: 0,
       scale: 1,
-      duration: 0.5,
+      duration: duration,
       ease: "back.out(1.7)",
       stagger: 0.2,
       delay: delay,
@@ -120,7 +137,8 @@ export const fadeTopStagger = (
 export const fadeRightStagger = (
   target: string,
   trigger: string,
-  delay: number = 0
+  delay: number = 0,
+  duration: number = 0.5
 ) => {
   return gsap.fromTo(
     target,
@@ -131,7 +149,7 @@ export const fadeRightStagger = (
     {
       opacity: 1,
       x: 0,
-      duration: 0.5,
+      duration: duration,
       ease: "back.out(1.7)",
       stagger: 0.2,
       delay: delay,
@@ -146,7 +164,8 @@ export const fadeRightStagger = (
 export const fadeBottomStagger = (
   target: string,
   trigger: string,
-  delay: number = 0
+  delay: number = 0,
+  duration: number = 0.5
 ) => {
   return gsap.fromTo(
     target,
@@ -157,7 +176,7 @@ export const fadeBottomStagger = (
     {
       opacity: 1,
       y: 0,
-      duration: 0.5,
+      duration: duration,
       ease: "back.out(1.7)",
       stagger: 0.2,
       delay: delay,
