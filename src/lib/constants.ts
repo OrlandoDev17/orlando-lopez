@@ -150,11 +150,11 @@ export const PROJECTS_LIST: Project[] = [
     image: "/projects/worklyst.webp",
     links: [
       {
-        url: "https://github.com/orlandolopezdev/worklyst",
+        url: "https://github.com/OrlandoDev17/worklyst",
         icon: GitHub,
       },
       {
-        url: "https://worklyst.vercel.app",
+        url: "https://worklyst-smoky.vercel.app/",
         icon: Link,
       },
     ],
