@@ -16,4 +16,14 @@ export default defineConfig({
       "@ui": path.resolve(__dirname, "./src/components/ui"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom"],
+          "vendor-gsap": ["gsap"],
+        },
+      },
+    },
+  },
 });

@@ -1,73 +1,66 @@
-# React + TypeScript + Vite
+# 🚀 Orlando López | Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div align="center">
+  <img src="./public/avatar.png" width="160" alt="Avatar" style="border-radius: 50%;" />
+  <br />
+  <br />
+  <h2>"Elevando el desarrollo web a una experiencia digital premium" ✨</h2>
+  <p>
+    <b>Frontend Developer | Diseñador de Interfaces | Futuro Ingeniero Informático</b>
+  </p>
+  
+  ---
+</div>
 
-Currently, two official plugins are available:
+## 🎨 Mi Filosofía de Diseño
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+No solo escribo código; esculpo experiencias. Mi enfoque se centra en crear sitios web que no solo sean funcionales, sino que transmitan una sensación de **calidad artesanal**.
 
-## React Compiler
+Cada transición, cada color y cada espacio está pensado para que el usuario se sienta en un entorno **profesional, fluido y moderno**.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+---
 
-## Expanding the ESLint configuration
+## 🛠️ ¿Qué hace especial a esta Web?
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Esta plataforma es el resultado de combinar las herramientas más vanguardistas del mercado:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **React 19 & TypeScript**: La base sólida para una web inteligente y sin errores.
+- **Tailwind CSS 4**: Estilos de última generación para una velocidad de desarrollo y carga inmejorable.
+- **GSAP Animations**: Movimientos suaves y orgánicos que dan vida a cada sección.
+- **Vite**: El motor que permite que todo cargue en un abrir y cerrar de ojos.
+- **Tipografía de Vanguardia**: Uso de _Space Grotesk_ y _DM Sans_ para una lectura cómoda y un look tecnológico.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🚀 Optimizada para el Futuro
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Como desarrollador senior, me he asegurado de que esta web vuele:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- ✅ **Lazy Loading**: Solo descargas lo que ves, ahorrando datos y tiempo.
+- ✅ **GPU Accelerated**: Animaciones que usan la potencia de tu tarjeta gráfica para máxima fluidez.
+- ✅ **Code Splitting**: El código está fragmentado para que el navegador lo gestione de forma ultra-eficiente.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## �️ Mi Proceso Creativo
+
+1.  **Visión**: Visualizar el impacto emocional que quiero causar.
+2.  **Estructura**: Cimiento sólido enfocado en la usabilidad.
+3.  **Detalle**: Pulido obsesivo de cada píxel y animación.
+4.  **Despliegue**: Entrega de un producto que supera las expectativas.
+
+---
+
+## � Hablemos
+
+Si buscas a alguien que cuide tu proyecto como si fuera suyo, estoy a un clic de distancia.
+
+- 📍 Venezuela
+- � [Conectemos en LinkedIn](https://www.linkedin.com/in/orlando-lopez1707/)
+- ✉️ [Escríbeme un correo](mailto:orlandodev1707@gmail.com)
+
+---
+
+<div align="center">
+  <sub>Diseñado y desarrollado con pasión por Orlando López © 2026</sub>
+</div>

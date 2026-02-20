@@ -2,7 +2,6 @@ import {
   Antigravity,
   Astro,
   Bun,
-  Css,
   Dribbble,
   Express,
   Figma,
@@ -12,6 +11,7 @@ import {
   Gsap,
   JavaScript,
   MySQL,
+  n8n,
   Nextjs,
   Nodejs,
   NodejsColor,
@@ -111,98 +111,54 @@ export const BRANDS_LIST: brandItem[] = [
     name: "Astro",
     icon: Astro,
   },
+  {
+    name: "n8n",
+    icon: n8n,
+  },
 ];
 
 export const PROJECTS_LIST: Project[] = [
   {
-    title: "RIVO - Plataforma de movilidad",
-    description:
-      "RIVO es una app móvil desarrollada con Next.js y TailwindCSS para el frontend junto con NodeJs para el backend y una base de datos con PostgreSQL, la app permite a los usuarios solicitar un servicio de taxi desde su móvil y al conductor aceptar el servicio para que pueda realizar el viaje.",
-    image: "/projects/rivo.webp",
+    title: "Worklyst - Ecosistema Inteligente de Gestión de Proyectos",
+    description: `Desarrollé la interfaz completa con Next.js y TypeScript, integrándola a microservicios mediante Axios y optimizando la experiencia con animaciones en GSAP. El proyecto destaca por la automatización de flujos mediante un agente en n8n y una arquitectura escalable, todo diseñado previamente en Figma y respaldado por documentación técnica detallada.`,
     techs: [
       {
         name: "Next.js",
         icon: Nextjs,
       },
       {
-        name: "Tailwind CSS",
-        icon: TailwindCSS,
-      },
-      {
-        name: "Node.js",
-        icon: Nodejs,
-      },
-      {
         name: "TypeScript",
         icon: TypeScript,
       },
       {
-        name: "PostgreSQL",
-        icon: PostgreSQL,
+        name: "Tailwind CSS",
+        icon: TailwindCSS,
       },
       {
-        name: "Express",
-        icon: Express,
+        name: "GSAP",
+        icon: Gsap,
       },
       {
-        name: "Vercel",
-        icon: Vercel,
+        name: "n8n",
+        icon: n8n,
       },
       {
-        name: "Railway",
-        icon: Railway,
+        name: "Figma",
+        icon: Figma,
       },
     ],
+    image: "/projects/worklyst.webp",
     links: [
       {
-        url: "https://github.com/OrlandoDev17/Rivo",
+        url: "https://github.com/orlandolopezdev/worklyst",
         icon: GitHub,
       },
       {
-        url: "https://rivo-frontend.vercel.app",
+        url: "https://worklyst.vercel.app",
         icon: Link,
       },
     ],
-    order: "md:order-0",
-  },
-  {
-    title: "Web de Gestión de Ventas",
-    description:
-      "Desarrollé una aplicación web para gestionar las ventas de una cafetería, con productos personalizados en divisas y cálculo automático del cambio en bolívares según la tasa diaria. La plataforma clasifica ingresos por método de pago, genera un resumen consolidado del día, guarda la información en localStorage y permite exportar un PDF con el detalle de las ventas.",
-    image: "/projects/gestion-ventas.webp",
-    techs: [
-      {
-        name: "React",
-        icon: React,
-      },
-      {
-        name: "CSS",
-        icon: Css,
-      },
-      {
-        name: "JavaScript",
-        icon: JavaScript,
-      },
-      {
-        name: "Vercel",
-        icon: Vercel,
-      },
-      {
-        name: "GitHub",
-        icon: GitHub,
-      },
-    ],
-    links: [
-      {
-        url: "https://github.com/OrlandoDev17/gestor-ventas",
-        icon: GitHub,
-      },
-      {
-        url: "https://dulces-ideas.vercel.app",
-        icon: Link,
-      },
-    ],
-    order: "md:order-1",
+    order: "order-0",
   },
 ];
 
@@ -337,12 +293,12 @@ export const SKILLS: Skill[] = [
         icon: Bun,
       },
       {
-        name: "Git",
-        icon: Git,
+        name: "n8n",
+        icon: n8n,
       },
       {
-        name: "GitHub",
-        icon: GitHub,
+        name: "Git",
+        icon: Git,
       },
       {
         name: "Figma",

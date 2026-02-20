@@ -39,11 +39,11 @@ export function ProjectCard({
         <ul className="flex items-center gap-2 flex-wrap">
           {techs.map((tech) => (
             <li
-              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-lime-green/20 border-2 border-lime-green"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-lime-green/20 border-2 border-lime-green"
               key={tech.name}
             >
-              <tech.icon className="size-6 text-dark/90" />
-              <span className="font-medium text-base 2xl:text-lg">
+              <tech.icon className="size-5 text-dark/90" />
+              <span className="font-medium text-sm 2xl:text-base">
                 {tech.name}
               </span>
             </li>
