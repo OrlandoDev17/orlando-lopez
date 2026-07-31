@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* Declaración de Fuentes Locales (Variable Fonts) */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/fonts/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Tokens del Sistema de Diseño (Tailwind v4 @theme) */
+@theme {
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Plus Jakarta Sans", sans-serif;
+
+  --color-primary-50: #f2efff;
+  --color-primary-100: #e3dbff;
+  --color-primary-200: #c6b5ff;
+  --color-primary-300: #a68cff;
+  --color-primary-400: #8f6efc;
+  --color-primary-500: #7a5cfa;
+  --color-primary-600: #6340e3;
+  --color-primary-700: #4c2cbd;
+  --color-primary-800: #381e96;
+  --color-primary-900: #25126f;
+
+  --color-secondary-50: #f5fcef;
+  --color-secondary-100: #e7f9d7;
+  --color-secondary-200: #d1f4b0;
+  --color-secondary-300: #bbee88;
+  --color-secondary-400: #acec72;
+  --color-secondary-500: #a3e862;
+  --color-secondary-600: #83cc43;
+  --color-secondary-700: #63a12c;
+  --color-secondary-800: #477a1c;
+  --color-secondary-900: #2d520e;
+
+  --color-bg-main: #faf9fe;
+  --color-bg-surface: #ffffff;
+  --color-main: #363636;
+  --color-muted: #6b6b6b;
+  --color-border-subtle: #eae7f6;
+}
+
+/* Estilos Base del Documento */
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg-main);
+  color: var(--color-main);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2 {
+  font-family: var(--font-heading);
+}
+
+::selection {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-900);
+}
