@@ -1,0 +1,68 @@
+---
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+const siteName = "Orlando Lopez";
+const url = Astro.url;
+const locale = "es_ES";
+const siteTitle = `${title} | ${siteName}`;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+		<link rel="icon" href="/logo.svg" />
+		<meta name="viewport" content="width=device-width" />
+
+		<!-- Metadata básica -->
+		<title>{siteTitle}</title>
+		<meta name="description" content={description} />
+		<meta name="author" content={siteName} />
+		<meta name="robots" content="index, follow" />
+		<meta name="theme-color" content="#7a5cfa" />
+		<link rel="canonical" href={url.href} />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={siteName} />
+		<meta property="og:title" content={siteTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={url.href} />
+		<meta property="og:locale" content={locale} />
+		<!-- TODO: generar /og-image.png (1200x630) y descomentar
+		<meta property="og:image" content={`${url.origin}/og-image.png`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={siteTitle} />
+		-->
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={siteTitle} />
+		<meta name="twitter:description" content={description} />
+		<!-- TODO: descomentar cuando exista /og-image.png
+		<meta name="twitter:image" content={`${url.origin}/og-image.png`} />
+		-->
+
+		<!-- JSON-LD: Person -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Person",
+			"name": siteName,
+			"jobTitle": "Desarrollador de Software",
+			"url": url.origin,
+			"knowsAbout": ["Desarrollo Web", "React", "TypeScript", "Astro", "Accesibilidad", "Rendimiento"]
+		})}></script>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

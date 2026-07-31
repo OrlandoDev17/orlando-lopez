@@ -1,0 +1,82 @@
+---
+import Button from "../common/Button.astro";
+
+interface navItem {
+  label: string;
+  url: string;
+  icon?: ChildNode;
+}
+
+const NAV_ITEMS: navItem[] = [
+  {
+    label: "Inicio",
+    url: "#"
+  },
+  {
+    label: "Experiencia",
+    url: "#experience",
+  },
+  {
+    label: "Workflow",
+    url: "#workflow"
+  },
+  {
+    label: "Habilidades",
+    url: "#skills"
+  },
+  {
+    label: "Sobre Mi",
+    url: "#about"
+  },
+]
+
+---
+
+<header class="fixed inset-0 top-0 w-full z-100 h-16 flex items-center">
+  <div class="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
+    <img src="/logo.svg" class="size-14" alt="Logo de Orlando López" loading="eager" />
+    <nav>
+    <ul class="flex items-center gap-2">
+      {NAV_ITEMS.map(({ label, url }) => (
+        <li class="relative">
+          <a class="nav-link px-2 text-muted font-semibold hover:text-primary-500 hover:tracking-wider transition-all duration-300" href={url}>{label}</a>
+          <span class="nav-indicator absolute -bottom-1.5 left-0 w-0 h-1 rounded-full bg-primary-500 transition-all duration-300"></span>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  </div>
+</header>
+
+<script>
+  import { $$ } from "@/utils/dom"
+
+  const updateActiveLink = () => {
+    const currentHash = window.location.hash || "#"
+    const $links = $$<HTMLAnchorElement>(".nav-link")
+    const $indicators = $$<HTMLSpanElement>(".nav-indicator")
+
+    $links.forEach((link, index) => {
+      const isMatch = link.getAttribute("href") === currentHash
+
+      // 1. Alternar color del texto del enlace
+      link.classList.toggle("text-primary-500", isMatch);
+      link.classList.toggle("tracking-wider", isMatch);
+      link.classList.toggle("text-muted", !isMatch);
+      link.classList.toggle("tracking-normal", !isMatch);
+
+      // 2. Controlar la barra indicadora según el índice
+      const indicator = $indicators[index];
+      if (indicator) {
+        indicator.classList.toggle("w-full", isMatch);
+        indicator.classList.toggle("w-0", !isMatch);
+      }
+    })
+  }
+
+  // 1. Ejecutar al al cargar la pagina
+  document.addEventListener("DOMContentLoaded", updateActiveLink)
+
+  // 2. Escuchar cuando cambie el Hash de la URL
+  window.addEventListener("hashchange", updateActiveLink)
+</script>
