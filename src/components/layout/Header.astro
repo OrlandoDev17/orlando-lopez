@@ -1,5 +1,5 @@
 ---
-import Button from "../common/Button.astro";
+import Button from "@/components/common/Button.astro";
 
 interface navItem {
   label: string;
@@ -33,12 +33,12 @@ const NAV_ITEMS: navItem[] = [
 ---
 
 <header class="fixed inset-0 top-0 w-full z-100 h-16 flex items-center">
-  <div class="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
-    <img src="/logo.svg" class="size-14" alt="Logo de Orlando López" loading="eager" />
+  <div class="flex items-center justify-between max-w-7xl mx-auto w-full px-8">
+    <img data-header-img src="/logo.svg" class="size-14" alt="Logo de Orlando López" loading="eager" />
     <nav>
-    <ul class="flex items-center gap-2">
+    <ul class="nav-list flex items-center gap-2">
       {NAV_ITEMS.map(({ label, url }) => (
-        <li class="relative">
+        <li class="nav-item relative">
           <a class="nav-link px-2 text-muted font-semibold hover:text-primary-500 hover:tracking-wider transition-all duration-300" href={url}>{label}</a>
           <span class="nav-indicator absolute -bottom-1.5 left-0 w-0 h-1 rounded-full bg-primary-500 transition-all duration-300"></span>
         </li>
@@ -50,8 +50,11 @@ const NAV_ITEMS: navItem[] = [
 
 <script>
   import { $$ } from "@/utils/dom"
+  import { animate } from "@/utils/animations"
 
-  const updateActiveLink = () => {
+  // 1. LÓGICA DE NAVEGACIÓN ACTIVA (HASH)
+  const initActiveNav = () => {
+    const updateActiveLink = () => {
     const currentHash = window.location.hash || "#"
     const $links = $$<HTMLAnchorElement>(".nav-link")
     const $indicators = $$<HTMLSpanElement>(".nav-indicator")
@@ -74,9 +77,36 @@ const NAV_ITEMS: navItem[] = [
     })
   }
 
-  // 1. Ejecutar al al cargar la pagina
-  document.addEventListener("DOMContentLoaded", updateActiveLink)
-
-  // 2. Escuchar cuando cambie el Hash de la URL
+  updateActiveLink()
   window.addEventListener("hashchange", updateActiveLink)
+  }
+
+  // 2. LÓGICA DE ANIMACIÓN DE ENTRADA (GSAP)
+  const initAnimations = () => {
+    animate("[data-header-img]", 
+    {
+      opacity: 0,
+      x: -30,
+      duration: 0.4,
+      ease: "back.out",
+      delay: 0.2
+    }
+    )
+
+    animate(".nav-item",
+    {
+      opacity: 0,
+      y: 30,
+      duration: 0.5,
+      ease: "back.out",
+      stagger: 0.05
+    }
+    )
+  }
+  
+  // INICIALIZACIÓN CENTRALIZADA
+  document.addEventListener("DOMContentLoaded", () => {
+    initActiveNav();
+    initAnimations();
+  });
 </script>
