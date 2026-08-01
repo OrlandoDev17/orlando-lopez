@@ -1,9 +1,119 @@
-<section class="hero-wrapper relative w-full">
-  <div id="hero-pin" class="h-screen w-full flex items-center justify-between max-w-7xl mx-auto px-8"> 
-    <!-- LADO IZQUIERDO DEL HERO -->
-    <!-- LADO DERECHO DEL HERO -->
-      <div class="relative size-80">
-        <img src="/avatar/frame-1.webp" class="avatar-frame absolute inset-0 size-full object-cover rounded-2xl" />
-     </div>
+---
+import { HIGHLIGHTED_WORDS } from "@/utils/highlighted-words";
+import { highlight } from "@/utils/highlight";
+import { Image } from "astro:assets";
+import TechIcon from "@/components/icons/TechIcon.astro";
+
+const HERO_DESCRIPTION = `Desarrollador de Software especializado en crear experiencias digitales modernas, rápidas y eficientes, tanto en web como en aplicaciones móviles.
+
+Mi enfoque abarca desde la arquitectura frontend con React, Astro y Tailwind CSS, hasta el desarrollo backend con Node.js, TypeScript y microservicios, asegurando siempre la calidad del producto mediante buenas prácticas de QA. No solo construyo software funcional para resolver problemas reales, me aseguro de que sea escalable, elegante y con una interfaz impecable.`;
+
+interface TechIconConfig {
+  name: "react" | "opencode" | "tailwind" | "astro" | "tanstack" | "typescript";
+  label: string;
+  top: string;
+  side: "left" | "right";
+  outset?: boolean;
+  extraClass?: string;
+}
+
+const TECH_ICONS: readonly TechIconConfig[] = [
+  { name: "react", label: "React", top: "18%", side: "left" },
+  { name: "opencode", label: "OpenCode", top: "44%", side: "left", outset: true },
+  { name: "tailwind", label: "Tailwind CSS", top: "70%", side: "left" },
+  {
+    name: "astro",
+    label: "Astro",
+    top: "18%",
+    side: "right",
+    extraClass: "size-12 drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]",
+  },
+  { name: "tanstack", label: "TanStack", top: "44%", side: "right", outset: true },
+  { name: "typescript", label: "TypeScript", top: "70%", side: "right" },
+];
+---
+
+<section class="w-full grid grid-cols-2 max-w-7xl min-h-screen mx-auto px-8 py-8">
+  <div class="flex flex-col gap-4">
+    <h1 id="hero-title" class="text-7xl font-black">
+      Hola, Soy Orlando López
+    </h1>
+    <h2 id="hero-subtitle" class="text-4xl text-secondary-600 font-semibold">Desarrollador de Software</h2>
+    <p id="hero-description" class="text-muted text-balance max-w-xl" set:html={highlight(HERO_DESCRIPTION, HIGHLIGHTED_WORDS)} />
   </div>
+  <aside class="flex items-start justify-center relative">
+    <div class="avatar-container relative w-full flex justify-center">
+      <Image id="avatar" src="/avatar/avatar.webp" alt="Avatar de Orlando López" width={448} height={448} />
+      {TECH_ICONS.map((icon) => (
+        <span
+          class={`tech-icon absolute`}
+          data-top={icon.top}
+          data-side={icon.side}
+          data-outset={icon.outset}
+        >
+          <span
+          >
+            <TechIcon name={icon.name} label={icon.label} class={icon.extraClass} />
+          </span>
+        </span>
+      ))}
+    </div>
+  </aside>
 </section>
+
+<script>
+  import gsap from "gsap";
+  import { $ ,$$ } from "@/utils/dom"
+  import { typewriter, splitTextAnimation, animate, animateFromTo } from "@/utils/animations"
+
+  const initHeroAnimations = () => {
+
+      const $techIcons = $$(".tech-icon")
+    if (!$techIcons.length) return
+
+    const tl = gsap.timeline()
+
+    typewriter("#hero-title", {
+      highlight: ["Orlando", "López"],
+      highlightClass: "text-primary-500",
+      speed: 50
+    }, tl)
+
+    splitTextAnimation("#hero-subtitle", {
+      opacity: 0,
+      y: 30,
+      stagger: 0.15,
+      type: "words",
+    }, {}, tl, "-=0.2")
+
+    animate("#hero-description", {
+      opacity: 0,
+      x: -30,
+      duration: 0.5,
+      ease: "back.out",
+    }, {}, tl, "-=0.2")
+
+    animate("#avatar", {
+      opacity: 0,
+      y: 30,
+      scale: 0.8,
+      ease: "back.out",
+      duration: 0.5
+    }, {}, tl, "-=0.2")
+
+    $techIcons.forEach((el, i) => {
+      const isLeft = el.dataset.side === "left"
+      const side = isLeft ? "left" : "right"
+      const outset = el.dataset.outset === "true"
+      
+      const from = { top: "50%", scale: 0, opacity: 0, [side]: "50%" }
+      const to = { top: el.dataset.top, scale: 1, opacity: 1, [side]: outset ? "5%" : "15%"}
+      animateFromTo(el, from, to, { duration: 0.2 }, tl, "-=0.6")
+    })
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initHeroAnimations()
+  });
+
+</script>

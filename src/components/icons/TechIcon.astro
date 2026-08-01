@@ -1,0 +1,33 @@
+---
+import reactIcon from "@/icons/react.svg?raw";
+import astroIcon from "@/icons/astro.svg?raw";
+import tailwindIcon from "@/icons/tailwind.svg?raw";
+import typescriptIcon from "@/icons/typescript.svg?raw";
+import dockerIcon from "@/icons/docker.svg?raw";
+import antigravityIcon from "@/icons/antigravity.svg?raw";
+
+const ICONS = {
+  react: reactIcon,
+  astro: astroIcon,
+  tailwind: tailwindIcon,
+  typescript: typescriptIcon,
+  tanstack: dockerIcon,
+  opencode: antigravityIcon,
+} as const;
+
+interface Props {
+  name: keyof typeof ICONS;
+  label: string;
+  class?: string;
+}
+
+const { name, label, class: className = "size-12" } = Astro.props;
+
+const svg = ICONS[name].replace(
+  /<svg([^>]*?)>/,
+  (_match, attrs) =>
+    `<svg${attrs} class="${className}" role="img" aria-label="${label}"><title>${label}</title>`,
+);
+---
+
+<Fragment set:html={svg} />
