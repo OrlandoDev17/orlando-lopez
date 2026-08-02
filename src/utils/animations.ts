@@ -247,3 +247,71 @@ export const typewriter = (
 
   return tween;
 };
+
+/**
+ * Preset Marquee: recibe el `track` (el contenedor flex con los ítems).
+ * Duplica su contenido para lograr un loop infinito seamless y anima con
+ * `xPercent` a velocidad constante. El padre con `overflow-hidden` es el que
+ * recorta visualmente la cinta.
+ */
+export interface MarqueeOptions {
+  /** Velocidad en px por segundo (default: 50). */
+  speed?: number;
+  /** Dirección del desplazamiento (default: "left"). */
+  direction?: "left" | "right";
+  /** Pausar al pasar el mouse por el contenedor (default: true). */
+  pauseOnHover?: boolean;
+  /** Recalcular la duración al redimensionar la ventana (default: false). */
+  responsive?: boolean;
+}
+
+export const marquee = (
+  target: string | Element,
+  options: MarqueeOptions = {},
+): gsap.core.Tween | undefined => {
+  const track = typeof target === "string" ? $(target) : target;
+  if (!track || track.dataset.marquee) return;
+  track.dataset.marquee = "true";
+
+  const {
+    speed = 50,
+    direction = "left",
+    pauseOnHover = true,
+    responsive = false,
+  } = options;
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const items = Array.from(track.children);
+  if (!items.length) return;
+
+  items.forEach((item) => track.appendChild(item.cloneNode(true)));
+
+  const dir = direction === "right" ? 1 : -1;
+  const getDuration = () => track.scrollWidth / 2 / speed;
+
+  const tween = gsap.fromTo(
+    track,
+    { xPercent: dir === -1 ? 0 : -50 },
+    {
+      xPercent: dir === -1 ? -50 : 0,
+      duration: getDuration(),
+      ease: "none",
+      repeat: -1,
+    },
+  );
+
+  if (responsive) {
+    window.addEventListener("resize", () => {
+      tween.duration(getDuration());
+    });
+  }
+
+  if (pauseOnHover) {
+    const container = track.parentElement;
+    container?.addEventListener("mouseenter", () => tween.pause());
+    container?.addEventListener("mouseleave", () => tween.resume());
+  }
+
+  return tween;
+};
