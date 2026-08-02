@@ -2,35 +2,8 @@
 import { HIGHLIGHTED_WORDS } from "@/utils/highlighted-words";
 import { highlight } from "@/utils/highlight";
 import { Image } from "astro:assets";
-import TechIcon from "@/components/icons/TechIcon.astro";
-
-const HERO_DESCRIPTION = `Desarrollador de Software especializado en crear experiencias digitales modernas, rápidas y eficientes, tanto en web como en aplicaciones móviles.
-
-Mi enfoque abarca desde la arquitectura frontend con React, Astro y Tailwind CSS, hasta el desarrollo backend con Node.js, TypeScript y microservicios, asegurando siempre la calidad del producto mediante buenas prácticas de QA. No solo construyo software funcional para resolver problemas reales, me aseguro de que sea escalable, elegante y con una interfaz impecable.`;
-
-interface TechIconConfig {
-  name: "react" | "opencode" | "tailwind" | "astro" | "tanstack" | "typescript";
-  label: string;
-  top: string;
-  side: "left" | "right";
-  outset?: boolean;
-  extraClass?: string;
-}
-
-const TECH_ICONS: readonly TechIconConfig[] = [
-  { name: "react", label: "React", top: "18%", side: "left" },
-  { name: "opencode", label: "OpenCode", top: "44%", side: "left", outset: true },
-  { name: "tailwind", label: "Tailwind CSS", top: "70%", side: "left" },
-  {
-    name: "astro",
-    label: "Astro",
-    top: "18%",
-    side: "right",
-    extraClass: "size-12 drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]",
-  },
-  { name: "tanstack", label: "TanStack", top: "44%", side: "right", outset: true },
-  { name: "typescript", label: "TypeScript", top: "70%", side: "right" },
-];
+import { Icon } from "astro-icon/components";
+import { HERO_DESCRIPTION, TECH_ICONS, TECH_STACK } from "@/components/sections/hero.constants";
 ---
 
 <section class="w-full grid grid-cols-2 max-w-7xl min-h-screen mx-auto px-8 py-8">
@@ -51,20 +24,34 @@ const TECH_ICONS: readonly TechIconConfig[] = [
           data-side={icon.side}
           data-outset={icon.outset}
         >
-          <span
-          >
-            <TechIcon name={icon.name} label={icon.label} class={icon.extraClass} />
-          </span>
+          <Icon
+            name={icon.icon}
+            title={icon.label}
+            class={icon.className ?? "size-12 text-primary-500"}
+          />
         </span>
       ))}
     </div>
   </aside>
 </section>
 
+<section
+  class="marquee overflow-hidden pb-8 [-webkit-mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]"
+  aria-label="Tecnologías que uso"
+>
+  <div class="marquee-track flex items-center gap-16">
+    {TECH_STACK.map(({ name, icon }) => (
+      <span class="flex shrink-0">
+        <Icon title={name} name={icon} class="size-14 text-primary-500" />
+      </span>
+    ))}
+  </div>
+</section>
+
 <script>
   import gsap from "gsap";
-  import { $ ,$$ } from "@/utils/dom"
-  import { typewriter, splitTextAnimation, animate, animateFromTo } from "@/utils/animations"
+  import { $$ } from "@/utils/dom"
+  import { typewriter, splitTextAnimation, animate, animateFromTo, marquee } from "@/utils/animations"
 
   const initHeroAnimations = () => {
 
@@ -114,6 +101,7 @@ const TECH_ICONS: readonly TechIconConfig[] = [
 
   document.addEventListener("DOMContentLoaded", () => {
     initHeroAnimations()
+    marquee(".marquee-track", { speed: 60, direction: "right", pauseOnHover: false })
   });
 
 </script>
