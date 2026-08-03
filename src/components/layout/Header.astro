@@ -52,7 +52,7 @@ const NAV_ITEMS: navItem[] = [
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   import { $$ } from "@/utils/dom"
-  import { animate } from "@/utils/animations"
+  import { animateFrom } from "gsap-presets-kit"
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -89,25 +89,26 @@ const NAV_ITEMS: navItem[] = [
 
   // 2. LÓGICA DE ANIMACIÓN DE ENTRADA (GSAP)
   const initAnimations = () => {
-    animate("[data-header-img]", 
+    animateFrom("[data-header-img]",
     {
       opacity: 0,
       x: -30,
+      y: 0,
       duration: 0.4,
       ease: "back.out",
-      delay: 0.2
-    }, {}, tl
-    )
+      delay: 0.2,
+      timeline: tl
+    })
 
-    animate(".nav-item",
+    animateFrom(".nav-item",
     {
       opacity: 0,
       y: 30,
       duration: 0.5,
       ease: "back.out",
-      stagger: 0.05
-    }, {}, tl
-    )
+      stagger: 0.05,
+      timeline: tl
+    })
   }
   
   // 3. LÓGICA DE BLUR + SOMBRA AL HACER SCROLL (GSAP)

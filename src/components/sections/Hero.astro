@@ -51,7 +51,7 @@ import { HERO_DESCRIPTION, TECH_ICONS, TECH_STACK } from "@/components/sections/
 <script>
   import gsap from "gsap";
   import { $$ } from "@/utils/dom"
-  import { typewriter, splitTextAnimation, animate, animateFromTo, marquee } from "@/utils/animations"
+  import { animateFrom, animateFromTo, marquee, splitTextReveal, typewriter } from "gsap-presets-kit"
 
   const initHeroAnimations = () => {
 
@@ -63,39 +63,50 @@ import { HERO_DESCRIPTION, TECH_ICONS, TECH_STACK } from "@/components/sections/
     typewriter("#hero-title", {
       highlight: ["Orlando", "López"],
       highlightClass: "text-primary-500",
-      speed: 50
-    }, tl)
+      speed: 50,
+      timeline: tl
+    })
 
-    splitTextAnimation("#hero-subtitle", {
+    splitTextReveal("#hero-subtitle", {
+      type: "words",
       opacity: 0,
       y: 30,
+      yPercent: 0,
       stagger: 0.15,
-      type: "words",
-    }, {}, tl, "-=0.2")
+      duration: 0.8,
+      ease: "power2.out",
+      timeline: tl,
+      position: "-=0.2"
+    })
 
-    animate("#hero-description", {
+    animateFrom("#hero-description", {
       opacity: 0,
       x: -30,
+      y: 0,
       duration: 0.5,
       ease: "back.out",
-    }, {}, tl, "-=0.2")
+      timeline: tl,
+      position: "-=0.2"
+    })
 
-    animate("#avatar", {
+    animateFrom("#avatar", {
       opacity: 0,
       y: 30,
       scale: 0.8,
       ease: "back.out",
-      duration: 0.5
-    }, {}, tl, "-=0.2")
+      duration: 0.5,
+      timeline: tl,
+      position: "-=0.2"
+    })
 
-    $techIcons.forEach((el, i) => {
+    $techIcons.forEach((el) => {
       const isLeft = el.dataset.side === "left"
       const side = isLeft ? "left" : "right"
       const outset = el.dataset.outset === "true"
-      
-      const from = { top: "50%", scale: 0, opacity: 0, [side]: "50%" }
-      const to = { top: el.dataset.top, scale: 1, opacity: 1, [side]: outset ? "5%" : "15%"}
-      animateFromTo(el, from, to, { duration: 0.2 }, tl, "-=0.6")
+
+      const from = { top: "50%", scale: 0, opacity: 0, y: 0, [side]: "50%" }
+      const to = { top: el.dataset.top, scale: 1, opacity: 1, [side]: outset ? "5%" : "15%" }
+      animateFromTo(el, from, to, { timeline: tl, position: "-=0.6" })
     })
   }
 
