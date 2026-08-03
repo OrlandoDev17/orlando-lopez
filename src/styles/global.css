@@ -69,3 +69,9 @@ h2 {
   background-color: var(--color-primary-100);
   color: var(--color-primary-900);
 }
+
+/* Iconos del avatar: ocultos hasta que GSAP los anime.
+   Solo cuando hay JS (evita el FOUC de iconos apilados en cargas lentas). */
+html.js .tech-icon {
+  opacity: 0;
+}

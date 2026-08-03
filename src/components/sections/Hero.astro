@@ -16,7 +16,7 @@ import { HERO_DESCRIPTION, TECH_ICONS, TECH_STACK } from "@/components/sections/
   </div>
   <aside class="flex items-start justify-center relative">
     <div class="avatar-container relative w-full flex justify-center">
-      <Image id="avatar" src="/avatar/avatar.webp" alt="Avatar de Orlando López" width={448} height={448} />
+      <Image id="avatar" src="/avatar/avatar.webp" alt="Avatar de Orlando López" width={448} height={448} loading="eager" fetchpriority="high" />
       {TECH_ICONS.map((icon) => (
         <span
           class={`tech-icon absolute`}
