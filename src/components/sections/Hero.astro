@@ -3,21 +3,22 @@ import { HIGHLIGHTED_WORDS } from "@/utils/highlighted-words";
 import { highlight } from "@/utils/highlight";
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
-import { HERO_DESCRIPTION, TECH_ICONS, TECH_STACK } from "@/components/sections/hero.constants";
+import { HERO_DESCRIPTION, TECH_ICONS, TECH_STACK } from "@/constants/hero.constants";
 import Button from "@/components/common/Button.astro";
-import { Folder } from "@lucide/astro";
+import { Folder, Download } from "@lucide/astro";
 ---
 
-<section class="flex flex-col gap-12 max-w-7xl min-h-screen mx-auto px-8 pt-8 2xl:pt-16">
+<section class="flex flex-col gap-12 max-w-7xl min-h-screen mx-auto px-8 pt-6 2xl:pt-16">
   <div class="w-full grid grid-cols-2 ">
     <div class="flex flex-col gap-4">
     <h1 id="hero-title" class="text-7xl font-black">
       Hola, Soy Orlando López
     </h1>
     <h2 id="hero-subtitle" class="text-4xl text-secondary-600 font-semibold">Desarrollador de Software</h2>
-    <p id="hero-description" class="text-muted text-balance max-w-xl" set:html={highlight(HERO_DESCRIPTION, HIGHLIGHTED_WORDS)} />
-    <div>
-      <Button><Folder class="size-4" /> Ver Proyectos</Button>
+    <p id="hero-description" class="text-sm 2xl:text-base text-muted text-balance max-w-xl" set:html={highlight(HERO_DESCRIPTION, HIGHLIGHTED_WORDS)} />
+    <div class="flex items-center gap-4">
+      <Button className="button"><Folder fill="currentColor" class="size-4" /> Ver Proyectos</Button>
+      <Button className="button" variant="secondary"><Download stroke-width={3} class="size-4" /> Descargar CV</Button>
     </div>
   </div>
   <aside class="flex items-start justify-center relative">
@@ -114,6 +115,14 @@ import { Folder } from "@lucide/astro";
       const from = { top: "50%", scale: 0, opacity: 0, y: 0, [side]: "50%" }
       const to = { top: el.dataset.top, scale: 1, opacity: 1, [side]: outset ? "5%" : "15%" }
       animateFromTo(el, from, to, { timeline: tl, position: "-=0.6" })
+    })
+
+    animateFrom(".button", {
+      opacity: 0,
+      y: 30,
+      stagger: 0.1,
+      timeline: tl,
+      position: "-=0.2"
     })
   }
 
