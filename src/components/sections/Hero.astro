@@ -4,15 +4,21 @@ import { highlight } from "@/utils/highlight";
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import { HERO_DESCRIPTION, TECH_ICONS, TECH_STACK } from "@/components/sections/hero.constants";
+import Button from "@/components/common/Button.astro";
+import { Folder } from "@lucide/astro";
 ---
 
-<section class="w-full grid grid-cols-2 max-w-7xl min-h-screen mx-auto px-8 py-8">
-  <div class="flex flex-col gap-4">
+<section class="flex flex-col gap-12 max-w-7xl min-h-screen mx-auto px-8 pt-8 2xl:pt-16">
+  <div class="w-full grid grid-cols-2 ">
+    <div class="flex flex-col gap-4">
     <h1 id="hero-title" class="text-7xl font-black">
       Hola, Soy Orlando López
     </h1>
     <h2 id="hero-subtitle" class="text-4xl text-secondary-600 font-semibold">Desarrollador de Software</h2>
     <p id="hero-description" class="text-muted text-balance max-w-xl" set:html={highlight(HERO_DESCRIPTION, HIGHLIGHTED_WORDS)} />
+    <div>
+      <Button><Folder class="size-4" /> Ver Proyectos</Button>
+    </div>
   </div>
   <aside class="flex items-start justify-center relative">
     <div class="avatar-container relative w-full flex justify-center">
@@ -33,19 +39,20 @@ import { HERO_DESCRIPTION, TECH_ICONS, TECH_STACK } from "@/components/sections/
       ))}
     </div>
   </aside>
-</section>
-
-<section
+  </div>
+  
+  <div
   class="marquee overflow-hidden pb-8 [-webkit-mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]"
   aria-label="Tecnologías que uso"
->
-  <div class="marquee-track flex items-center gap-16">
+  >
+  <div class="marquee-track flex w-max items-center">
     {TECH_STACK.map(({ name, icon }) => (
-      <span class="flex shrink-0">
+      <span class="flex shrink-0 px-8">
         <Icon title={name} name={icon} class="size-14 text-primary-500" />
       </span>
     ))}
   </div>
+</div>
 </section>
 
 <script>
