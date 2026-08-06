@@ -61,7 +61,8 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   font-family: var(--font-heading);
 }
 
@@ -74,4 +75,34 @@ h2 {
    Solo cuando hay JS (evita el FOUC de iconos apilados en cargas lentas). */
 html.js .tech-icon {
   opacity: 0;
+}
+
+/* Skip link: invisible hasta que recibe foco (WCAG 2.4.1) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-primary-500);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* Respeto por prefers-reduced-motion para transiciones CSS */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
 }
