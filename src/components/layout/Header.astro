@@ -10,7 +10,7 @@ interface navItem {
 const NAV_ITEMS: navItem[] = [
   {
     label: "Inicio",
-    url: "#"
+    url: "#inicio"
   },
   {
     label: "Proyectos",
@@ -34,13 +34,15 @@ const NAV_ITEMS: navItem[] = [
 
 <header class="fixed inset-0 top-0 w-full z-100 h-16 flex items-center">
   <div class="flex items-center justify-between max-w-7xl mx-auto w-full px-8">
-    <img data-header-img src="/logo.svg" class="size-14" alt="Logo de Orlando López" loading="eager" />
-    <nav>
+    <a href="#inicio" class="flex items-center" aria-label="Orlando López — ir al inicio">
+      <img data-header-img src="/logo.svg" class="size-14" alt="Logo de Orlando López" loading="eager" aria-hidden="true" />
+    </a>
+    <nav aria-label="Navegación principal">
     <ul class="nav-list flex items-center gap-2">
       {NAV_ITEMS.map(({ label, url }) => (
         <li class="nav-item relative">
           <a class="nav-link px-2 text-muted font-semibold hover:text-primary-500 hover:tracking-wider transition-all duration-300" href={url}>{label}</a>
-          <span class="nav-indicator absolute -bottom-1.5 left-0 w-0 h-1 rounded-full bg-primary-500 transition-all duration-300"></span>
+          <span class="nav-indicator absolute -bottom-1.5 left-0 w-0 h-1 rounded-full bg-primary-500 transition-all duration-300" aria-hidden="true"></span>
         </li>
       ))}
     </ul>
@@ -49,22 +51,23 @@ const NAV_ITEMS: navItem[] = [
 </header>
 
 <script>
-  import gsap from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { gsap } from "@/utils/gsap"
   import { $$ } from "@/utils/dom"
   import { animateFrom } from "gsap-presets-kit"
-
-  gsap.registerPlugin(ScrollTrigger);
 
   // 1. LÓGICA DE NAVEGACIÓN ACTIVA (HASH)
   const initActiveNav = () => {
     const updateActiveLink = () => {
-    const currentHash = window.location.hash || "#"
+    const currentHash = window.location.hash || "#inicio"
     const $links = $$<HTMLAnchorElement>(".nav-link")
     const $indicators = $$<HTMLSpanElement>(".nav-indicator")
 
     $links.forEach((link, index) => {
       const isMatch = link.getAttribute("href") === currentHash
+
+      // 0. Estado activo para lectores de pantalla
+      link.toggleAttribute("aria-current", isMatch)
+      if (isMatch) link.setAttribute("aria-current", "true")
 
       // 1. Alternar color del texto del enlace
       link.classList.toggle("text-primary-500", isMatch);

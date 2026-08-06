@@ -8,48 +8,54 @@ import Button from "@/components/common/Button.astro";
 import { Folder, Download } from "@lucide/astro";
 ---
 
-<section class="flex flex-col gap-12 max-w-7xl min-h-screen mx-auto px-8 pt-6 2xl:pt-16">
+<section id="inicio" class="flex flex-col gap-12 max-w-7xl min-h-screen mx-auto px-8 pt-8 2xl:pt-16" aria-labelledby="hero-title">
   <div class="w-full grid grid-cols-2 ">
     <div class="flex flex-col gap-4">
-    <h1 id="hero-title" class="text-7xl font-black">
+    <h1 id="hero-title" class="text-6xl font-black">
       Hola, Soy Orlando López
     </h1>
     <h2 id="hero-subtitle" class="text-4xl text-secondary-600 font-semibold">Desarrollador de Software</h2>
-    <p id="hero-description" class="text-sm 2xl:text-base text-muted text-balance max-w-xl" set:html={highlight(HERO_DESCRIPTION, HIGHLIGHTED_WORDS)} />
-    <div class="flex items-center gap-4">
-      <Button className="button"><Folder fill="currentColor" class="size-4" /> Ver Proyectos</Button>
-      <Button className="button" variant="secondary"><Download stroke-width={3} class="size-4" /> Descargar CV</Button>
+    <p id="hero-description" class="text-sm 2xl:text-base text-muted text-balance font-body max-w-xl" set:html={highlight(HERO_DESCRIPTION, HIGHLIGHTED_WORDS)} />
+
+    <div class="flex items-center gap-4 btn-container">
+      <div class="button">
+        <Button href="#projects"><Folder aria-hidden="true" class="size-4" /> Ver Proyectos</Button>
+      </div>
+      <div class="button">
+        <Button variant="secondary"><Download aria-hidden="true" stroke-width={3} class="size-4" /> Descargar CV</Button>
+      </div>
     </div>
+
   </div>
-  <aside class="flex items-start justify-center relative">
+  <div class="flex items-start justify-center relative">
     <div class="avatar-container relative w-full flex justify-center">
-      <Image id="avatar" src="/avatar/avatar.webp" alt="Avatar de Orlando López" width={448} height={448} loading="eager" fetchpriority="high" />
+      <Image id="avatar" src="/avatar/avatar.webp" alt="Avatar de Orlando López, desarrollador de software" width={448} height={448} loading="eager" fetchpriority="high" />
       {TECH_ICONS.map((icon) => (
         <span
           class={`tech-icon absolute`}
           data-top={icon.top}
           data-side={icon.side}
           data-outset={icon.outset}
+          aria-hidden="true"
         >
           <Icon
             name={icon.icon}
-            title={icon.label}
             class={icon.className ?? "size-12 text-primary-500"}
           />
         </span>
       ))}
     </div>
-  </aside>
+  </div>
   </div>
   
   <div
   class="marquee overflow-hidden pb-8 [-webkit-mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]"
-  aria-label="Tecnologías que uso"
+  aria-hidden="true"
   >
   <div class="marquee-track flex w-max items-center">
     {TECH_STACK.map(({ name, icon }) => (
       <span class="flex shrink-0 px-8">
-        <Icon title={name} name={icon} class="size-14 text-primary-500" />
+        <Icon name={icon} class="size-14 text-primary-500" />
       </span>
     ))}
   </div>
@@ -57,7 +63,7 @@ import { Folder, Download } from "@lucide/astro";
 </section>
 
 <script>
-  import gsap from "gsap";
+  import { gsap } from "@/utils/gsap"
   import { $$ } from "@/utils/dom"
   import { animateFrom, animateFromTo, marquee, splitTextReveal, typewriter } from "gsap-presets-kit"
 
@@ -66,10 +72,13 @@ import { Folder, Download } from "@lucide/astro";
       const $techIcons = $$(".tech-icon")
     if (!$techIcons.length) return
 
+    const $btns = $$(".button")
+    if (!$btns.length) return
+
     const tl = gsap.timeline()
 
     typewriter("#hero-title", {
-      highlight: ["Orlando", "López"],
+      highlight: ["Orlando",  "López"],
       highlightClass: "text-primary-500",
       speed: 50,
       timeline: tl
@@ -97,6 +106,14 @@ import { Folder, Download } from "@lucide/astro";
       position: "-=0.2"
     })
 
+    animateFrom($btns, {
+      y: 30,
+      stagger: 0.05,
+      duration: 0.3,
+      timeline: tl,
+      position: "-=0.2"
+    })
+
     animateFrom("#avatar", {
       opacity: 0,
       y: 30,
@@ -114,15 +131,7 @@ import { Folder, Download } from "@lucide/astro";
 
       const from = { top: "50%", scale: 0, opacity: 0, y: 0, [side]: "50%" }
       const to = { top: el.dataset.top, scale: 1, opacity: 1, [side]: outset ? "5%" : "15%" }
-      animateFromTo(el, from, to, { timeline: tl, position: "-=0.6" })
-    })
-
-    animateFrom(".button", {
-      opacity: 0,
-      y: 30,
-      stagger: 0.1,
-      timeline: tl,
-      position: "-=0.2"
+      animateFromTo(el, from, to, { timeline: tl, position: "-=0.65" })
     })
   }
 
