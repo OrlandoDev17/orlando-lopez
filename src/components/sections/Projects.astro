@@ -1,0 +1,57 @@
+---
+import ProjectCard from "@/components/projects/ProjectCard.astro";
+import { PROJECTS } from "@/constants/projects";
+---
+
+<section id="projects" class="flex flex-col gap-6 max-w-7xl mx-auto w-full px-8">
+  <header class="flex flex-col gap-2">
+    <h2 id="projects-title" class="text-3xl text-primary-500 font-black">Experiencia & Proyectos</h2>
+    <p id="projects-paragraph" class="text-sm text-muted font-body max-w-2xl">Una coleccion de aplicaciones enfocadas en rendimiento, interfaces intuitivas y código escalable. Cada proyecto representa un desafío técnico resuelto desde el diseño hasta la implementación.</p>
+    <div id="projects-separator" class="w-md h-1.5 rounded-full bg-secondary-500 my-2"/>
+  </header>
+  <div class="flex flex-col gap-6 w-full">
+    {PROJECTS.map((project) => <ProjectCard {...project} />)}
+  </div>
+</section>
+
+<script>
+  import { animateFrom, splitTextReveal } from "gsap-presets-kit"
+  import { createSectionTimeline } from "@/utils/gsap"
+
+  const tl = createSectionTimeline("#projects")
+
+  const initProjectsAnimations = () => {
+    splitTextReveal("#projects-title", {
+      type: "words",
+      opacity: 0,
+      y: 30,
+      stagger: 0.15,
+      duration: 0.6,
+      ease: "power2.out",
+      timeline: tl,
+      scroll: false,
+    })
+
+    animateFrom("#projects-paragraph", {
+      opacity: 0,
+      x: -30,
+      duration: 0.5,
+      ease: "back.out",
+      timeline: tl,
+      position: "-=0.2",
+      scroll: false
+    })
+
+    tl.from("#projects-separator", {
+      scaleX: 0,
+      transformOrigin: "left center",
+      duration: 0.6,
+      ease: "power2.out",
+    }, "-=0.3")
+
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initProjectsAnimations()
+  })
+</script>

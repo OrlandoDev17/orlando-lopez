@@ -1,0 +1,85 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  slug: string;
+  thumbnail: string;
+  title: string;
+  role: string;
+  description: string;
+  period: string;
+  links: {
+    icon: string;
+    url: string
+  }[],
+  techs: {
+    name: string;
+    icon: string;
+  }[]
+}
+
+const { slug, thumbnail, title, role, description, period, links, techs } = Astro.props;
+---
+
+<article class="grid grid-cols-3 place-items-center w-full bg-white shadow-md rounded-xl overflow-hidden min-h-72 hover:shadow-xl transition-all duration-300 group/card">
+  <div class="col-span-1 w-full h-full overflow-hidden">
+    <img class="block w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-110" src={thumbnail} alt={`Proyecto: ${title}`}>
+  </div>
+  <div class="col-span-2 flex flex-col gap-4 w-full p-6">
+    <div class="flex items-center justify-between">
+      <h3 class="text-2xl font-black">{title}</h3>
+      <ul class="flex items-center gap-2">
+        {links.map(({icon, url}) => (
+          <li>
+            <a href={url}>
+              <Icon class="size-10 p-2 rounded-xl border-2 border-secondary-500 text-secondary-600 
+              hover:bg-secondary-500 hover:text-white transition-all duration-300" name={icon} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <h4 class="text-lg text-primary-600 font-bold">{role}</h4>
+    <p class="text-sm text-muted max-w-2xl">{description}</p>
+    <ul class="flex items-center gap-2 flex-wrap">
+      {techs.map(({icon, name}) => (
+        <li>
+          <Icon class="size-13 p-3 rounded-xl bg-bg-main hover:bg-main hover:text-white transition-all duration-300" name={icon} />
+        </li>
+      ))}
+    </ul>
+    <a 
+    class="flex items-center gap-2 px-12 py-3.5 bg-main text-white w-fit rounded-xl font-bold font-heading project-card-btn
+    hover:tracking-wide transition-all duration-300 group" 
+    href={`project/${slug}`}
+    >
+      <span class="relative z-1 flex items-center gap-2">Mas Detalles <ArrowRight class='size-4 stroke-3 transition-transform duration-300 group-hover:translate-x-1' /></span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .project-card-btn {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .project-card-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 100%;
+    background: var(--color-primary-500);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: 0;
+  }
+
+  .project-card-btn:hover::before,
+  .project-card-btn:focus-visible::before {
+    transform: scaleY(1);
+  }
+</style>
