@@ -12,13 +12,15 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@iconify-json/lucide": "^1.2.121",
     "@lucide/astro": "^1.28.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.1.6",
     "astro-icon": "^1.1.5",
     "gsap": "^3.15.0",
-    "gsap-presets-kit": "^0.3.0",
-    "tailwindcss": "^4.3.3"
+    "gsap-presets-kit": "^0.3.1",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@iconify-json/simple-icons": "^1.2.92"

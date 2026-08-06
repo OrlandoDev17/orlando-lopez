@@ -2,4 +2,4 @@ allowBuilds:
   esbuild: true
   sharp: true
 minimumReleaseAgeExclude:
-  - gsap-presets-kit@0.1.0 || 0.2.0 || 0.3.0
+  - gsap-presets-kit@0.1.0 || 0.2.0 || 0.3.0 || 0.3.1

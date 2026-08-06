@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@iconify-json/lucide':
+        specifier: ^1.2.121
+        version: 1.2.121
       '@lucide/astro':
         specifier: ^1.28.0
         version: 1.28.0(astro@7.1.6(@emnapi/core@2.0.0-alpha.3)(@emnapi/runtime@2.0.0-alpha.3)(@types/node@26.1.2)(jiti@2.7.0))
@@ -24,11 +27,14 @@ importers:
         specifier: ^3.15.0
         version: 3.15.0
       gsap-presets-kit:
-        specifier: ^0.3.0
-        version: 0.3.0(gsap@3.15.0)(zod@4.4.3)
+        specifier: ^0.3.1
+        version: 0.3.1(gsap@3.15.0)(zod@4.4.3)
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@iconify-json/simple-icons':
         specifier: ^1.2.92
@@ -375,6 +381,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@iconify-json/lucide@1.2.121':
+    resolution: {integrity: sha512-zSoQQSmsyFaeTpSwURHJ9PIrsDcGFpDNhGlpiTrs+Ua4uFeH5UsE26L4OEBLrgLWoSK0UO+JhsO8yehSw0403g==}
 
   '@iconify-json/simple-icons@1.2.92':
     resolution: {integrity: sha512-hR0ozxR97t1dzWw+esoxFijZ15gagt7EIgF3CNifu2yICXhS7gnun4Y+j+odJQtNSl7wvqMdoLbViIShwe/fdw==}
@@ -1133,8 +1142,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  gsap-presets-kit@0.3.0:
-    resolution: {integrity: sha512-KxzyWGuiOQSN6igbnw19un8QPw9XlETyn/AqLCaUZS6BQkhUVgkhubHsadSLndxa59gALo6rrhgG6rB8TZsAqw==}
+  gsap-presets-kit@0.3.1:
+    resolution: {integrity: sha512-t4QJjyK9lTl6hbhCIRBG5qf9cl49b3HVr77RedSJGS0CRL5+T0+FBp2w+/a3Lgi9ZAf3LNS0qcdOZ2dF4Zq8sg==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -2115,6 +2124,10 @@ snapshots:
   '@esbuild/win32-x64@0.28.1':
     optional: true
 
+  '@iconify-json/lucide@1.2.121':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify-json/simple-icons@1.2.92':
     dependencies:
       '@iconify/types': 2.0.0
@@ -2867,7 +2880,7 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  gsap-presets-kit@0.3.0(gsap@3.15.0)(zod@4.4.3):
+  gsap-presets-kit@0.3.1(gsap@3.15.0)(zod@4.4.3):
     dependencies:
       gsap: 3.15.0
       zod: 4.4.3
