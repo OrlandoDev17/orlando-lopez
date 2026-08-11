@@ -1,6 +1,6 @@
 ---
 import ProjectCard from "@/components/projects/ProjectCard.astro";
-import { PROJECTS } from "@/constants/projects";
+import { ProjectsData } from "@/constants/projects";
 ---
 
 <section id="projects" class="flex flex-col gap-6 max-w-7xl mx-auto w-full px-8">
@@ -10,7 +10,7 @@ import { PROJECTS } from "@/constants/projects";
     <div id="projects-separator" class="w-md h-1.5 rounded-full bg-secondary-500 my-2"/>
   </header>
   <div class="flex flex-col gap-6 w-full">
-    {PROJECTS.map((project) => <ProjectCard {...project} />)}
+    {ProjectsData.map((project) => <ProjectCard {...project} />)}
   </div>
 </section>
 
