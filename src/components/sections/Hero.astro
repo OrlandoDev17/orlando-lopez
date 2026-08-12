@@ -135,7 +135,7 @@ import { Folder, Download } from "@lucide/astro";
     })
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     initHeroAnimations()
     marquee(".marquee-track", { speed: 60, direction: "right", pauseOnHover: false })
   });

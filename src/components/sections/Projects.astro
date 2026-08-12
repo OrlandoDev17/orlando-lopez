@@ -10,7 +10,11 @@ import { ProjectsData } from "@/constants/projects";
     <div id="projects-separator" class="w-md h-1.5 rounded-full bg-secondary-500 my-2"/>
   </header>
   <div class="flex flex-col gap-6 w-full">
-    {ProjectsData.map((project) => <ProjectCard {...project} />)}
+    {ProjectsData.map((project) => (
+      <div class="project-card">
+        <ProjectCard {...project} />
+      </div>
+    ))}
   </div>
 </section>
 
@@ -49,9 +53,20 @@ import { ProjectsData } from "@/constants/projects";
       ease: "power2.out",
     }, "-=0.3")
 
+    animateFrom(".project-card", {
+      opacity: 0,
+      y: 30,
+      duration: 0.5,
+      ease: "power3.out",
+      timeline: tl,
+      scroll: false,
+      stagger: 0.2,
+      position: "-=0.1"
+    })
+
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     initProjectsAnimations()
   })
 </script>

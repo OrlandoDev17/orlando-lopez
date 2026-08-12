@@ -10,11 +10,16 @@ const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
 
 <article class="grid grid-cols-5 place-items-center w-full bg-white shadow-md rounded-xl overflow-hidden min-h-72 hover:shadow-xl transition-all duration-300 group/card">
   <div class="col-span-2 w-full h-full overflow-hidden">
-    <img class="block w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-102" src={thumbnail} alt={`Proyecto: ${title}`}>
+    <img 
+      transition:name={`${slug}-image`} 
+      class="block w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-102" 
+      src={thumbnail} 
+      alt={`Proyecto: ${title}`}
+    >
   </div>
   <div class="col-span-3 flex flex-col gap-4 w-full p-6">
     <div class="flex items-center justify-between">
-      <h3 class="text-2xl font-black">{title}</h3>
+      <h3 transition:name={`${slug}-title`} class="text-2xl font-black">{title}</h3>
       <ul class="flex items-center gap-2">
         {links.map(({icon, url}) => (
           <li>
@@ -27,7 +32,7 @@ const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
       </ul>
     </div>
     <h4 class="text-lg text-primary-600 font-bold">{role}</h4>
-    <p class="text-sm text-muted max-w-2xl">{summary}</p>
+    <p transition:name={`${slug}-summary`} class="text-sm text-muted max-w-2xl">{summary}</p>
     <ul class="flex items-center gap-2 flex-wrap">
       {techs.map(({icon, name}) => (
         <li>
@@ -38,7 +43,7 @@ const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
     <a 
     class="flex items-center gap-2 px-12 py-3.5 bg-main text-white w-fit rounded-xl font-bold font-heading project-card-btn
     hover:tracking-wide transition-all duration-300 group" 
-    href={`project/${slug}`}
+    href={`/project/${slug}`}
     >
       <span class="relative z-1 flex items-center gap-2">Mas Detalles <ArrowRight class='size-4 stroke-3 transition-transform duration-300 group-hover:translate-x-1' /></span>
     </a>

@@ -4,47 +4,56 @@ import Button from "@/components/common/Button.astro";
 interface navItem {
   label: string;
   url: string;
+  hash: string;
   icon?: ChildNode;
 }
 
-const NAV_ITEMS: navItem[] = [
+export const NAV_ITEMS: navItem[] = [
   {
     label: "Inicio",
-    url: "#inicio"
+    url: "/",
+    hash: ""
   },
   {
     label: "Proyectos",
-    url: "#projects",
+    url: "/",
+    hash: "projects"
   },
   {
     label: "Workflow",
-    url: "#workflow"
+    url: "/",
+    hash: "workflow"
   },
   {
     label: "Habilidades",
-    url: "#skills"
+    url: "/",
+    hash: "skills"
   },
   {
     label: "Sobre Mi",
-    url: "#about"
+    url: "/",
+    hash: "about"
   },
 ]
 
 ---
 
-<header class="fixed inset-0 top-0 w-full z-100 h-16 flex items-center">
+<header class="fixed inset-0 top-0 w-full z-50 h-16 flex items-center">
   <div class="flex items-center justify-between max-w-7xl mx-auto w-full px-8">
-    <a href="#inicio" class="flex items-center" aria-label="Orlando López — ir al inicio">
+    <a href="/" class="flex items-center" aria-label="Orlando López — ir al inicio">
       <img data-header-img src="/logo.svg" class="size-14" alt="Logo de Orlando López" loading="eager" aria-hidden="true" />
     </a>
     <nav aria-label="Navegación principal">
     <ul class="nav-list flex items-center gap-2">
-      {NAV_ITEMS.map(({ label, url }) => (
-        <li class="nav-item relative">
-          <a class="nav-link px-2 text-muted font-semibold hover:text-primary-500 hover:tracking-wider transition-all duration-300" href={url}>{label}</a>
-          <span class="nav-indicator absolute -bottom-1.5 left-0 w-0 h-1 rounded-full bg-primary-500 transition-all duration-300" aria-hidden="true"></span>
-        </li>
-      ))}
+      {NAV_ITEMS.map(({ label, url, hash }) => {
+        const href = hash ? `${url}#${hash}` : url;
+        return (
+          <li class="nav-item relative">
+            <a class="nav-link px-2 text-muted font-semibold hover:text-primary-500 hover:tracking-wider transition-all duration-300" href={href}>{label}</a>
+            <span class="nav-indicator absolute -bottom-1.5 left-0 w-0 h-1 rounded-full bg-primary-500 transition-all duration-300" aria-hidden="true"></span>
+          </li>
+        );
+      })}
     </ul>
   </nav>
   </div>
@@ -55,38 +64,103 @@ const NAV_ITEMS: navItem[] = [
   import { $$ } from "@/utils/dom"
   import { animateFrom } from "gsap-presets-kit"
 
-  // 1. LÓGICA DE NAVEGACIÓN ACTIVA (HASH)
+  // 1. LÓGICA DE NAVEGACIÓN ACTIVA (SCROLL + PATHNAME)
   const initActiveNav = () => {
-    const updateActiveLink = () => {
-    const currentHash = window.location.hash || "#inicio"
-    const $links = $$<HTMLAnchorElement>(".nav-link")
-    const $indicators = $$<HTMLSpanElement>(".nav-indicator")
+    const isHomePage = window.location.pathname === "/" || window.location.pathname === "";
+    const isProjectSubpage = window.location.pathname.startsWith("/project");
+    let activeSectionId = "inicio";
 
-    $links.forEach((link, index) => {
-      const isMatch = link.getAttribute("href") === currentHash
+    const updateActiveLink = (targetId?: string) => {
+      const $links = $$<HTMLAnchorElement>(".nav-link");
+      const $indicators = $$<HTMLSpanElement>(".nav-indicator");
 
-      // 0. Estado activo para lectores de pantalla
-      link.toggleAttribute("aria-current", isMatch)
-      if (isMatch) link.setAttribute("aria-current", "true")
+      $links.forEach((link, index) => {
+        const href = link.getAttribute("href") || "";
+        const linkHash = href.includes("#") ? href.split("#")[1] : "";
+        let isMatch = false;
 
-      // 1. Alternar color del texto del enlace
-      link.classList.toggle("text-primary-500", isMatch);
-      link.classList.toggle("tracking-wider", isMatch);
-      link.classList.toggle("text-muted", !isMatch);
-      link.classList.toggle("tracking-normal", !isMatch);
+        if (isProjectSubpage) {
+          isMatch = linkHash === "projects";
+        } else if (isHomePage) {
+          const currentId = targetId || activeSectionId;
+          isMatch = linkHash === currentId || (linkHash === "" && (currentId === "inicio" || currentId === ""));
+        } else {
+          isMatch = linkHash === "" || linkHash === "inicio";
+        }
 
-      // 2. Controlar la barra indicadora según el índice
-      const indicator = $indicators[index];
-      if (indicator) {
-        indicator.classList.toggle("w-full", isMatch);
-        indicator.classList.toggle("w-0", !isMatch);
+        // 0. Estado activo para lectores de pantalla
+        link.toggleAttribute("aria-current", isMatch);
+        if (isMatch) link.setAttribute("aria-current", "true");
+        else link.removeAttribute("aria-current");
+
+        // 1. Alternar color del texto del enlace
+        link.classList.toggle("text-primary-500", isMatch);
+        link.classList.toggle("tracking-wider", isMatch);
+        link.classList.toggle("text-muted", !isMatch);
+        link.classList.toggle("tracking-normal", !isMatch);
+
+        // 2. Controlar la barra indicadora según el índice
+        const indicator = $indicators[index];
+        if (indicator) {
+          indicator.classList.toggle("w-full", isMatch);
+          indicator.classList.toggle("w-0", !isMatch);
+        }
+      });
+    };
+
+    if (isHomePage) {
+      const $links = $$<HTMLAnchorElement>(".nav-link");
+      const sections = $links
+        .map((link) => {
+          const href = link.getAttribute("href") || "";
+          const hash = href.includes("#") ? href.split("#")[1] : "inicio";
+          return document.getElementById(hash);
+        })
+        .filter((section): section is HTMLElement => section !== null);
+
+      if (sections.length > 0) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                activeSectionId = entry.target.id;
+                updateActiveLink(activeSectionId);
+              }
+            });
+          },
+          {
+            rootMargin: "-20% 0px -60% 0px",
+            threshold: 0,
+          }
+        );
+
+        sections.forEach((section) => observer.observe(section));
       }
-    })
-  }
+    }
 
-  updateActiveLink()
-  window.addEventListener("hashchange", updateActiveLink)
-  }
+    // Desplazamiento suave al tope absoluto (0, 0) al pulsar "Inicio" o el Logo estando en la home
+    const $homeLinks = document.querySelectorAll<HTMLAnchorElement>("a[href='/'], a[href='/#inicio'], a[href='#inicio']");
+    $homeLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        if (window.location.pathname === "/" || window.location.pathname === "") {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          history.pushState(null, "", "/");
+          activeSectionId = "inicio";
+          updateActiveLink("inicio");
+        }
+      });
+    });
+
+    updateActiveLink();
+    window.addEventListener("hashchange", () => {
+      const hash = window.location.hash.replace("#", "");
+      if (hash) {
+        activeSectionId = hash;
+        updateActiveLink(hash);
+      }
+    });
+  };
 
   const tl = gsap.timeline()
 
@@ -140,7 +214,7 @@ const NAV_ITEMS: navItem[] = [
   }
 
   // INICIALIZACIÓN CENTRALIZADA
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     initActiveNav();
     initAnimations();
     initHeaderScroll();

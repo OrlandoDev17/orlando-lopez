@@ -1,5 +1,7 @@
 ---
 import "@/styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import Header from "./Header.astro";
 
 interface Props {
   title: string;
@@ -82,9 +84,13 @@ const siteTitle = `${title} | ${siteName}`;
 			"url": url.origin,
 			"inLanguage": "es"
 		})}></script>
+
+		<ClientRouter fallback="animate" />
 	</head>
 	<body>
-		<a class="skip-link" href="#main-content">Saltar al contenido principal</a>
-		<slot />
+		<Header />
+		<main class="space-y-16 mt-16">
+			<slot />
+		</main>
 	</body>
 </html>
