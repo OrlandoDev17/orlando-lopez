@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  before: string;
+  after: string;
+}
+
+const { before, after } = Astro.props;
+---
+
+<section aria-labelledby="before-after-heading">
+  <h2 id="before-after-heading" class="text-xs font-semibold uppercase tracking-widest text-muted mb-4">
+    Comparación
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-gray-50 border border-gray-200 rounded-xl p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <Icon class="size-4 text-muted" name="lucide:clock" aria-hidden="true" />
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-muted">Antes</h3>
+      </div>
+      <p class="text-sm text-muted leading-relaxed">{before}</p>
+    </div>
+    <div class="bg-white border border-primary-500 rounded-xl p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <Icon class="size-4 text-primary-500" name="lucide:check-circle" aria-hidden="true" />
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-primary-600">Después</h3>
+      </div>
+      <p class="text-sm text-main leading-relaxed">{after}</p>
+    </div>
+  </div>
+</section>

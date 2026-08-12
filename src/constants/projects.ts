@@ -18,6 +18,7 @@ export interface Project {
   slug: string;
   title: string;
   thumbnail: string;
+  images: string[];
   tagline: string;
   role: string;
   duracion: string;
@@ -37,6 +38,11 @@ export const DulcesIdeasData: Project = {
   slug: "dulces-ideas",
   title: "Dulces Ideas - Sistema POS & Gestión Administrativa",
   thumbnail: "/projects/dulces-ideas.webp",
+  images: [
+    "/projects/dulces-ideas.webp",
+    "/projects/dulces-ideas.webp",
+    "/projects/dulces-ideas.webp",
+  ],
   tagline:
     "Sistema POS offline-first con conversión de divisa en tiempo real, gestión de encargos y reportes financieros.",
   role: "Desarrollador de Software",

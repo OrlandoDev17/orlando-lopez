@@ -1,0 +1,272 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  images: string[];
+  alt: string;
+}
+
+const { images, alt } = Astro.props;
+---
+
+<section aria-labelledby="gallery-heading" class="py-4">
+  <h2 id="gallery-heading" class="text-xs font-semibold uppercase tracking-widest text-muted mb-4 flex items-center gap-2">
+    <Icon class="size-4 text-primary-500" name="lucide:images" aria-hidden="true" />
+    Galería de Imágenes
+  </h2>
+
+  <div class="relative">
+    <!-- Contenedor del carrusel -->
+    <div 
+      id="carousel-container"
+      class="overflow-x-auto snap-x snap-mandatory flex scroll-smooth
+             [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {images.map((img, i) => (
+        <button
+          type="button"
+          class="snap-center shrink-0 w-full rounded-xl overflow-hidden 
+                 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          data-lightbox-trigger={i}
+          aria-label={`Ver imagen ${i + 1} de ${images.length}: ${alt}`}
+        >
+          <img
+            src={img}
+            alt={`${alt} - Imagen ${i + 1}`}
+            class="w-full h-auto object-cover aspect-video"
+            loading={i === 0 ? "eager" : "lazy"}
+          />
+        </button>
+      ))}
+    </div>
+
+    <!-- Flechas de navegación -->
+    {images.length > 1 && (
+      <>
+        <button
+          type="button"
+          id="carousel-prev"
+          class="absolute left-3 top-1/2 -translate-y-1/2 size-10 rounded-full bg-white/80 backdrop-blur-sm
+                 flex items-center justify-center shadow-lg border border-border-subtle
+                 hover:bg-white hover:shadow-xl transition-all duration-300"
+          aria-label="Imagen anterior"
+        >
+          <Icon class="size-5 text-main" name="lucide:chevron-left" />
+        </button>
+        <button
+          type="button"
+          id="carousel-next"
+          class="absolute right-3 top-1/2 -translate-y-1/2 size-10 rounded-full bg-white/80 backdrop-blur-sm
+                 flex items-center justify-center shadow-lg border border-border-subtle
+                 hover:bg-white hover:shadow-xl transition-all duration-300"
+          aria-label="Imagen siguiente"
+        >
+          <Icon class="size-5 text-main" name="lucide:chevron-right" />
+        </button>
+      </>
+    )}
+
+    <!-- Contador de imágenes -->
+    <div class="absolute bottom-3 right-3 bg-main/70 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
+      <span id="carousel-current">1</span> / {images.length}
+    </div>
+  </div>
+
+  <!-- Indicadores -->
+  {images.length > 1 && (
+    <div class="flex justify-center gap-2 mt-4" role="tablist" aria-label="Imágenes del carrusel">
+      {images.map((_, i) => (
+        <button
+          type="button"
+          class:list={[
+            "size-2 rounded-full transition-all duration-300",
+            i === 0 ? "bg-primary-500 w-6" : "bg-border-subtle hover:bg-muted"
+          ]}
+          data-carousel-indicator={i}
+          role="tab"
+          aria-selected={i === 0}
+          aria-label={`Ir a imagen ${i + 1}`}
+        />
+      ))}
+    </div>
+  )}
+</section>
+
+<!-- Lightbox -->
+<div
+  id="lightbox-overlay"
+  class="fixed inset-0 z-50 bg-black/95 hidden items-center justify-center p-4 cursor-zoom-out w-full h-dvh"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Visor de imagen ampliada"
+>
+  <button
+    type="button"
+    id="lightbox-close"
+    class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10 z-10"
+    aria-label="Cerrar visor de imagen"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <img
+    id="lightbox-image"
+    src=""
+    alt=""
+    class="max-w-full max-h-full object-contain rounded-lg"
+  />
+</div>
+
+<script>
+  function initCarousel() {
+    const container = document.getElementById('carousel-container');
+    const indicators = document.querySelectorAll('[data-carousel-indicator]');
+    const triggers = document.querySelectorAll('[data-lightbox-trigger]');
+    const prevBtn = document.getElementById('carousel-prev');
+    const nextBtn = document.getElementById('carousel-next');
+    const counter = document.getElementById('carousel-current');
+    const lightbox = document.getElementById('lightbox-overlay') as HTMLDivElement;
+    const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+    const lightboxClose = document.getElementById('lightbox-close');
+
+    if (!container || !lightbox || !lightboxImage) return;
+
+    const totalImages = container.children.length;
+    let currentIndex = 0;
+    let autoplayInterval: ReturnType<typeof setInterval>;
+
+    // Función para ir a una imagen específica
+    const goToSlide = (index: number) => {
+      if (index < 0) index = totalImages - 1;
+      if (index >= totalImages) index = 0;
+      
+      currentIndex = index;
+      const itemWidth = container.scrollWidth / totalImages;
+      container.scrollTo({ left: itemWidth * index, behavior: 'smooth' });
+      
+      // Actualizar contador
+      if (counter) counter.textContent = String(index + 1);
+      
+      // Actualizar indicadores
+      indicators.forEach((indicator, i) => {
+        if (i === index) {
+          indicator.classList.add('bg-primary-500', 'w-6');
+          indicator.classList.remove('bg-border-subtle');
+          indicator.setAttribute('aria-selected', 'true');
+        } else {
+          indicator.classList.remove('bg-primary-500', 'w-6');
+          indicator.classList.add('bg-border-subtle');
+          indicator.setAttribute('aria-selected', 'false');
+        }
+      });
+    };
+
+    // Autoplay
+    const startAutoplay = () => {
+      autoplayInterval = setInterval(() => {
+        goToSlide(currentIndex + 1);
+      }, 4000);
+    };
+
+    const stopAutoplay = () => {
+      clearInterval(autoplayInterval);
+    };
+
+    // Flechas de navegación
+    prevBtn?.addEventListener('click', () => {
+      stopAutoplay();
+      goToSlide(currentIndex - 1);
+      startAutoplay();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      stopAutoplay();
+      goToSlide(currentIndex + 1);
+      startAutoplay();
+    });
+
+    // Navegar con indicadores
+    indicators.forEach((indicator, i) => {
+      indicator.addEventListener('click', () => {
+        stopAutoplay();
+        goToSlide(i);
+        startAutoplay();
+      });
+    });
+
+    // Detectar cambio manual por touch/scroll
+    container.addEventListener('scroll', () => {
+      const itemWidth = container.scrollWidth / totalImages;
+      const newIndex = Math.round(container.scrollLeft / itemWidth);
+      if (newIndex !== currentIndex) {
+        currentIndex = newIndex;
+        if (counter) counter.textContent = String(currentIndex + 1);
+        
+        indicators.forEach((indicator, i) => {
+          if (i === currentIndex) {
+            indicator.classList.add('bg-primary-500', 'w-6');
+            indicator.classList.remove('bg-border-subtle');
+            indicator.setAttribute('aria-selected', 'true');
+          } else {
+            indicator.classList.remove('bg-primary-500', 'w-6');
+            indicator.classList.add('bg-border-subtle');
+            indicator.setAttribute('aria-selected', 'false');
+          }
+        });
+      }
+    });
+
+    // Pausar autoplay al hover
+    container.addEventListener('mouseenter', stopAutoplay);
+    container.addEventListener('mouseleave', startAutoplay);
+
+    // Abrir lightbox
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        stopAutoplay();
+        const img = (trigger as HTMLElement).querySelector('img');
+        if (img) {
+          lightboxImage.src = img.src;
+          lightboxImage.alt = img.alt;
+          lightbox.classList.remove('hidden');
+          lightbox.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    // Cerrar lightbox
+    const closeLightbox = () => {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      startAutoplay();
+    };
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target === lightboxClose) {
+        closeLightbox();
+      }
+    });
+
+    lightboxClose?.addEventListener('click', closeLightbox);
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+        closeLightbox();
+      }
+    });
+
+    // Iniciar autoplay
+    startAutoplay();
+  }
+
+  // Inicializar
+  initCarousel();
+
+  // Reinicializar en cambios de vista (Astro View Transitions)
+  document.addEventListener('astro:page-load', initCarousel);
+</script>

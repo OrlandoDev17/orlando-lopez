@@ -1,0 +1,155 @@
+---
+import Layout from "@/components/layout/Layout.astro";
+import Button from "@/components/common/Button.astro";
+import ImageCarousel from "@/components/projects/ImageCarousel.astro";
+import ProjectMetrics from "@/components/projects/ProjectMetrics.astro";
+import BeforeAfter from "@/components/projects/BeforeAfter.astro";
+import ProjectChallenges from "@/components/projects/ProjectChallenges.astro";
+import ProjectFeatures from "@/components/projects/ProjectFeatures.astro";
+import { Icon } from "astro-icon/components";
+import { ProjectsData } from "@/constants/projects";
+
+export function getStaticPaths() {
+  return ProjectsData.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+const metadata = [
+  { label: "Rol", value: project.role },
+  { label: "Duración", value: project.duracion },
+  { label: "Cliente", value: project.client },
+];
+
+const demoUrl = project.links.find(l => l.icon.includes('rocket'))?.url;
+const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
+---
+
+<Layout title={project.title} description={project.summary}>
+  <main class="max-w-7xl mx-auto w-full px-8">
+    <!-- Hero: Mockup + Texto + Botones -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center pt-8">
+      <article class="relative order-2 lg:order-1 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <img 
+          transition:name={`${project.slug}-image`}
+          src={project.thumbnail} 
+          alt={project.title}
+          class="w-full h-auto object-cover"
+        >
+      </article>
+      
+      <div class="order-1 lg:order-2 flex flex-col gap-3 justify-center">
+        <h1 
+          transition:name={`${project.slug}-title`}
+          class="text-3xl md:text-4xl font-black text-main leading-tight"
+        >
+          {project.title}
+        </h1>
+        <p 
+          transition:name={`${project.slug}-summary`}
+          class="text-sm text-muted leading-snug"
+        >
+          {project.summary}
+        </p>
+        <div class="flex flex-wrap gap-3 mt-2">
+          {demoUrl && (
+            <Button href={demoUrl} variant="primary" className="text-sm">
+              <Icon class="size-4" name="lucide:rocket" />
+              Explorar proyecto
+            </Button>
+          )}
+          {githubUrl && (
+            <Button href={githubUrl} variant="secondary" className="text-sm">
+              <Icon class="size-4" name="simple-icons:github" />
+              Ver código fuente
+            </Button>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Metadata: Rol, Duración, Cliente -->
+    <section aria-labelledby="project-info-heading" class="py-6">
+      <h2 class="sr-only" id="project-info-heading">Información del Proyecto</h2>
+      <dl class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+        {metadata.map((item, index) => (
+          <Fragment>
+            {index > 0 && (
+              <div class="w-px h-6 bg-border-subtle hidden sm:block" aria-hidden="true"></div>
+            )}
+            <div class="flex flex-col items-center gap-0.5">
+              <dt class="font-semibold text-xs uppercase tracking-widest text-muted">
+                {item.label}
+              </dt>
+              <dd class="text-lg font-bold text-main">
+                {item.value}
+              </dd>
+            </div>
+          </Fragment>
+        ))}
+      </dl>
+    </section>
+
+    <!-- Separador -->
+    <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
+
+    <!-- Stack Tecnológico -->
+    <section aria-labelledby="tech-stack-heading" class="py-6">
+      <h2 class="sr-only" id="tech-stack-heading">Stack Tecnológico</h2>
+      <ul class="flex flex-wrap items-center justify-center gap-2">
+        {project.techs.map(({ icon, name }) => (
+          <li>
+            <Icon 
+              title={name}
+              aria-label={name}
+              class="size-12 p-2.5 rounded-lg bg-bg-main border border-border-subtle 
+                     hover:bg-main hover:text-white hover:border-main
+                     transition-all duration-300 cursor-default"
+              name={icon}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- Separador -->
+    <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
+
+    <!-- Detalles del Proyecto -->
+    <section aria-labelledby="project-details-heading" class="py-8 space-y-8">
+      <h2 class="sr-only" id="project-details-heading">Detalles del Proyecto</h2>
+
+      <!-- Impacto -->
+      <ProjectMetrics metrics={project.metrics} />
+
+      <!-- Antes vs Después -->
+      <BeforeAfter before={project.before} after={project.after} />
+
+      <!-- Resolución de Retos -->
+      <ProjectChallenges challenges={project.challenges} />
+
+      <!-- Características -->
+      <ProjectFeatures features={project.features} />
+
+      <!-- Separador -->
+      <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
+
+      <!-- Galería de Imágenes -->
+      <ImageCarousel images={project.images} alt={project.title} />
+
+      <!-- Separador -->
+      <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
+
+      <!-- Volver -->
+      <nav class="text-center" aria-label="Navegación del proyecto">
+        <a href="/#projects" class="inline-flex items-center gap-2 text-sm text-muted hover:text-primary-600 transition-colors duration-300">
+          <Icon class="size-4" name="lucide:arrow-left" aria-hidden="true" />
+          Volver a proyectos
+        </a>
+      </nav>
+    </section>
+  </main>
+</Layout>

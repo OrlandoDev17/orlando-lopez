@@ -1,0 +1,61 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  metrics: string[];
+}
+
+const { metrics } = Astro.props;
+
+const parsedMetrics = metrics.map((metric) => {
+  const match = metric.match(/^([\d]+%?):\s*(.+)/);
+  if (match) {
+    return { value: match[1], text: match[2] };
+  }
+  return { value: null, text: metric };
+});
+---
+
+<section aria-labelledby="metrics-heading" class="relative">
+  <h2 id="metrics-heading" class="text-xs font-semibold uppercase tracking-widest text-muted mb-5">
+    Impacto del Proyecto
+  </h2>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    {parsedMetrics.map((metric, i) => (
+      <div class:list={[
+        "relative rounded-2xl p-5 overflow-hidden",
+        i === 0 ? "bg-primary-500 text-white col-span-2 lg:col-span-1" : 
+        i === 1 ? "bg-secondary-500 text-main" : 
+        i === 2 ? "bg-main text-white" : "bg-white border border-border-subtle"
+      ]}>
+        {metric.value ? (
+          <div class="relative z-10">
+            <span class:list={[
+              "text-4xl lg:text-5xl font-black leading-none block",
+              i === 0 ? "text-white" : i === 1 ? "text-main" : i === 2 ? "text-white" : "text-primary-600"
+            ]}>{metric.value}</span>
+            <p class:list={[
+              "text-xs mt-2 leading-tight font-medium",
+              i === 0 ? "text-white/80" : i === 1 ? "text-main/70" : i === 2 ? "text-white/80" : "text-muted"
+            ]}>{metric.text.split(':')[0]}</p>
+          </div>
+        ) : (
+          <div class="relative z-10">
+            <Icon class:list={[
+              "size-10 mb-2",
+              i === 0 ? "text-white" : i === 1 ? "text-main" : i === 2 ? "text-white" : "text-primary-500"
+            ]} name="lucide:shield-check" aria-hidden="true" />
+            <p class:list={[
+              "text-xs leading-snug font-medium",
+              i === 0 ? "text-white/90" : i === 1 ? "text-main/80" : i === 2 ? "text-white/90" : "text-main"
+            ]}>{metric.text}</p>
+          </div>
+        )}
+        <div class:list={[
+          "absolute -bottom-4 -right-4 size-20 rounded-full opacity-10",
+          i === 0 ? "bg-white" : i === 1 ? "bg-main" : i === 2 ? "bg-white" : "bg-primary-500"
+        ]}></div>
+      </div>
+    ))}
+  </div>
+</section>
