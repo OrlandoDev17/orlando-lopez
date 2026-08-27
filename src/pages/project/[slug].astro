@@ -76,7 +76,7 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
       <h2 class="sr-only" id="project-info-heading">Información del Proyecto</h2>
       <dl class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
         {metadata.map((item, index) => (
-          <Fragment>
+          <>
             {index > 0 && (
               <div class="w-px h-6 bg-border-subtle hidden sm:block" aria-hidden="true"></div>
             )}
@@ -88,7 +88,7 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
                 {item.value}
               </dd>
             </div>
-          </Fragment>
+          </>
         ))}
       </dl>
     </section>
