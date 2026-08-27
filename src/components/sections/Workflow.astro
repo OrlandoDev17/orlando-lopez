@@ -1,0 +1,160 @@
+---
+import { workflowSteps } from "@/constants/workflow";
+---
+
+<section id="workflow" class="relative">
+  {/* Header - scrollea normal */}
+  <header class="flex flex-col gap-2 px-8 max-w-7xl mx-auto w-full mt-8">
+    <h2 id="workflow-title" class="text-3xl text-primary-500 font-black">Mi Flujo de Trabajo</h2>
+    <p id="workflow-paragraph" class="text-sm text-muted font-body max-w-2xl">Un vistazo a mi proceso de desarrollo de software, desde la ideación hasta el despliegue.</p>
+    <div id="workflow-separator" class="w-md h-1.5 rounded-full bg-secondary-500 my-1"/>
+  </header>
+
+  {/* Sticky container - se queda fijo cuando llega al top */}
+  <div id="workflow-pin" class="relative h-dvh overflow-hidden">
+    {/* Linea SVG animada de fondo */}
+    <svg class="absolute top-1/2 left-0 w-full -translate-y-1/2 pointer-events-none z-0" height="280" viewBox="0 0 1200 280" preserveAspectRatio="none">
+      <path
+        id="workflow-svg-line"
+        d="M 0,140 Q 300,20 600,140 T 1200,140"
+        fill="none"
+        stroke="url(#gradient-line)"
+        stroke-width="8"
+        stroke-linecap="round"
+        stroke-dasharray="1200"
+        stroke-dashoffset="1200"
+      />
+      <defs>
+        <linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#7a5cfa" />
+          <stop offset="50%" stop-color="#6340e3" />
+          <stop offset="100%" stop-color="#a3e862" />
+        </linearGradient>
+      </defs>
+    </svg>
+
+    {/* Pista horizontal para las 6 tarjetas */}
+    <div id="workflow-track" class="flex items-center h-full w-max relative z-10">
+      {workflowSteps.map((step) => (
+        <div class="workflow-card w-[45vw] min-w-95 h-full flex items-center justify-center px-6">
+          <div class="max-w-xl w-full bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 relative overflow-hidden group">
+            
+            {/* Acento decorativo */}
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-linear-to-b from-primary-500 to-primary-700"></div>
+
+            {/* Encabezado del Card */}
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <span class="text-4xl font-black text-primary-500">{step.number}</span>
+                <span class="text-xs font-semibold uppercase tracking-wider bg-primary-50 text-primary-700 px-3 py-1 rounded-full border border-primary-200">
+                  {step.category}
+                </span>
+              </div>
+            </div>
+
+            {/* Titulo & Descripcion */}
+            <h3 class="text-2xl font-bold text-main mb-3 group-hover:text-primary-600 transition-colors duration-300">
+              {step.title}
+            </h3>
+            <p class="text-muted text-sm leading-relaxed mb-6">
+              {step.description}
+            </p>
+
+            {/* Entregable Clave */}
+            <div class="mb-6 p-3 bg-bg-main rounded-xl border border-border-subtle flex items-center justify-between">
+              <span class="text-xs text-muted font-medium uppercase tracking-wider">Entregable:</span>
+              <span class="text-xs font-semibold text-primary-600">{step.deliverable}</span>
+            </div>
+
+            {/* Badges de Tecnologias / Herramientas */}
+            <div class="flex flex-wrap gap-2">
+              {step.techs.map((tech) => (
+                <span class="text-xs bg-bg-main text-main font-medium px-3 py-1 rounded-md border border-border-subtle">
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Spacer - crea la distancia de scroll para la animacion */}
+  <div id="workflow-spacer"></div>
+</section>
+
+<script>
+  import gsap from "gsap";
+import { animateFrom, splitTextReveal } from "gsap-presets-kit";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const initWorkflow = () => {
+    const pin = document.querySelector("#workflow-pin") as HTMLElement;
+    const track = document.querySelector("#workflow-track");
+    const svgLine = document.querySelector("#workflow-svg-line");
+    const spacer = document.querySelector("#workflow-spacer") as HTMLElement;
+
+    if (!pin || !track || !svgLine || !spacer) return;
+
+    const getScrollDistance = () => (track as HTMLElement).scrollWidth - window.innerWidth;
+
+    // Sticky via JS para asegurar compatibilidad
+    pin.style.position = "sticky";
+    pin.style.top = "0";
+
+    // Spacer crea la distancia de scroll
+    spacer.style.height = `${getScrollDistance()}px`;
+
+    const animTl = gsap.timeline();
+
+    splitTextReveal("#workflow-title", {
+      type: "words",
+      opacity: 0,
+      y: 30,
+      stagger: 0.15,
+      duration: 0.6,
+      ease: "power2.out",
+      timeline: animTl,
+      scroll: false,
+    })
+
+    animateFrom("#workflow-paragraph", {
+      opacity: 0,
+      x: -30,
+      duration: 0.5,
+      ease: "back.out",
+      timeline: animTl,
+      position: "-=0.2",
+      scroll: false
+    })
+
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: pin,
+        start: "top top",
+        end: () => `+=${getScrollDistance()}`,
+        scrub: 1,
+        invalidateOnRefresh: true,
+      }
+    });
+
+    tl.to(track, {
+      x: () => -getScrollDistance(),
+      ease: "none"
+    }, 0);
+
+    tl.to(svgLine, {
+      strokeDashoffset: 0,
+      ease: "none"
+    }, 0);
+
+    ScrollTrigger.refresh();
+  };
+
+  document.addEventListener("astro:page-load", initWorkflow);
+</script>
