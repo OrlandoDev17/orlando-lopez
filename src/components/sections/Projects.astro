@@ -1,14 +1,17 @@
 ---
+import SectionContainer from "@/components/common/SectionContainer.astro";
 import ProjectCard from "@/components/projects/ProjectCard.astro";
 import { ProjectsData } from "@/constants/projects";
 ---
 
-<section id="projects" class="flex flex-col gap-6 max-w-7xl mx-auto w-full px-8">
-  <header class="flex flex-col gap-2">
-    <h2 id="projects-title" class="text-3xl text-primary-500 font-black">Experiencia & Proyectos</h2>
-    <p id="projects-paragraph" class="text-sm text-muted font-body max-w-2xl">Una coleccion de aplicaciones enfocadas en rendimiento, interfaces intuitivas y código escalable. Cada proyecto representa un desafío técnico resuelto desde el diseño hasta la implementación.</p>
-    <div id="projects-separator" class="w-md h-1.5 rounded-full bg-secondary-500 my-2"/>
-  </header>
+<SectionContainer
+  id="projects"
+  title="Experiencia & Proyectos"
+  subtitle="Una coleccion de aplicaciones enfocadas en rendimiento, interfaces intuitivas y código escalable. Cada proyecto representa un desafío técnico resuelto desde el diseño hasta la implementación."
+  titleId="projects-title"
+  subtitleId="projects-paragraph"
+  separatorId="projects-separator"
+>
   <div class="flex flex-col gap-6 w-full">
     {ProjectsData.map((project) => (
       <div class="project-card">
@@ -16,7 +19,7 @@ import { ProjectsData } from "@/constants/projects";
       </div>
     ))}
   </div>
-</section>
+</SectionContainer>
 
 <script>
   import { animateFrom, splitTextReveal } from "gsap-presets-kit"

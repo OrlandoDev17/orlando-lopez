@@ -1,0 +1,56 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"section"> {
+  title?: string;
+  subtitle?: string;
+  showSeparator?: boolean;
+  titleId?: string;
+  subtitleId?: string;
+  separatorId?: string;
+}
+
+const {
+  title,
+  subtitle,
+  showSeparator = true,
+  titleId,
+  subtitleId,
+  separatorId,
+  class: className = "",
+  ...rest
+} = Astro.props;
+---
+
+<section
+  class:list={[
+    "flex flex-col gap-6 max-w-7xl mx-auto w-full px-8",
+    className,
+  ]}
+  {...rest}
+>
+  {(title || subtitle) && (
+    <header class="flex flex-col gap-2">
+      {title && (
+        <h2 id={titleId} class="text-3xl text-primary-500 font-black">
+          {title}
+        </h2>
+      )}
+      {subtitle && (
+        <p
+          id={subtitleId}
+          class="text-sm text-muted font-body max-w-2xl"
+        >
+          {subtitle}
+        </p>
+      )}
+      {showSeparator && (
+        <div
+          id={separatorId}
+          class="w-md h-1.5 rounded-full bg-secondary-500 my-2"
+        />
+      )}
+    </header>
+  )}
+  <slot />
+</section>
