@@ -1,0 +1,157 @@
+---
+import SectionContainer from "@/components/common/SectionContainer.astro";
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import { SKILL_CATEGORIES } from "@/constants/skills";
+---
+
+<SectionContainer
+  id="skills"
+  title="Habilidades técnicas"
+  subtitle="Un conjunto de tecnologías, herramientas y buenas prácticas que me permiten desarrollar soluciones modernas, escalables y eficientes. Constantemente aprendo y busco mejorar para ofrecer el mejor resultado en cada proyecto."
+  titleId="skills-title"
+  subtitleId="skills-subtitle"
+  separatorId="skills-separator"
+  class="skills-section"
+>
+  <div class="grid grid-cols-2 gap-6 mt-4">
+    {SKILL_CATEGORIES.map((cat) => (
+      <div
+        class:list={[
+          "skill-card relative bg-white p-7 shadow-md",
+          cat.gradientColor === "green" && "skill-card-green",
+          cat.gradientColor === "purple" && "skill-card-purple",
+        ]}
+        style={`transform: rotate(${cat.rotation}); border-radius: ${cat.borderRadius};`}
+      >
+        <div class="flex gap-6 items-start">
+          <div class="flex-1 min-w-0">
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider bg-primary-50 text-primary-700 px-3 py-1 rounded-full border border-primary-200 mb-4">
+              <Icon name={cat.badge.icon} class="size-3.5" />
+              {cat.badge.label}
+            </span>
+
+            <h3 class="text-xl font-bold text-main mb-2 font-heading">
+              {cat.title}
+            </h3>
+            <p class="text-muted text-sm leading-relaxed mb-5">
+              {cat.description}
+            </p>
+
+            <div class="flex flex-wrap gap-x-4 gap-y-3">
+              {cat.techs.map((tech) => (
+                <div class="flex items-center gap-2">
+                  {tech.icon && tech.icon.startsWith("lucide:") ? (
+                    <Icon name={tech.icon} class="size-5 text-primary-500" />
+                  ) : tech.icon === "antigravity" ? (
+                    <img
+                      src="/icons/antigravity.svg"
+                      class="size-5"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  ) : tech.icon ? (
+                    <Icon
+                      name={`simple-icons:${tech.icon}`}
+                      class="size-5 text-main"
+                    />
+                  ) : null}
+                  <span class="text-xs text-muted font-medium">
+                    {tech.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="shrink-0 w-48 h-48 flex items-center justify-center relative">
+            <div class="absolute inset-0 bg-primary-200/30 rounded-full blur-2xl scale-110"></div>
+            <Image
+              src={cat.image}
+              alt={cat.title}
+              width={192}
+              height={192}
+              loading="lazy"
+              class="relative w-full h-full object-contain drop-shadow-lg"
+            />
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</SectionContainer>
+
+<style>
+  .skill-card {
+    border: 1px solid var(--color-border-subtle);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .skill-card:hover {
+    transform: rotate(0deg) scale(1.02) !important;
+    box-shadow: 0 20px 40px rgba(122, 92, 250, 0.15);
+  }
+
+  .skill-card-green {
+    background: linear-gradient(135deg, #f5fcef 0%, #e7f9d7 40%, #ffffff 100%);
+    border-color: #d1f4b0;
+  }
+
+  .skill-card-purple {
+    background: linear-gradient(135deg, #f2efff 0%, #e3dbff 40%, #ffffff 100%);
+    border-color: #c6b5ff;
+  }
+</style>
+
+<script>
+  import { animateFrom, splitTextReveal } from "gsap-presets-kit"
+  import { createSectionTimeline } from "@/utils/gsap"
+
+  const tl = createSectionTimeline("#skills")
+
+  const initSkillsAnimations = () => {
+    splitTextReveal("#skills-title", {
+      type: "words",
+      opacity: 0,
+      y: 30,
+      stagger: 0.15,
+      duration: 0.6,
+      ease: "power2.out",
+      timeline: tl,
+      scroll: false,
+    })
+
+    animateFrom("#skills-subtitle", {
+      opacity: 0,
+      x: -30,
+      duration: 0.5,
+      ease: "back.out",
+      timeline: tl,
+      position: "-=0.2",
+      scroll: false
+    })
+
+    tl.from("#skills-separator", {
+      scaleX: 0,
+      transformOrigin: "left center",
+      duration: 0.6,
+      ease: "power2.out",
+    }, "-=0.3")
+
+    animateFrom(".skill-card", {
+      opacity: 0,
+      y: 30,
+      duration: 0.5,
+      ease: "power3.out",
+      timeline: tl,
+      scroll: false,
+      stagger: 0.2,
+      position: "-=0.1"
+    })
+
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    initSkillsAnimations()
+  })
+</script>
