@@ -1,17 +1,18 @@
 ---
+import SectionContainer from "@/components/common/SectionContainer.astro";
 import { workflowSteps } from "@/constants/workflow";
 ---
 
-<section id="workflow" class="relative">
+<SectionContainer id="workflow" class="relative">
   {/* Header - scrollea normal */}
-  <header class="flex flex-col gap-2 px-8 max-w-7xl mx-auto w-full mt-8">
+  <header class="flex flex-col gap-2">
     <h2 id="workflow-title" class="text-3xl text-primary-500 font-black">Mi Flujo de Trabajo</h2>
     <p id="workflow-paragraph" class="text-sm text-muted font-body max-w-2xl">Un vistazo a mi proceso de desarrollo de software, desde la ideación hasta el despliegue.</p>
     <div id="workflow-separator" class="w-md h-1.5 rounded-full bg-secondary-500 my-1"/>
   </header>
 
   {/* Sticky container - se queda fijo cuando llega al top */}
-  <div id="workflow-pin" class="relative h-dvh overflow-hidden">
+  <div id="workflow-pin" class="relative h-[80vh] overflow-hidden">
     {/* Linea SVG animada de fondo */}
     <svg class="absolute top-1/2 left-0 w-full -translate-y-1/2 pointer-events-none z-0" height="280" viewBox="0 0 1200 280" preserveAspectRatio="none">
       <path
@@ -83,12 +84,13 @@ import { workflowSteps } from "@/constants/workflow";
 
   {/* Spacer - crea la distancia de scroll para la animacion */}
   <div id="workflow-spacer"></div>
-</section>
+</SectionContainer>
 
 <script>
   import gsap from "gsap";
-import { animateFrom, splitTextReveal } from "gsap-presets-kit";
+  import { animateFrom, splitTextReveal } from "gsap-presets-kit";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { createSectionTimeline } from "@/utils/gsap";
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -100,7 +102,12 @@ import { animateFrom, splitTextReveal } from "gsap-presets-kit";
 
     if (!pin || !track || !svgLine || !spacer) return;
 
-    const getScrollDistance = () => (track as HTMLElement).scrollWidth - window.innerWidth;
+    const getScrollDistance = () => {
+      const trackWidth = (track as HTMLElement).scrollWidth
+      const lastCard = (track as HTMLElement).lastElementChild as HTMLElement
+      const cardWidth = lastCard ? lastCard.offsetWidth : window.innerWidth * 0.45
+      return trackWidth - window.innerWidth + cardWidth
+    }
 
     // Sticky via JS para asegurar compatibilidad
     pin.style.position = "sticky";
@@ -109,7 +116,7 @@ import { animateFrom, splitTextReveal } from "gsap-presets-kit";
     // Spacer crea la distancia de scroll
     spacer.style.height = `${getScrollDistance()}px`;
 
-    const animTl = gsap.timeline();
+    const headerTl = createSectionTimeline("#workflow")
 
     splitTextReveal("#workflow-title", {
       type: "words",
@@ -118,7 +125,7 @@ import { animateFrom, splitTextReveal } from "gsap-presets-kit";
       stagger: 0.15,
       duration: 0.6,
       ease: "power2.out",
-      timeline: animTl,
+      timeline: headerTl,
       scroll: false,
     })
 
@@ -127,10 +134,17 @@ import { animateFrom, splitTextReveal } from "gsap-presets-kit";
       x: -30,
       duration: 0.5,
       ease: "back.out",
-      timeline: animTl,
+      timeline: headerTl,
       position: "-=0.2",
       scroll: false
     })
+
+    headerTl.from("#workflow-separator", {
+      scaleX: 0,
+      transformOrigin: "left center",
+      duration: 0.6,
+      ease: "power2.out",
+    }, "-=0.3")
 
 
     const tl = gsap.timeline({
