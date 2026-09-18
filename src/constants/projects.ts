@@ -150,7 +150,7 @@ export const TuPrestamoData: Project = {
     { name: "TanStack Query", icon: "simple-icons:tanstack" },
   ],
   metrics: [
-    "Digitalización del 100%: Eliminación total del uso de plantillas en Excel y registros manuales propensos a error[cite: 3, 4].",
+    "Digitalización del 100%: Eliminación total del uso de plantillas en Excel y registros manuales propensos a error.",
     "Optimización de registros: Carga y actualización de abonos en segundos directamente desde dispositivos móviles.",
     "0% pérdidas contables: Consolidación exacta de saldos pendientes, amortizaciones y cobros ejecutados en ruta.",
     "Disponibilidad móvil: Acceso continuo para cobradores mediante empaquetado nativo móvil.",
