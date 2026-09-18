@@ -19,6 +19,7 @@ export interface Project {
   title: string;
   thumbnail: string;
   images: string[];
+  device: "mobile" | "web";
   tagline: string;
   role: string;
   duracion: string;
@@ -37,12 +38,13 @@ export interface Project {
 export const DulcesIdeasData: Project = {
   slug: "dulces-ideas",
   title: "Dulces Ideas - Sistema POS & Gestión Administrativa",
-  thumbnail: "/projects/dulces-ideas.webp",
+  thumbnail: "/projects/dulces-ideas-thumbnail.webp",
   images: [
-    "/projects/dulces-ideas.webp",
-    "/projects/dulces-ideas.webp",
-    "/projects/dulces-ideas.webp",
+    "/projects/dulces-ideas-thumbnail.webp",
+    "/projects/dulces-ideas-thumbnail.webp",
+    "/projects/dulces-ideas-thumbnail.webp",
   ],
+  device: "web",
   tagline:
     "Sistema POS offline-first con conversión de divisa en tiempo real, gestión de encargos y reportes financieros.",
   role: "Desarrollador de Software",
@@ -112,4 +114,76 @@ export const DulcesIdeasData: Project = {
   ],
 };
 
-export const ProjectsData: Project[] = [DulcesIdeasData];
+export const TuPrestamoData: Project = {
+  slug: "tuprestamo",
+  title: "TuPrestamo - Sistema de Gestión Financiera & Cobros",
+  thumbnail: "/projects/tu-prestamo-thumbnail.webp",
+  images: [
+    "/projects/tu-prestamo/dashboard.webp",
+    "/projects/tu-prestamo/clientes.webp",
+    "/projects/tu-prestamo/crear-cliente.webp",
+    "/projects/tu-prestamo/prestamos.webp",
+    "/projects/tu-prestamo/crear-prestamo-cliente.webp",
+    "/projects/tu-prestamo/crear-prestamo-monto.webp",
+    "/projects/tu-prestamo/crear-prestamo-cuotas.webp",
+    "/projects/tu-prestamo/crear-prestamo-frecuencia.webp",
+    "/projects/tu-prestamo/crear-prestamo-resumen.webp",
+    "/projects/tu-prestamo/prestamo-detalle.webp",
+    "/projects/tu-prestamo/registrar-pago.webp",
+    "/projects/tu-prestamo/reportes.webp",
+  ],
+  device: "mobile",
+  tagline:
+    "Sistema web y móvil para automatización de rutas de cobro, gestión de préstamos y cálculo de intereses.",
+  role: "Desarrollador de Software",
+  duracion: "2 Semanas",
+  client: "Prestamista Privado",
+  summary:
+    "Plataforma financiera Fullstack desarrollada para sustituir el control contable en hojas de cálculo por una aplicación web y móvil centralizada. Automatiza la asignación de créditos, amortizaciones, cálculo de intereses y gestión de cobros en rutas diarias. Empaquetada para dispositivos móviles con Capacitor, incluye políticas de seguridad RLS en Supabase y soporte para roles múltiples.",
+  techs: [
+    { name: "TanStack Start", icon: "simple-icons:tanstack" },
+    { name: "TypeScript", icon: "simple-icons:typescript" },
+    { name: "TailwindCSS", icon: "simple-icons:tailwindcss" },
+    { name: "Supabase", icon: "simple-icons:supabase" },
+    { name: "Capacitor", icon: "simple-icons:capacitor" },
+    { name: "TanStack Query", icon: "simple-icons:tanstack" },
+  ],
+  metrics: [
+    "Digitalización del 100%: Eliminación total del uso de plantillas en Excel y registros manuales propensos a error[cite: 3, 4].",
+    "Optimización de registros: Carga y actualización de abonos en segundos directamente desde dispositivos móviles.",
+    "0% pérdidas contables: Consolidación exacta de saldos pendientes, amortizaciones y cobros ejecutados en ruta.",
+    "Disponibilidad móvil: Acceso continuo para cobradores mediante empaquetado nativo móvil.",
+  ],
+  before:
+    "La contabilidad de préstamos y las rutas de cobro se llevaban de forma manual en hojas de cálculo. Calcular intereses acumulados, amortizaciones parciales y saldos pendientes requería procesos mecánicos propensos a inconsistencias de saldo.",
+  after:
+    "Desarrollé una solución centralizada y móvil que automatiza los cálculos de cuotas y saldos. Los cobradores registran transacciones al instante desde el teléfono, permitiendo consultar la morosidad e ingresos diarios en tiempo real.",
+  features: [
+    "Gestión de Créditos: Creación de préstamos, esquemas de amortización y plazos de pago.",
+    "Rutas de Cobro Móviles: Interfaz táctil optimizada con Capacitor para seguimiento de cartera en campo.",
+    "Seguridad por Roles: Control de acceso con políticas RLS en Supabase para proteger transacciones sensibles.",
+    "Métricas Financieras: Tablero con saldos de capital prestado, intereses recuperados y morosidad.",
+  ],
+  challenges: [
+    {
+      problem:
+        "La necesidad de adaptar el software a cambios constantes en las reglas operativas requeridas por el cliente.",
+      solution:
+        "Aplicación de principios de Spec-Driven Development (SDD) y una arquitectura modular que permitió integrar modificaciones sin afectar el flujo en producción.",
+      result:
+        "Iteraciones de código rápidas y despliegues sin interrupción del servicio.",
+    },
+  ],
+  insights: [
+    "Digitalización a medida: Reemplazar herramientas genéricas como Excel por software especializado elimina la fricción operativa y previene fallas de cálculo.",
+    "Arquitectura desacoplada: Mantener una clara separación entre la capa de presentación y la base de datos acelera la adopción de feedback en tiempo récord.",
+  ],
+  links: [
+    {
+      icon: "simple-icons:github",
+      url: "https://github.com/OrlandoDev17/prestamos-app",
+    },
+  ],
+};
+
+export const ProjectsData: Project[] = [TuPrestamoData, DulcesIdeasData];

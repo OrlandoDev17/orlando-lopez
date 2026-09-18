@@ -138,7 +138,7 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
       <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
 
       <!-- Galería de Imágenes -->
-      <ImageCarousel images={project.images} alt={project.title} />
+      <ImageCarousel images={project.images} alt={project.title} device={project.device} />
 
       <!-- Separador -->
       <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
