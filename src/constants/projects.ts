@@ -187,4 +187,77 @@ export const TuPrestamoData: Project = {
   ],
 };
 
-export const ProjectsData: Project[] = [TuPrestamoData, DulcesIdeasData];
+export const ERPSaaSData: Project = {
+  slug: "erp-saas",
+  title: "ERP SaaS - Sistema de Gestión Empresarial Multi-empresa",
+  thumbnail: "/projects/erp-saas-thumbnail.webp",
+  device: "web",
+  images: [
+    "/projects/erp-saas/dashboard.webp",
+    "/projects/erp-saas/ventas.webp",
+    "/projects/erp-saas/inventario.webp",
+    "/projects/erp-saas/compras.webp",
+    "/projects/erp-saas/reportes.webp",
+  ],
+  tagline:
+    "Plataforma ERP multi-tenant lista para comercializar con gestión de inventario, POS, compras, reportes y facturación.",
+  role: "Desarrollador de Software",
+  duracion: "1 Mes",
+  client: "Proyecto propio / SaaS comercial",
+  summary:
+    "Sistema de planificación de recursos empresariales (ERP) desarrollado bajo una arquitectura multi-tenant para permitir que múltiples comercios gestionen sus operaciones de forma independiente. Centraliza el control de inventarios con alertas de stock, punto de venta (POS) interactivo, módulo de compras a proveedores y reportes consolidados en tiempo real con conversión automática a tasa oficial (USD/Bs). Diseñado para escalar comercialmente e integrar facturación fiscal y manual.",
+  techs: [
+    { name: "TanStack Start", icon: "simple-icons:tanstack" },
+    { name: "TypeScript", icon: "simple-icons:typescript" },
+    { name: "TailwindCSS", icon: "simple-icons:tailwindcss" },
+    { name: "Framer Motion", icon: "simple-icons:framer" },
+    { name: "Node.js", icon: "simple-icons:nodedotjs" },
+    { name: "Express", icon: "simple-icons:express" },
+    { name: "Prisma ORM", icon: "simple-icons:prisma" },
+    { name: "Neon DB", icon: "simple-icons:postgresql" },
+  ],
+  metrics: [
+    "Arquitectura Multi-tenant: Aislamiento total de datos para permitir la incorporación ilimitada de empresas y operadores.",
+    "Control de inventario 100% automatizado: Trazabilidad de existencias, cálculo de márgenes e IVA con alertas automáticas de stock bajo.",
+    "Sincronización cambiaria en tiempo real: Actualización continua de precios y métricas contables según la tasa oficial (BCV).",
+    "Generación de reportes multicriterio: Exportación instantánea de métricas operativas y financieras en formatos Excel, CSV y PDF.",
+  ],
+  before:
+    "Las pequeñas y medianas empresas suelen fragmentar su gestión utilizando múltiples herramientas independientes (Excel para inventarios, cuadernos para compras y calculadoras para el punto de venta), lo que genera pérdidas de información, descuadres en cierres de caja e incapacidad para evaluar la rentabilidad real.",
+  after:
+    "Diseñé e implementé una plataforma integral donde el administrador supervisa ventas, compras a proveedores y métricas globales desde un único panel. Permite a los operadores registrar transacciones de forma rápida mientras el sistema calcula automáticamente ganancias netas, costos y valuación de almacén.",
+  features: [
+    "Panel Control (Dashboard): KPIs en tiempo real de ventas diarias, ganancias estimadas, transacciones y gráfico comparativo semanal.",
+    "Punto de Venta (POS): Emisión rápida de tickets de venta con soporte multimoneda (USD/Bs) y estados de conexión.",
+    "Gestión de Inventario: Tabla analítica con cálculo de margen de ganancia, costos de compra, IVA y alertas de stock mínimo.",
+    "Módulo de Compras & Proveedores: Registro de adquisiciones con desglose por RIF/Cédula, formas de pago y actualización automática de existencias.",
+    "Reportes Financieros & Analítica: Desglose de ingresos por período y método de pago con exportación directa a Excel, CSV y PDF.",
+    "Facturación Flexible: Arquitectura preparada para emisión de facturación manual personalizada e integración con impresoras fiscales.",
+  ],
+  challenges: [
+    {
+      problem:
+        "Garantizar una estructura de datos escalable que admita múltiples empresas sin comprometer la velocidad de consulta o la privacidad entre tenants.",
+      solution:
+        "Diseño relacional robusto implementado con Prisma ORM y Neon PostgreSQL, estructurando identificadores de empresa y roles de usuario a nivel de consulta.",
+      result:
+        "Rendimiento optimizado en base de datos con respuestas de baja latencia para todos los módulos operacionales.",
+    },
+  ],
+  insights: [
+    "Arquitectura orientada a producto SaaS: Desarrollar pensando en comercialización exige un diseño de software altamente paramétrico, seguro y fácil de configurar para nuevos clientes.",
+    "Unificación de flujos operacionales: Centralizar inventario, compras y POS en un solo sistema elimina por completo la discrepancia de datos entre departamentos.",
+  ],
+  links: [
+    {
+      icon: "simple-icons:github",
+      url: "https://github.com/OrlandoDev17/erp-saas",
+    },
+  ],
+};
+
+export const ProjectsData: Project[] = [
+  TuPrestamoData,
+  DulcesIdeasData,
+  ERPSaaSData,
+];
