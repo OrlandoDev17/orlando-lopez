@@ -1,5 +1,6 @@
 export interface WorkflowStep {
   number: string;
+  icon: string;
   title: string;
   category: string;
   description: string;
@@ -10,6 +11,7 @@ export interface WorkflowStep {
 export const workflowSteps: WorkflowStep[] = [
   {
     number: "01",
+    icon: "lucide:compass",
     title: "Descubrimiento & Investigación",
     category: "Estrategia & Ideación",
     description:
@@ -24,6 +26,7 @@ export const workflowSteps: WorkflowStep[] = [
   },
   {
     number: "02",
+    icon: "lucide:pen-tool",
     title: "Arquitectura & UX",
     category: "Diseño & Stack",
     description:
@@ -33,6 +36,7 @@ export const workflowSteps: WorkflowStep[] = [
   },
   {
     number: "03",
+    icon: "lucide:code-xml",
     title: "Desarrollo",
     category: "Frontend / Backend",
     description:
@@ -48,6 +52,7 @@ export const workflowSteps: WorkflowStep[] = [
   },
   {
     number: "04",
+    icon: "lucide:badge-check",
     title: "Calidad & Testing",
     category: "QA & Rendimiento",
     description:
@@ -62,6 +67,7 @@ export const workflowSteps: WorkflowStep[] = [
   },
   {
     number: "05",
+    icon: "lucide:file-text",
     title: "Documentación",
     category: "Mantenibilidad & Entrega",
     description:
@@ -71,6 +77,7 @@ export const workflowSteps: WorkflowStep[] = [
   },
   {
     number: "06",
+    icon: "lucide:rocket",
     title: "Despliegue & DevOps",
     category: "Infraestructura & Producción",
     description:
