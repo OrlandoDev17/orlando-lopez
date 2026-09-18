@@ -131,4 +131,15 @@ html.js .tech-icon {
       font-size: 120%; /* 1rem pasa a ser 19.2px */
     }
   }
+
+  /* Anclas: compensa el header fijo (h-16 = 4rem) para que el título no quede tapado.
+     En rem para escalar junto con el header en pantallas grandes. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Workflow ya reserva el espacio del header con pt-16 en su pin */
+  #workflow {
+    scroll-margin-top: 0;
+  }
 }
