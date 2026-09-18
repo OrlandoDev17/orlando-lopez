@@ -8,8 +8,9 @@ type Props = Project;
 const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
 ---
 
-<article class="grid grid-cols-5 place-items-center w-full bg-white shadow-md rounded-xl overflow-hidden min-h-72 hover:shadow-xl transition-all duration-300 group/card">
-  <div class="col-span-2 w-full h-full overflow-hidden">
+<article class="grid grid-cols-1 md:grid-cols-5 place-items-center w-full bg-white shadow-md rounded-xl overflow-hidden 2xl:min-h-72 
+  hover:shadow-xl transition-all duration-300 group/card">
+  <div class="col-span-1 md:col-span-2 w-full h-full overflow-hidden aspect-video md:aspect-auto">
     <img 
       transition:name={`${slug}-image`} 
       class="block w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-102" 
@@ -17,7 +18,7 @@ const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
       alt={`Proyecto: ${title}`}
     >
   </div>
-  <div class="col-span-3 flex flex-col gap-4 w-full p-6">
+  <div class="col-span-1 md:col-span-3 flex flex-col gap-2 2xl:gap-4 w-full p-6">
     <div class="flex items-center justify-between">
       <h3 transition:name={`${slug}-title`} class="text-2xl font-black">{title}</h3>
       <ul class="flex items-center gap-2">
@@ -36,7 +37,8 @@ const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
     <ul class="flex items-center gap-2 flex-wrap">
       {techs.map(({icon, name}) => (
         <li>
-          <Icon title={name} class="size-12 p-3 rounded-xl bg-bg-main hover:bg-main hover:text-white transition-all duration-300" name={icon} />
+          <Icon title={name} class="size-12 p-3 rounded-xl bg-bg-main hover:bg-main hover:text-white transition-all 
+            duration-300" name={icon} />
         </li>
       ))}
     </ul>

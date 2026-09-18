@@ -14,17 +14,17 @@ import { SKILL_CATEGORIES } from "@/constants/skills";
   separatorId="skills-separator"
   class="skills-section"
 >
-  <div class="grid grid-cols-2 gap-6 mt-4">
+  <div class="grid md:grid-cols-2 gap-6 mt-4">
     {SKILL_CATEGORIES.map((cat) => (
       <div
         class:list={[
-          "skill-card relative bg-white p-7 shadow-md",
+          "skill-card relative bg-white p-5 md:p-7 shadow-md",
           cat.gradientColor === "green" && "skill-card-green",
           cat.gradientColor === "purple" && "skill-card-purple",
         ]}
         style={`transform: rotate(${cat.rotation}); border-radius: ${cat.borderRadius};`}
       >
-        <div class="flex gap-6 items-start">
+        <div class="flex flex-col md:flex-row gap-6 md:items-start">
           <div class="flex-1 min-w-0">
             <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider bg-primary-50 text-primary-700 px-3 py-1 rounded-full border border-primary-200 mb-4">
               <Icon name={cat.badge.icon} class="size-3.5" />
@@ -64,7 +64,7 @@ import { SKILL_CATEGORIES } from "@/constants/skills";
             </div>
           </div>
 
-          <div class="shrink-0 w-48 h-48 flex items-center justify-center relative">
+          <div class="shrink-0 w-32 h-32 md:w-48 md:h-48 flex items-center justify-center relative mx-auto md:mx-0">
             <div class="absolute inset-0 bg-primary-200/30 rounded-full blur-2xl scale-110"></div>
             <Image
               src={cat.image}
@@ -100,6 +100,12 @@ import { SKILL_CATEGORIES } from "@/constants/skills";
   .skill-card-purple {
     background: linear-gradient(135deg, #f2efff 0%, #e3dbff 40%, #ffffff 100%);
     border-color: #c6b5ff;
+  }
+
+  @media (max-width: 47.99rem) {
+    .skill-card {
+      transform: rotate(0deg) !important;
+    }
   }
 </style>
 
