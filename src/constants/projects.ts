@@ -40,9 +40,10 @@ export const DulcesIdeasData: Project = {
   title: "Dulces Ideas - Sistema POS & Gestión Administrativa",
   thumbnail: "/projects/dulces-ideas-thumbnail.webp",
   images: [
-    "/projects/dulces-ideas-thumbnail.webp",
-    "/projects/dulces-ideas-thumbnail.webp",
-    "/projects/dulces-ideas-thumbnail.webp",
+    "/projects/dulces-ideas-pos/pos.webp",
+    "/projects/dulces-ideas-pos/encargos.webp",
+    "/projects/dulces-ideas-pos/inventario.webp",
+    "/projects/dulces-ideas-pos/reportes.webp",
   ],
   device: "web",
   tagline:
