@@ -1,0 +1,177 @@
+---
+import SectionContainer from "@/components/common/SectionContainer.astro";
+import { Icon } from "astro-icon/components";
+import { highlight } from "@/utils/highlight";
+import {
+  ABOUT_ACHIEVEMENTS,
+  ABOUT_CLOSING,
+  ABOUT_HIGHLIGHTED_WORDS,
+  ABOUT_INTRO,
+  ABOUT_PARAGRAPHS,
+} from "@/constants/about";
+
+const CARD_ROTATIONS = [
+  "rotate-[-1.5deg]",
+  "rotate-[1deg]",
+  "rotate-[1.5deg]",
+  "rotate-[-1deg]",
+];
+---
+
+<SectionContainer
+  id="about"
+  title="Sobre mí"
+  titleId="about-title"
+  subtitle="Conoce un poco más sobre mí, mi experiencia y mis intereses."
+  subtitleId="about-subtitle"
+  separatorId="about-separator"
+>
+  <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 mt-4 items-start">
+    <div class="flex flex-col gap-5">
+      <h3 class="about-heading text-2xl font-bold text-main font-heading">
+        {ABOUT_INTRO}
+      </h3>
+
+      {ABOUT_PARAGRAPHS.map((paragraph) => (
+        <p
+          class="about-paragraph text-sm text-muted leading-relaxed font-body"
+          set:html={highlight(paragraph, ABOUT_HIGHLIGHTED_WORDS)}
+        />
+      ))}
+
+      <p
+        class="about-paragraph text-sm text-main font-medium leading-relaxed font-body border-l-2 border-secondary-500 pl-4"
+        set:html={highlight(ABOUT_CLOSING, ABOUT_HIGHLIGHTED_WORDS)}
+      />
+    </div>
+
+    <ul class="grid grid-cols-2 gap-5 sm:gap-6 lg:pb-14">
+      {ABOUT_ACHIEVEMENTS.map((card, index) => (
+        <li class="achievement-card">
+          <div
+            class={`group bg-white p-6 rounded-xl border border-border-subtle shadow-[0_8px_24px_rgba(122,92,250,0.08)] hover:shadow-[0_20px_40px_rgba(122,92,250,0.15)] hover:rotate-0 hover:scale-[1.03] transition-all duration-300 ${
+              CARD_ROTATIONS[index % CARD_ROTATIONS.length]
+            }`}
+          >
+            <span
+            class:list={[
+              "inline-flex items-center justify-center size-11 rounded-xl border mb-4",
+              card.tone === "primary"
+                ? "bg-primary-50 border-primary-200 text-primary-600"
+                : "bg-secondary-50 border-secondary-200 text-secondary-700",
+            ]}
+          >
+            <Icon name={card.icon} class="size-5" aria-hidden="true" />
+          </span>
+
+          <span
+            class:list={[
+              "achievement-value block text-2xl xl:text-3xl 2xl:text-4xl font-black font-heading leading-none wrap-break-words",
+              card.tone === "primary"
+                ? "text-primary-500"
+                : "text-secondary-700",
+            ]}
+            data-counter={card.value}
+          >
+            {card.value}
+          </span>
+
+          <span class="block text-sm font-semibold text-main mt-3">
+            {card.label}
+          </span>
+
+          <p class="text-xs text-muted leading-relaxed mt-1">
+            {card.description}
+          </p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</SectionContainer>
+
+<script>
+  import { animateFrom, splitTextReveal } from "gsap-presets-kit";
+  import { createSectionTimeline } from "@/utils/gsap";
+  import { animateCounter } from "@/utils/counter";
+  import { $$ } from "@/utils/dom";
+
+  const initAboutAnimations = () => {
+    const tl = createSectionTimeline("#about");
+
+    splitTextReveal("#about-title", {
+      type: "words",
+      opacity: 0,
+      y: 30,
+      stagger: 0.15,
+      duration: 0.4,
+      ease: "power2.out",
+      timeline: tl,
+      scroll: false,
+    });
+
+    animateFrom("#about-subtitle", {
+      opacity: 0,
+      x: -30,
+      duration: 0.3,
+      ease: "back.out",
+      timeline: tl,
+      position: "-=0.2",
+      scroll: false,
+    });
+
+    tl.from(
+      "#about-separator",
+      {
+        scaleX: 0,
+        transformOrigin: "left center",
+        duration: 0.4,
+        ease: "power2.out",
+      },
+      "-=0.3",
+    );
+
+    animateFrom(".about-heading", {
+      opacity: 0,
+      x: -30,
+      duration: 0.3,
+      ease: "power3.out",
+      timeline: tl,
+      scroll: false,
+      position: "-=0.1",
+    });
+
+    animateFrom(".about-paragraph", {
+      opacity: 0,
+      x: -30,
+      duration: 0.3,
+      ease: "power3.out",
+      timeline: tl,
+      scroll: false,
+      stagger: 0.15,
+      position: "-=0.1",
+    });
+
+    tl.from(".achievement-card", {
+      opacity: 0,
+      y: 30,
+      duration: 0.3,
+      ease: "power3.out",
+      stagger: 0.15,
+      position: "-=0.1",
+    })
+
+    $$(".achievement-value").forEach((element) => {
+      animateCounter(element, {
+        duration: 1.2,
+        ease: "power2.out",
+        timeline: tl,
+        position: "-=0.35",
+      });
+    });
+  };
+
+  document.addEventListener("astro:page-load", () => {
+    initAboutAnimations();
+  });
+</script>

@@ -1,0 +1,340 @@
+---
+import { Icon } from "astro-icon/components";
+import { Send } from "@lucide/astro";
+import {
+  CONTACT_BADGE,
+  CONTACT_CHANNELS,
+  CONTACT_PARAGRAPH,
+} from "@/constants/contact";
+---
+
+<section
+  id="contact"
+  class="flex flex-col max-w-7xl mx-auto w-full px-8 pb-16"
+  aria-labelledby="contact-title"
+>
+  <div class="grid lg:grid-cols-2 gap-12 items-start">
+    {/* Columna izquierda: header de sección + canales directos */}
+    <div class="flex flex-col gap-6">
+      <header class="flex flex-col gap-2">
+        <h2 id="contact-title" class="text-3xl text-primary-500 font-black">
+          Contacto
+        </h2>
+        <h3 id="contact-subtitle" class="text-2xl font-bold font-heading">
+          <span class="bg-linear-to-r from-primary-500 to-secondary-600 bg-clip-text text-transparent">
+            {CONTACT_BADGE}
+          </span>
+        </h3>
+        <div
+          id="contact-separator"
+          class="w-md h-1.5 rounded-full bg-secondary-500 my-2"
+        />
+      </header>
+
+      <p
+        class="contact-block text-muted text-sm leading-relaxed max-w-xl"
+      >
+        {CONTACT_PARAGRAPH}
+      </p>
+
+      <div class="contact-block flex items-center gap-4 flex-wrap">
+        {CONTACT_CHANNELS.map((channel) => (
+          <a
+            href={channel.href}
+            data-copy={channel.copy ? "true" : undefined}
+            target={channel.href.startsWith("mailto:") ? undefined : "_blank"}
+            rel={channel.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+            aria-label={channel.label}
+            class="social-btn"
+          >
+            <div class:list={["relative group/btn w-12 h-12 rounded-xl flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-sm hover:shadow-lg",channel.bg]}>
+              <Icon name={channel.icon} class="size-5" aria-hidden="true" />
+            <span
+              class="contact-tooltip absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-medium bg-main text-white shadow-lg px-2.5 py-1.5 rounded-lg opacity-0 translate-y-1 transition-all duration-200 pointer-events-none group-hover/btn:opacity-100 group-hover/btn:translate-y-0"
+            >
+              {channel.tooltip}
+            </span>
+            </div>
+          </a>
+        ))}
+        <span class="sr-only" id="contact-copy-status" aria-live="polite">
+        </span>
+      </div>
+    </div>
+
+    {/* Columna derecha: formulario AJAX */}
+    <div class="relative">
+      <form
+        id="contact-form"
+        class="contact-form bg-white p-8 rounded-2xl border border-border-subtle shadow-md flex flex-col gap-5"
+      >
+        <div class="flex flex-col gap-1.5">
+          <label for="contact-name" class="text-sm font-semibold text-main">
+            Nombre completo
+          </label>
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="¿Cómo te llamas?"
+            class="w-full rounded-xl border border-border-subtle bg-bg-main text-sm text-main px-4 py-3 placeholder:text-muted/70 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="contact-email" class="text-sm font-semibold text-main">
+            Correo electrónico
+          </label>
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="tu@correo.com"
+            class="w-full rounded-xl border border-border-subtle bg-bg-main text-sm text-main px-4 py-3 placeholder:text-muted/70 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="contact-message" class="text-sm font-semibold text-main">
+            Mensaje
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            rows="4"
+            required
+            placeholder="Cuéntame sobre tu idea o proyecto..."
+            class="w-full rounded-xl border border-border-subtle bg-bg-main text-sm text-main px-4 py-3 placeholder:text-muted/70 resize-none focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          id="contact-submit"
+          class="group bg-linear-to-r from-primary-500 to-primary-600 text-white font-bold font-heading py-4 px-6 rounded-xl w-full transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary-500/40 hover:shadow-xl hover:shadow-primary-500/50 hover:-translate-y-0.5 hover:tracking-wide active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed"
+        >
+          <span id="contact-submit-label" class="flex items-center gap-2">
+            <Send
+              class="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5"
+              aria-hidden="true"
+            />
+            Enviar mensaje
+          </span>
+          <span
+            id="contact-submit-spinner"
+            class="hidden items-center gap-2"
+            aria-hidden="true"
+          >
+            <Icon name="lucide:loader-circle" class="size-4 animate-spin" />
+            Enviando...
+          </span>
+        </button>
+
+        <p
+          id="contact-status"
+          class="hidden text-xs font-semibold rounded-xl px-4 py-3"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { animateFrom, splitTextReveal } from "gsap-presets-kit";
+  import { CONTACT_EMAIL } from "@/constants/contact";
+  import { $ } from "@/utils/dom";
+  import { createSectionTimeline } from "@/utils/gsap";
+
+  const ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+
+  const initContactAnimations = () => {
+    const tl = createSectionTimeline("#contact");
+
+    splitTextReveal("#contact-title", {
+      type: "words",
+      opacity: 0,
+      y: 30,
+      stagger: 0.15,
+      duration: 0.6,
+      ease: "power2.out",
+      timeline: tl,
+      scroll: false,
+    });
+
+    animateFrom("#contact-subtitle", {
+      opacity: 0,
+      x: -30,
+      duration: 0.5,
+      ease: "back.out",
+      timeline: tl,
+      position: "-=0.2",
+      scroll: false,
+    });
+
+    tl.from(
+      "#contact-separator",
+      {
+        scaleX: 0,
+        transformOrigin: "left center",
+        duration: 0.6,
+        ease: "power2.out",
+      },
+      "-=0.3",
+    );
+
+    animateFrom(".contact-block", {
+      opacity: 0,
+      y: 24,
+      duration: 0.5,
+      ease: "power3.out",
+      timeline: tl,
+      scroll: false,
+      stagger: 0.15,
+      position: "-=0.1",
+    });
+
+    animateFrom(".social-btn", {
+      opacity: 0,
+      y: 16,
+      scale: 0.9,
+      stagger: 0.08,
+      duration: 0.4,
+      ease: "back.out",
+      timeline: tl,
+      scroll: false,
+      position: "-=0.1",
+    });
+
+    animateFrom(".contact-form", {
+      opacity: 0,
+      y: 40,
+      duration: 0.6,
+      ease: "power3.out",
+      timeline: tl,
+      scroll: false,
+      position: "-=0.2",
+    });
+  };
+
+  const initContactForm = () => {
+    const form = $<HTMLFormElement>("#contact-form");
+    if (!form) return;
+
+    const submit = $<HTMLButtonElement>("#contact-submit");
+    const submitLabel = $("#contact-submit-label");
+    const submitSpinner = $("#contact-submit-spinner");
+    const status = $<HTMLParagraphElement>("#contact-status");
+    const copyStatus = $("#contact-copy-status");
+    const copyBtns = form.querySelectorAll<HTMLAnchorElement>(
+      '[data-copy="true"]',
+    );
+
+    const STATUS_CLASSES = {
+      idle: ["hidden"],
+      success: [
+        "bg-secondary-50",
+        "text-secondary-800",
+        "border",
+        "border-secondary-200",
+      ],
+      error: ["bg-red-50", "text-red-700", "border", "border-red-200"],
+    };
+
+    const setStatus = (type: keyof typeof STATUS_CLASSES, message: string) => {
+      if (!status) return;
+      Object.values(STATUS_CLASSES).forEach((classes) =>
+        classes.forEach((cls) => status.classList.remove(cls)),
+      );
+      STATUS_CLASSES[type].forEach((cls) => status.classList.add(cls));
+      status.textContent = message;
+    };
+
+    const setLoading = (loading: boolean) => {
+      if (!submit || !submitLabel || !submitSpinner) return;
+      submit.disabled = loading;
+      submitLabel.classList.toggle("hidden", loading);
+      submitSpinner.classList.toggle("hidden", !loading);
+      submitSpinner.classList.toggle("flex", loading);
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!submit?.checkValidity()) {
+        submit?.reportValidity();
+        return;
+      }
+
+      setLoading(true);
+      setStatus("idle", "");
+
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            access_key: ACCESS_KEY,
+            subject: "Nuevo mensaje desde el portafolio",
+            from_name: new FormData(form).get("name"),
+            ...Object.fromEntries(new FormData(form)),
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setStatus(
+            "success",
+            "¡Mensaje enviado correctamente! Te responderé lo antes posible.",
+          );
+          form.reset();
+        } else {
+          setStatus(
+            "error",
+            "Ups, no se pudo enviar el mensaje. Inténtalo de nuevo.",
+          );
+        }
+      } catch {
+        setStatus(
+          "error",
+          "Ups, no se pudo enviar el mensaje. Inténtalo de nuevo.",
+        );
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    copyBtns.forEach((btn) => {
+      const tooltip = btn.querySelector<HTMLElement>(".contact-tooltip");
+      const defaultTooltip = tooltip?.textContent;
+
+      btn.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        try {
+          await navigator.clipboard.writeText(CONTACT_EMAIL);
+          if (tooltip) tooltip.textContent = "¡Copiado!";
+          if (copyStatus)
+            copyStatus.textContent = "Correo copiado al portapapeles";
+          setTimeout(() => {
+            if (tooltip && defaultTooltip) tooltip.textContent = defaultTooltip;
+            if (copyStatus) copyStatus.textContent = "";
+          }, 2000);
+        } catch {
+          window.location.href = `mailto:${CONTACT_EMAIL}`;
+        }
+      });
+    });
+  };
+
+  document.addEventListener("astro:page-load", () => {
+    initContactAnimations();
+    initContactForm();
+  });
+</script>
