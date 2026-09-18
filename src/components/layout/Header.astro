@@ -46,7 +46,7 @@ export const NAV_ITEMS: navItem[] = [
 <header class="fixed inset-0 top-0 w-full z-50 h-16 flex items-center">
   <div class="flex items-center justify-between max-w-7xl mx-auto w-full px-4 md:px-8">
     <a href="/" class="flex items-center" aria-label="Orlando López — ir al inicio">
-      <img data-header-img src="/logo.svg" class="size-14" alt="Logo de Orlando López" loading="eager" aria-hidden="true" />
+      <img data-header-img src="/logo.svg" class="size-14" alt="" aria-hidden="true" loading="eager" />
     </a>
 
     {/* Navegación de escritorio */}
@@ -108,15 +108,25 @@ export const NAV_ITEMS: navItem[] = [
     background-color: var(--color-primary-50);
     color: var(--color-primary-500);
   }
+
+  /* Con movimiento reducido no hay animación de scroll: el header mantiene
+     su fondo translúcido de forma estática para garantizar legibilidad. */
+  @media (prefers-reduced-motion: reduce) {
+    header {
+      backdrop-filter: blur(12px);
+      background-color: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+  }
 </style>
 
 <script>
-  import { gsap } from "@/utils/gsap"
+  import { gsap, prefersReducedMotion } from "@/utils/gsap"
   import { $, $$ } from "@/utils/dom"
   import { animateFrom } from "gsap-presets-kit"
 
   // 1. LÓGICA DE NAVEGACIÓN ACTIVA (SCROLL + PATHNAME)
-  const initActiveNav = () => {
+  const initActiveNav = (signal?: AbortSignal) => {
     const isHomePage = window.location.pathname === "/" || window.location.pathname === "";
     const isProjectSubpage = window.location.pathname.startsWith("/project");
     let activeSectionId = "inicio";
@@ -140,7 +150,6 @@ export const NAV_ITEMS: navItem[] = [
         }
 
         // 0. Estado activo para lectores de pantalla
-        link.toggleAttribute("aria-current", isMatch);
         if (isMatch) link.setAttribute("aria-current", "true");
         else link.removeAttribute("aria-current");
 
@@ -186,37 +195,51 @@ export const NAV_ITEMS: navItem[] = [
         );
 
         sections.forEach((section) => observer.observe(section));
+        signal?.addEventListener("abort", () => observer.disconnect());
       }
     }
 
     // Desplazamiento suave al tope absoluto (0, 0) al pulsar "Inicio" o el Logo estando en la home
     const $homeLinks = document.querySelectorAll<HTMLAnchorElement>("a[href='/'], a[href='/#inicio'], a[href='#inicio']");
     $homeLinks.forEach((link) => {
-      link.addEventListener("click", (e) => {
-        if (window.location.pathname === "/" || window.location.pathname === "") {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          history.pushState(null, "", "/");
-          activeSectionId = "inicio";
-          updateActiveLink("inicio");
-        }
-      });
+      link.addEventListener(
+        "click",
+        (e) => {
+          if (window.location.pathname === "/" || window.location.pathname === "") {
+            e.preventDefault();
+            window.scrollTo({
+              top: 0,
+              behavior: prefersReducedMotion() ? "auto" : "smooth",
+            });
+            history.pushState(null, "", "/");
+            activeSectionId = "inicio";
+            updateActiveLink("inicio");
+          }
+        },
+        { signal },
+      );
     });
 
     updateActiveLink();
-    window.addEventListener("hashchange", () => {
-      const hash = window.location.hash.replace("#", "");
-      if (hash) {
-        activeSectionId = hash;
-        updateActiveLink(hash);
-      }
-    });
+    window.addEventListener(
+      "hashchange",
+      () => {
+        const hash = window.location.hash.replace("#", "");
+        if (hash) {
+          activeSectionId = hash;
+          updateActiveLink(hash);
+        }
+      },
+      { signal },
+    );
   };
 
   const tl = gsap.timeline()
 
   // 2. LÓGICA DE ANIMACIÓN DE ENTRADA (GSAP)
   const initAnimations = () => {
+    if (prefersReducedMotion()) return
+
     animateFrom("[data-header-img]",
     {
       opacity: 0,
@@ -240,9 +263,10 @@ export const NAV_ITEMS: navItem[] = [
   }
   
   // 3. LÓGICA DE BLUR + SOMBRA AL HACER SCROLL (GSAP)
-  const initHeaderScroll = () => {
+  const initHeaderScroll = (signal?: AbortSignal) => {
     const header = document.querySelector("header");
-    if (!header) return;
+    // Sin animación: el fondo del header se aplica por CSS (ver <style>)
+    if (!header || prefersReducedMotion()) return;
 
     gsap.set(header, {
       backdropFilter: "blur(0px)",
@@ -250,7 +274,7 @@ export const NAV_ITEMS: navItem[] = [
       boxShadow: "0 0 0 rgba(0, 0, 0, 0)",
     });
 
-    gsap.to(header, {
+    const tween = gsap.to(header, {
       backdropFilter: "blur(12px)",
       backgroundColor: "rgba(255, 255, 255, 0.65)",
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
@@ -258,14 +282,19 @@ export const NAV_ITEMS: navItem[] = [
       ease: "power1.out",
       scrollTrigger: {
         trigger: document.body,
-        start: "top 10",
+        start: "top -10",
         toggleActions: "play none none reverse",
       },
+    });
+
+    signal?.addEventListener("abort", () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
     });
   }
 
   // 4. LÓGICA DEL MENÚ MÓVIL (< md)
-  const initMobileMenu = () => {
+  const initMobileMenu = (signal?: AbortSignal) => {
     const toggle = $<HTMLButtonElement>("#menu-toggle");
     const menu = $<HTMLElement>("#mobile-nav-menu");
     if (!toggle || !menu) return;
@@ -333,26 +362,46 @@ export const NAV_ITEMS: navItem[] = [
     toggle.addEventListener("click", () => (isOpen ? close() : open()));
     items.forEach((item) => item.addEventListener("click", close));
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") close();
-    });
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key === "Escape") close();
+      },
+      { signal },
+    );
 
-    document.addEventListener("click", (event) => {
-      if (!isOpen) return;
-      const target = event.target as Node;
-      if (!menu.contains(target) && !toggle.contains(target)) close();
-    });
+    document.addEventListener(
+      "click",
+      (event) => {
+        if (!isOpen) return;
+        const target = event.target as Node;
+        if (!menu.contains(target) && !toggle.contains(target)) close();
+      },
+      { signal },
+    );
 
-    desktopQuery.addEventListener("change", (event) => {
-      if (event.matches) close();
-    });
+    desktopQuery.addEventListener(
+      "change",
+      (event) => {
+        if (event.matches) close();
+      },
+      { signal },
+    );
   };
 
-  // INICIALIZACIÓN CENTRALIZADA
+  // INICIALIZACIÓN CENTRALIZADA CON LIMPIEZA ENTRE NAVEGACIONES
+  let controller: AbortController | undefined;
+
   document.addEventListener("astro:page-load", () => {
-    initActiveNav();
+    controller?.abort();
+    controller = new AbortController();
+    const { signal } = controller;
+
+    initActiveNav(signal);
     initAnimations();
-    initHeaderScroll();
-    initMobileMenu();
+    initHeaderScroll(signal);
+    initMobileMenu(signal);
   });
+
+  document.addEventListener("astro:before-swap", () => controller?.abort());
 </script>

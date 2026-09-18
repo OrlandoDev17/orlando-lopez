@@ -34,7 +34,12 @@ import { SKILL_CATEGORIES } from "@/constants/skills";
             <h3 class="text-xl font-bold text-main mb-2 font-heading">
               {cat.title}
             </h3>
-            <p class="text-muted text-sm leading-relaxed mb-5">
+            <p
+              class:list={[
+                "text-sm leading-relaxed mb-5",
+                cat.gradientColor === "purple" ? "text-main/80" : "text-muted",
+              ]}
+            >
               {cat.description}
             </p>
 
@@ -56,7 +61,12 @@ import { SKILL_CATEGORIES } from "@/constants/skills";
                       class="size-5 text-main"
                     />
                   ) : null}
-                  <span class="text-xs text-muted font-medium">
+                  <span
+                    class:list={[
+                      "text-xs font-medium",
+                      cat.gradientColor === "purple" ? "text-main/80" : "text-muted",
+                    ]}
+                  >
                     {tech.label}
                   </span>
                 </div>
@@ -68,7 +78,8 @@ import { SKILL_CATEGORIES } from "@/constants/skills";
             <div class="absolute inset-0 bg-primary-200/30 rounded-full blur-2xl scale-110"></div>
             <Image
               src={cat.image}
-              alt={cat.title}
+              alt=""
+              aria-hidden="true"
               width={192}
               height={192}
               loading="lazy"
@@ -111,11 +122,13 @@ import { SKILL_CATEGORIES } from "@/constants/skills";
 
 <script>
   import { animateFrom, splitTextReveal } from "gsap-presets-kit"
-  import { createSectionTimeline } from "@/utils/gsap"
-
-  const tl = createSectionTimeline("#skills")
+  import { createSectionTimeline, prefersReducedMotion } from "@/utils/gsap"
 
   const initSkillsAnimations = () => {
+    if (prefersReducedMotion()) return
+
+    const tl = createSectionTimeline("#skills")
+
     splitTextReveal("#skills-title", {
       type: "words",
       opacity: 0,

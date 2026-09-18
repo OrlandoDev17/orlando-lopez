@@ -92,11 +92,13 @@ const CARD_ROTATIONS = [
 
 <script>
   import { animateFrom, splitTextReveal } from "gsap-presets-kit";
-  import { createSectionTimeline } from "@/utils/gsap";
+  import { createSectionTimeline, prefersReducedMotion } from "@/utils/gsap";
   import { animateCounter } from "@/utils/counter";
   import { $$ } from "@/utils/dom";
 
   const initAboutAnimations = () => {
+    if (prefersReducedMotion()) return;
+
     const tl = createSectionTimeline("#about");
 
     splitTextReveal("#about-title", {

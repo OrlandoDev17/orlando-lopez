@@ -27,6 +27,7 @@ const {
     "flex flex-col gap-4 2xl:gap-6 max-w-7xl mx-auto w-full px-4 md:px-8",
     className,
   ]}
+  aria-labelledby={title && titleId ? titleId : undefined}
   {...rest}
 >
   {(title || subtitle) && (

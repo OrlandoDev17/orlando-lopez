@@ -6,6 +6,11 @@ import type { Project } from '@/constants/projects';
 type Props = Project;
 
 const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
+
+const getLinkLabel = (icon: string) =>
+  icon.includes("github")
+    ? `Ver el código fuente de ${title} en GitHub`
+    : `Ver la demostración de ${title}`;
 ---
 
 <article class="grid grid-cols-1 md:grid-cols-5 place-items-center w-full bg-white shadow-md rounded-xl overflow-hidden 2xl:min-h-72 
@@ -16,6 +21,10 @@ const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
       class="block w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-102" 
       src={thumbnail} 
       alt={`Proyecto: ${title}`}
+      width={1920}
+      height={1080}
+      loading="lazy"
+      decoding="async"
     >
   </div>
   <div class="col-span-1 md:col-span-3 flex flex-col gap-2 2xl:gap-4 w-full p-6">
@@ -24,9 +33,9 @@ const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
       <ul class="flex items-center gap-2">
         {links.map(({icon, url}) => (
           <li>
-            <a href={url}>
-              <Icon class="size-10 p-2 rounded-xl border-2 border-secondary-500 text-secondary-600 
-              hover:bg-secondary-500 hover:text-white transition-all duration-300" name={icon} />
+            <a href={url} aria-label={getLinkLabel(icon)}>
+              <Icon aria-hidden="true" class="size-10 p-2 rounded-xl border-2 border-secondary-700 text-secondary-700 
+              hover:bg-secondary-600 hover:text-white transition-all duration-300" name={icon} />
             </a>
           </li>
         ))}
@@ -45,9 +54,10 @@ const { slug, thumbnail, title, role, summary, links, techs } = Astro.props;
     <a 
     class="flex items-center gap-2 px-12 py-3.5 bg-main text-white w-fit rounded-xl font-bold font-heading project-card-btn
     hover:tracking-wide transition-all duration-300 group" 
-    href={`/project/${slug}`}
+    href={`/project/${slug}/`}
+    aria-label={`Ver más detalles de ${title}`}
     >
-      <span class="relative z-1 flex items-center gap-2">Mas Detalles <ArrowRight class='size-4 stroke-3 transition-transform duration-300 group-hover:translate-x-1' /></span>
+      <span class="relative z-1 flex items-center gap-2">Más Detalles <ArrowRight aria-hidden="true" class='size-4 stroke-3 transition-transform duration-300 group-hover:translate-x-1' /></span>
     </a>
   </div>
 </article>

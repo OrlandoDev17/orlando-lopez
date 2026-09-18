@@ -40,8 +40,9 @@ const isMobile = device === "mobile";
             alt={`${alt} - Imagen ${i + 1}`}
             class={isMobile
               ? "h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-lg"
-              : "w-full h-auto object-cover aspect-video"}
-            loading={i === 0 ? "eager" : "lazy"}
+              : "block w-full h-auto"}
+            loading="lazy"
+            decoding="async"
           />
         </button>
       ))}
@@ -74,14 +75,28 @@ const isMobile = device === "mobile";
     )}
 
     <!-- Contador de imágenes -->
-    <div class="absolute bottom-3 right-3 bg-main/70 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
+    <div class="absolute bottom-3 right-3 bg-main/70 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full" aria-hidden="true">
       <span id="carousel-current">1</span> / {images.length}
     </div>
+
+    <!-- Control de reproducción automática (WCAG 2.2.2) -->
+    {images.length > 1 && (
+      <button
+        type="button"
+        id="carousel-autoplay"
+        class="absolute bottom-3 left-3 size-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg border border-border-subtle hover:bg-white hover:shadow-xl transition-all duration-300"
+        aria-label="Pausar reproducción automática"
+        aria-pressed="false"
+      >
+        <Icon id="carousel-autoplay-pause" class="size-4 text-main" name="lucide:pause" />
+        <Icon id="carousel-autoplay-play" class="hidden size-4 text-main" name="lucide:play" />
+      </button>
+    )}
   </div>
 
   <!-- Indicadores -->
   {images.length > 1 && (
-    <div class="flex justify-center gap-2 mt-4" role="tablist" aria-label="Imágenes del carrusel">
+    <div class="flex justify-center gap-2 mt-4" role="group" aria-label="Ir a una imagen del carrusel">
       {images.map((_, i) => (
         <button
           type="button"
@@ -90,9 +105,8 @@ const isMobile = device === "mobile";
             i === 0 ? "bg-primary-500 w-6" : "bg-border-subtle hover:bg-muted"
           ]}
           data-carousel-indicator={i}
-          role="tab"
-          aria-selected={i === 0}
-          aria-label={`Ir a imagen ${i + 1}`}
+          aria-current={i === 0 ? "true" : undefined}
+          aria-label={`Ir a imagen ${i + 1} de ${images.length}`}
         />
       ))}
     </div>
@@ -127,54 +141,66 @@ const isMobile = device === "mobile";
 </div>
 
 <script>
+  const prefersReducedMotion = () =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   function initCarousel() {
-    const container = document.getElementById('carousel-container');
-    const indicators = document.querySelectorAll('[data-carousel-indicator]');
-    const triggers = document.querySelectorAll('[data-lightbox-trigger]');
-    const prevBtn = document.getElementById('carousel-prev');
-    const nextBtn = document.getElementById('carousel-next');
-    const counter = document.getElementById('carousel-current');
-    const lightbox = document.getElementById('lightbox-overlay') as HTMLDivElement;
-    const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
-    const lightboxClose = document.getElementById('lightbox-close');
+    const container = document.getElementById("carousel-container") as HTMLDivElement | null;
+    const indicators = document.querySelectorAll<HTMLButtonElement>("[data-carousel-indicator]");
+    const triggers = document.querySelectorAll<HTMLButtonElement>("[data-lightbox-trigger]");
+    const prevBtn = document.getElementById("carousel-prev");
+    const nextBtn = document.getElementById("carousel-next");
+    const counter = document.getElementById("carousel-current");
+    const lightbox = document.getElementById("lightbox-overlay") as HTMLDivElement | null;
+    const lightboxImage = document.getElementById("lightbox-image") as HTMLImageElement | null;
+    const lightboxClose = document.getElementById("lightbox-close") as HTMLButtonElement | null;
+    const autoplayBtn = document.getElementById("carousel-autoplay") as HTMLButtonElement | null;
+    const autoplayPauseIcon = document.getElementById("carousel-autoplay-pause");
+    const autoplayPlayIcon = document.getElementById("carousel-autoplay-play");
 
     if (!container || !lightbox || !lightboxImage) return;
+    // Evita la doble inicialización en la primera carga (init directo + astro:page-load)
+    if (container.dataset.carouselReady === "true") return;
+    container.dataset.carouselReady = "true";
 
     const totalImages = container.children.length;
     let currentIndex = 0;
     let autoplayInterval: ReturnType<typeof setInterval> | undefined;
     let resumeTimeout: ReturnType<typeof setTimeout> | undefined;
+    let autoplayEnabled = !prefersReducedMotion();
 
     const AUTOPLAY_DELAY = 4000;
     const RESUME_DELAY = 8000;
 
-    // Función para ir a una imagen específica
-    const goToSlide = (index: number) => {
-      if (index < 0) index = totalImages - 1;
-      if (index >= totalImages) index = 0;
-      
-      currentIndex = index;
-      const itemWidth = container.scrollWidth / totalImages;
-      container.scrollTo({ left: itemWidth * index, behavior: 'smooth' });
-      
-      // Actualizar contador
-      if (counter) counter.textContent = String(index + 1);
-      
-      // Actualizar indicadores
+    const syncIndicators = (index: number) => {
       indicators.forEach((indicator, i) => {
-        if (i === index) {
-          indicator.classList.add('bg-primary-500', 'w-6');
-          indicator.classList.remove('bg-border-subtle');
-          indicator.setAttribute('aria-selected', 'true');
-        } else {
-          indicator.classList.remove('bg-primary-500', 'w-6');
-          indicator.classList.add('bg-border-subtle');
-          indicator.setAttribute('aria-selected', 'false');
-        }
+        const active = i === index;
+        indicator.classList.toggle("bg-primary-500", active);
+        indicator.classList.toggle("w-6", active);
+        indicator.classList.toggle("bg-border-subtle", !active);
+        if (active) indicator.setAttribute("aria-current", "true");
+        else indicator.removeAttribute("aria-current");
       });
     };
 
-    // Autoplay
+    const updateCounter = (index: number) => {
+      if (counter) counter.textContent = String(index + 1);
+    };
+
+    const goToSlide = (index: number) => {
+      if (index < 0) index = totalImages - 1;
+      if (index >= totalImages) index = 0;
+
+      currentIndex = index;
+      const itemWidth = container.scrollWidth / totalImages;
+      container.scrollTo({
+        left: itemWidth * index,
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+      });
+      updateCounter(index);
+      syncIndicators(index);
+    };
+
     const clearAutoplay = () => {
       if (autoplayInterval) {
         clearInterval(autoplayInterval);
@@ -184,10 +210,8 @@ const isMobile = device === "mobile";
 
     const startAutoplay = () => {
       clearAutoplay();
-      if (totalImages <= 1) return;
-      autoplayInterval = setInterval(() => {
-        goToSlide(currentIndex + 1);
-      }, AUTOPLAY_DELAY);
+      if (totalImages <= 1 || !autoplayEnabled) return;
+      autoplayInterval = setInterval(() => goToSlide(currentIndex + 1), AUTOPLAY_DELAY);
     };
 
     const stopAutoplay = () => {
@@ -209,101 +233,139 @@ const isMobile = device === "mobile";
       }, resumeDelay);
     };
 
-    // Flechas de navegación
-    prevBtn?.addEventListener('click', () => {
+    const setAutoplayUI = () => {
+      if (!autoplayBtn) return;
+      autoplayBtn.setAttribute("aria-pressed", String(autoplayEnabled));
+      autoplayBtn.setAttribute(
+        "aria-label",
+        autoplayEnabled ? "Pausar reproducción automática" : "Reanudar reproducción automática",
+      );
+      autoplayPauseIcon?.classList.toggle("hidden", !autoplayEnabled);
+      autoplayPlayIcon?.classList.toggle("hidden", autoplayEnabled);
+    };
+
+    autoplayBtn?.addEventListener("click", () => {
+      autoplayEnabled = !autoplayEnabled;
+      stopAutoplay();
+      if (autoplayEnabled) startAutoplay();
+      setAutoplayUI();
+    });
+
+    prevBtn?.addEventListener("click", () => {
       pauseAutoplay();
       goToSlide(currentIndex - 1);
     });
 
-    nextBtn?.addEventListener('click', () => {
+    nextBtn?.addEventListener("click", () => {
       pauseAutoplay();
       goToSlide(currentIndex + 1);
     });
 
-    // Navegar con indicadores
     indicators.forEach((indicator, i) => {
-      indicator.addEventListener('click', () => {
+      indicator.addEventListener("click", () => {
         pauseAutoplay();
         goToSlide(i);
       });
     });
 
     // Detectar cambio manual por touch/scroll
-    container.addEventListener('scroll', () => {
+    container.addEventListener("scroll", () => {
       const itemWidth = container.scrollWidth / totalImages;
       const newIndex = Math.round(container.scrollLeft / itemWidth);
       if (newIndex !== currentIndex) {
         currentIndex = newIndex;
-        if (counter) counter.textContent = String(currentIndex + 1);
-        
-        indicators.forEach((indicator, i) => {
-          if (i === currentIndex) {
-            indicator.classList.add('bg-primary-500', 'w-6');
-            indicator.classList.remove('bg-border-subtle');
-            indicator.setAttribute('aria-selected', 'true');
-          } else {
-            indicator.classList.remove('bg-primary-500', 'w-6');
-            indicator.classList.add('bg-border-subtle');
-            indicator.setAttribute('aria-selected', 'false');
-          }
-        });
+        updateCounter(currentIndex);
+        syncIndicators(currentIndex);
       }
     });
 
     // Pausar autoplay al hover, foco o mientras se presiona/arrastra
-    container.addEventListener('mouseenter', stopAutoplay);
-    container.addEventListener('mouseleave', startAutoplay);
-    container.addEventListener('focusin', stopAutoplay);
-    container.addEventListener('focusout', startAutoplay);
-    container.addEventListener('pointerdown', stopAutoplay);
-    container.addEventListener('pointerup', () => pauseAutoplay());
-    container.addEventListener('pointercancel', () => pauseAutoplay());
+    container.addEventListener("mouseenter", stopAutoplay);
+    container.addEventListener("mouseleave", startAutoplay);
+    container.addEventListener("focusin", stopAutoplay);
+    container.addEventListener("focusout", startAutoplay);
+    container.addEventListener("pointerdown", stopAutoplay);
+    container.addEventListener("pointerup", () => pauseAutoplay());
+    container.addEventListener("pointercancel", () => pauseAutoplay());
 
-    // Abrir lightbox
-    triggers.forEach((trigger) => {
-      trigger.addEventListener('click', () => {
-        stopAutoplay();
-        const img = (trigger as HTMLElement).querySelector('img');
-        if (img) {
-          lightboxImage.src = img.src;
-          lightboxImage.alt = img.alt;
-          lightbox.classList.remove('hidden');
-          lightbox.classList.add('flex');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    });
+    // Lightbox con gestión de foco (WCAG 2.4.3)
+    let lastFocused: HTMLElement | null = null;
 
-    // Cerrar lightbox
+    const getFocusable = () =>
+      Array.from(
+        lightbox.querySelectorAll<HTMLElement>(
+          'button, [href], [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => !el.hasAttribute("disabled"));
+
+    const openLightbox = (trigger: HTMLButtonElement) => {
+      const img = trigger.querySelector("img");
+      if (!img) return;
+      stopAutoplay();
+      lastFocused = document.activeElement as HTMLElement | null;
+      lightboxImage.src = img.src;
+      lightboxImage.alt = img.alt;
+      lightbox.classList.remove("hidden");
+      lightbox.classList.add("flex");
+      document.body.style.overflow = "hidden";
+      const focusable = getFocusable();
+      (focusable[0] ?? lightboxClose)?.focus();
+    };
+
     const closeLightbox = () => {
-      lightbox.classList.add('hidden');
-      lightbox.classList.remove('flex');
-      document.body.style.overflow = '';
+      lightbox.classList.add("hidden");
+      lightbox.classList.remove("flex");
+      document.body.style.overflow = "";
+      lastFocused?.focus?.();
+      lastFocused = null;
       startAutoplay();
     };
 
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox || e.target === lightboxClose) {
-        closeLightbox();
-      }
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => openLightbox(trigger));
     });
 
-    lightboxClose?.addEventListener('click', closeLightbox);
-
-    // Cerrar con Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
-        closeLightbox();
-      }
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === lightboxClose) closeLightbox();
     });
 
-    // Iniciar autoplay
+    lightboxClose?.addEventListener("click", closeLightbox);
+
+    // Escape para cerrar + trampa de foco (Tab) dentro del diálogo
+    const onKeydown = (e: KeyboardEvent) => {
+      if (lightbox.classList.contains("hidden")) return;
+      if (e.key === "Escape") {
+        closeLightbox();
+        return;
+      }
+      if (e.key === "Tab") {
+        const focusable = getFocusable();
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", onKeydown);
+    document.addEventListener(
+      "astro:before-swap",
+      () => {
+        document.removeEventListener("keydown", onKeydown);
+        clearAutoplay();
+      },
+      { once: true },
+    );
+
+    setAutoplayUI();
     startAutoplay();
   }
 
-  // Inicializar
-  initCarousel();
-
-  // Reinicializar en cambios de vista (Astro View Transitions)
-  document.addEventListener('astro:page-load', initCarousel);
+  document.addEventListener("astro:page-load", initCarousel);
 </script>
