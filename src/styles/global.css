@@ -97,12 +97,22 @@ html.js .tech-icon {
   left: 0;
 }
 
-/* Respeto por prefers-reduced-motion para transiciones CSS */
+/* Respeto por prefers-reduced-motion: desactiva transiciones, animaciones CSS
+   y el desplazamiento suave. Las animaciones GSAP se omiten desde JS. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Los iconos del avatar solo se ocultan cuando GSAP va a animarlos;
+     sin animación deben verse de inmediato. */
+  html.js .tech-icon {
+    opacity: 1;
   }
 }
 

@@ -24,7 +24,7 @@ const CARD_RADII = [
 ];
 ---
 
-<SectionContainer id="workflow">
+<SectionContainer id="workflow" aria-label="Mi flujo de trabajo">
   <div>
     <div
       id="workflow-pin"
@@ -47,7 +47,7 @@ const CARD_RADII = [
             >
               <span
                 id="workflow-progress-step"
-                class="inline-block text-sm font-black text-primary-500"
+                class="inline-block text-sm font-black text-primary-600"
               >
                 01
               </span>
@@ -119,14 +119,14 @@ const CARD_RADII = [
 
         <div
           id="workflow-track"
-          class="relative z-10 flex flex-col items-center gap-6 w-full pl-8 md:flex-row md:gap-0 md:w-max md:h-[min(55vh,26rem)] md:min-h-80 md:pl-0"
+          class="relative z-10 flex flex-col items-center gap-6 w-full pl-8 md:flex-row md:gap-0 md:w-max md:h-[min(55vh,26rem)] md:min-h-80 md:pl-0 md:pr-25"
         >
           {workflowSteps.map((step, index) => (
             <div class="workflow-card w-full min-w-0 h-auto flex items-center justify-center md:w-[45vw] md:min-w-95 md:h-full md:px-6">
               <article
                 class:list={[
                   "workflow-step-card group/step relative max-w-xl w-full p-6 2xl:p-8 shadow-md overflow-hidden",
-                  "backdrop-blur-md transition-[translate,scale,rotate,box-shadow] duration-300 ease-out",
+                  "transition-[translate,scale,rotate,box-shadow] duration-300 ease-out",
                   "hover:rotate-0 hover:-translate-y-2 hover:scale-[1.03] hover:shadow-[0_24px_48px_rgba(122,92,250,0.25)]",
                   CARD_ROTATIONS[index % CARD_ROTATIONS.length],
                   CARD_RADII[index % CARD_RADII.length],
@@ -168,7 +168,7 @@ const CARD_RADII = [
                   <span class="inline-flex items-center gap-2 text-muted">
                     <Icon
                       name="lucide:package-check"
-                      class="size-4 shrink-0 text-secondary-600"
+                      class="size-4 shrink-0 text-secondary-700"
                       aria-hidden="true"
                     />
                     <span class="text-xs font-medium uppercase tracking-wider">
@@ -217,17 +217,15 @@ const CARD_RADII = [
   .workflow-step-card {
     border: 1px solid transparent;
     background:
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9))
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.96))
         padding-box,
       linear-gradient(135deg, rgba(122, 92, 250, 0.5), rgba(163, 232, 98, 0.4))
         border-box;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
   }
 
   .workflow-step-card:hover {
     background:
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.97))
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.99), rgba(255, 255, 255, 0.99))
         padding-box,
       linear-gradient(135deg, rgba(122, 92, 250, 0.85), rgba(163, 232, 98, 0.7))
         border-box;
@@ -238,10 +236,19 @@ const CARD_RADII = [
       rotate: 0deg;
     }
   }
+
+  /* Movimiento reducido: el pin pasa a ser un carril con scroll horizontal */
+  .workflow-reduced {
+    overflow-x: auto !important;
+    scrollbar-width: none;
+  }
+  .workflow-reduced::-webkit-scrollbar {
+    display: none;
+  }
 </style>
 
 <script>
-  import { gsap, ScrollTrigger } from "@/utils/gsap";
+  import { gsap, ScrollTrigger, prefersReducedMotion } from "@/utils/gsap";
   import { $$ } from "@/utils/dom";
   import { animateFrom, splitTextReveal } from "gsap-presets-kit";
 
@@ -270,10 +277,17 @@ const CARD_RADII = [
 
     if (!pin || !track || !svgLine) return;
 
+    // Movimiento reducido: sin pin ni scrub. Se habilita scroll horizontal
+    // nativo para que todas las tarjetas sigan siendo accesibles.
+    if (prefersReducedMotion()) {
+      pin.classList.add("workflow-reduced");
+      return;
+    }
+
     const cards = $$(".workflow-card");
     const totalSteps = cards.length;
 
-    const getScrollDistance = () => track.scrollWidth - pin.clientWidth + 100;
+    const getScrollDistance = () => track.scrollWidth - pin.clientWidth;
 
     const setBarProgress = progressBar
       ? gsap.quickSetter(progressBar, "scaleX")
@@ -383,13 +397,16 @@ const CARD_RADII = [
           strokeDashoffset: pathLength,
         });
 
+        // Promueve el track a su propia capa durante el desplazamiento horizontal
+        gsap.set(track, { willChange: "transform" });
+
         const scrollTl = gsap.timeline({
           defaults: { ease: "none" },
           scrollTrigger: {
             trigger: pin,
             start: "top top",
             end: () => `+=${getScrollDistance()}`,
-            scrub: 1,
+            scrub: 0.8,
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -406,17 +423,16 @@ const CARD_RADII = [
 
           gsap.fromTo(
             card,
-            { scale: 0.92, opacity: 0.6, yPercent: 4 },
+            { scale: 0.92, opacity: 0.6 },
             {
               scale: 1,
               opacity: 1,
-              yPercent: 0,
               ease: "none",
               scrollTrigger: {
                 trigger: wrapper,
                 containerAnimation: scrollTl,
-                start: "left 85%",
-                end: "center 45%",
+                start: "left 95%",
+                end: "center 30%",
                 scrub: true,
               },
             },

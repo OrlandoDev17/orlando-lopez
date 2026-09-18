@@ -24,14 +24,15 @@ export function animateCounter(
     element.textContent = `${prefix}${state.value}${suffix}`;
   };
 
-  render();
-
   const vars: gsap.TweenVars = {
     value: target,
     duration: options.duration ?? 1.2,
     ease: options.ease ?? "power2.out",
     delay: options.delay ?? 0,
     snap: { value: digits.includes(".") || digits.includes(",") ? 0.1 : 1 },
+    // No se renderiza "0" hasta que la animación arranca: si el trigger nunca
+    // se dispara, el valor final del HTML se mantiene visible.
+    onStart: render,
     onUpdate: render,
   };
 
