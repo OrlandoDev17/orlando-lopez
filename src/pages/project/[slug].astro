@@ -31,9 +31,10 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
 <Layout title={project.title} description={project.summary}>
   <main class="max-w-7xl mx-auto w-full px-8">
     <!-- Hero: Mockup + Texto + Botones -->
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center pt-8">
+    <section id="project-hero" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center pt-8">
       <article class="relative order-2 lg:order-1 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         <img 
+          id="project-hero-image"
           transition:name={`${project.slug}-image`}
           src={project.thumbnail} 
           alt={project.title}
@@ -43,18 +44,20 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
       
       <div class="order-1 lg:order-2 flex flex-col gap-3 justify-center">
         <h1 
+          id="project-title"
           transition:name={`${project.slug}-title`}
           class="text-3xl md:text-4xl font-black text-main leading-tight"
         >
           {project.title}
         </h1>
         <p 
+          id="project-summary"
           transition:name={`${project.slug}-summary`}
           class="text-sm text-muted leading-snug"
         >
           {project.summary}
         </p>
-        <div class="flex flex-wrap gap-3 mt-2">
+        <div id="project-cta" class="flex flex-wrap gap-3 mt-2">
           {demoUrl && (
             <Button href={demoUrl} variant="primary" className="text-sm">
               <Icon class="size-4" name="lucide:rocket" />
@@ -72,7 +75,7 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
     </section>
 
     <!-- Metadata: Rol, Duración, Cliente -->
-    <section aria-labelledby="project-info-heading" class="py-6">
+    <section id="project-info" aria-labelledby="project-info-heading" class="py-6">
       <h2 class="sr-only" id="project-info-heading">Información del Proyecto</h2>
       <dl class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
         {metadata.map((item, index) => (
@@ -80,7 +83,7 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
             {index > 0 && (
               <div class="w-px h-6 bg-border-subtle hidden sm:block" aria-hidden="true"></div>
             )}
-            <div class="flex flex-col items-center gap-0.5">
+            <div class="project-meta-item flex flex-col items-center gap-0.5">
               <dt class="font-semibold text-xs uppercase tracking-widest text-muted">
                 {item.label}
               </dt>
@@ -94,14 +97,14 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
     </section>
 
     <!-- Separador -->
-    <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
+    <div class="project-separator border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
 
     <!-- Stack Tecnológico -->
-    <section aria-labelledby="tech-stack-heading" class="py-6">
+    <section id="project-tech" aria-labelledby="tech-stack-heading" class="py-6">
       <h2 class="sr-only" id="tech-stack-heading">Stack Tecnológico</h2>
       <ul class="flex flex-wrap items-center justify-center gap-2">
         {project.techs.map(({ icon, name }) => (
-          <li>
+          <li class="project-tech-item">
             <Icon 
               title={name}
               aria-label={name}
@@ -116,35 +119,45 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
     </section>
 
     <!-- Separador -->
-    <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
+    <div class="project-separator border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
 
     <!-- Detalles del Proyecto -->
-    <section aria-labelledby="project-details-heading" class="py-8 space-y-8">
+    <section id="project-details" aria-labelledby="project-details-heading" class="py-8 space-y-8">
       <h2 class="sr-only" id="project-details-heading">Detalles del Proyecto</h2>
 
       <!-- Impacto -->
-      <ProjectMetrics metrics={project.metrics} />
+      <div class="detail-block">
+        <ProjectMetrics metrics={project.metrics} />
+      </div>
 
       <!-- Antes vs Después -->
-      <BeforeAfter before={project.before} after={project.after} />
+      <div class="detail-block">
+        <BeforeAfter before={project.before} after={project.after} />
+      </div>
 
       <!-- Resolución de Retos -->
-      <ProjectChallenges challenges={project.challenges} />
+      <div class="detail-block">
+        <ProjectChallenges challenges={project.challenges} />
+      </div>
 
       <!-- Características -->
-      <ProjectFeatures features={project.features} />
+      <div class="detail-block">
+        <ProjectFeatures features={project.features} />
+      </div>
 
       <!-- Separador -->
-      <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
+      <div class="project-separator border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
 
       <!-- Galería de Imágenes -->
-      <ImageCarousel images={project.images} alt={project.title} device={project.device} />
+      <div class="detail-block">
+        <ImageCarousel images={project.images} alt={project.title} device={project.device} />
+      </div>
 
       <!-- Separador -->
-      <div class="border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
+      <div class="project-separator border-t border-border-subtle max-w-xs mx-auto" aria-hidden="true"></div>
 
       <!-- Volver -->
-      <nav class="text-center" aria-label="Navegación del proyecto">
+      <nav class="detail-block text-center" aria-label="Navegación del proyecto">
         <a href="/#projects" class="inline-flex items-center gap-2 text-sm text-muted hover:text-primary-600 transition-colors duration-300">
           <Icon class="size-4" name="lucide:arrow-left" aria-hidden="true" />
           Volver a proyectos
@@ -153,3 +166,123 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
     </section>
   </main>
 </Layout>
+
+<script>
+  import { animateFrom, splitTextReveal } from "gsap-presets-kit";
+  import { gsap, createSectionTimeline } from "@/utils/gsap";
+
+  const initProjectAnimations = () => {
+    const hero = document.getElementById("project-hero");
+    if (!hero || hero.dataset.animated === "true") return;
+    hero.dataset.animated = "true";
+
+    // Hero: entrada al cargar la vista
+    const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    animateFrom("#project-hero-image", {
+      opacity: 0,
+      scale: 0.94,
+      y: 30,
+      duration: 0.7,
+      timeline: heroTl,
+      scroll: false,
+    });
+
+    splitTextReveal("#project-title", {
+      type: "words",
+      opacity: 0,
+      y: 30,
+      stagger: 0.08,
+      duration: 0.5,
+      timeline: heroTl,
+      position: "-=0.45",
+      scroll: false,
+    });
+
+    animateFrom("#project-summary", {
+      opacity: 0,
+      y: 20,
+      duration: 0.5,
+      timeline: heroTl,
+      position: "-=0.3",
+      scroll: false,
+    });
+
+    animateFrom("#project-cta a", {
+      opacity: 0,
+      y: 16,
+      stagger: 0.1,
+      duration: 0.4,
+      ease: "back.out(1.6)",
+      timeline: heroTl,
+      position: "-=0.25",
+      scroll: false,
+    });
+
+    // Metadata: rol, duración y cliente
+    const metaTl = createSectionTimeline("#project-info");
+    animateFrom(".project-meta-item", {
+      opacity: 0,
+      y: 20,
+      duration: 0.4,
+      stagger: 0.1,
+      timeline: metaTl,
+      scroll: false,
+    });
+
+    // Stack tecnológico
+    const techTl = createSectionTimeline("#project-tech");
+    animateFrom(".project-tech-item", {
+      opacity: 0,
+      scale: 0.8,
+      y: 12,
+      duration: 0.35,
+      stagger: 0.05,
+      ease: "back.out(1.7)",
+      timeline: techTl,
+      scroll: false,
+    });
+
+    // Bloques de detalle con entrada al hacer scroll
+    document.querySelectorAll<HTMLElement>(".detail-block").forEach((block) => {
+      const tl = createSectionTimeline(block);
+
+      animateFrom(block, {
+        opacity: 0,
+        y: 40,
+        duration: 0.6,
+        timeline: tl,
+        scroll: false,
+      });
+
+      const inner = block.querySelectorAll(
+        ".metric-card, .challenge-card, .feature-item, .before-after-card",
+      );
+
+      if (inner.length) {
+        animateFrom(inner, {
+          opacity: 0,
+          y: 24,
+          duration: 0.45,
+          stagger: 0.12,
+          timeline: tl,
+          position: "-=0.3",
+          scroll: false,
+        });
+      }
+    });
+
+    // Separadores
+    document.querySelectorAll<HTMLElement>(".project-separator").forEach((separator) => {
+      const tl = createSectionTimeline(separator, { start: "top 92%" });
+      tl.from(separator, {
+        scaleX: 0,
+        transformOrigin: "center center",
+        duration: 0.5,
+        ease: "power2.out",
+      });
+    });
+  };
+
+  document.addEventListener("astro:page-load", initProjectAnimations);
+</script>

@@ -15,7 +15,7 @@ const { challenges } = Astro.props;
   </h2>
   <ul class="space-y-4">
     {challenges.map(({ problem, solution, result }) => (
-      <li class="bg-white border border-border-subtle rounded-2xl overflow-hidden">
+      <li class="challenge-card bg-white border border-border-subtle rounded-2xl overflow-hidden">
         <div class="grid grid-cols-1 md:grid-cols-3">
           <div class="p-5 border-b md:border-b-0 md:border-r border-border-subtle">
             <span class="text-[10px] font-semibold uppercase tracking-wider text-muted flex items-center gap-1.5 mb-2">

@@ -23,7 +23,7 @@ const parsedMetrics = metrics.map((metric) => {
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     {parsedMetrics.map((metric, i) => (
       <div class:list={[
-        "relative rounded-2xl p-5 overflow-hidden",
+        "metric-card relative rounded-2xl p-5 overflow-hidden",
         i === 0 ? "bg-primary-500 text-white col-span-2 lg:col-span-1" : 
         i === 1 ? "bg-secondary-500 text-main" : 
         i === 2 ? "bg-main text-white" : "bg-white border border-border-subtle"
