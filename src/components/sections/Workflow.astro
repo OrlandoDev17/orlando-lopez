@@ -28,41 +28,44 @@ const CARD_RADII = [
   <div>
     <div
       id="workflow-pin"
-      class="relative z-30 h-screen flex flex-col justify-center gap-8 pt-16 overflow-hidden"
+      class="relative z-30 flex flex-col justify-center gap-5 md:h-dvh 2xl:gap-8 overflow-hidden"
     >
-      {/* Indicador de progreso */}
-      <div
-        id="workflow-progress"
-        class="absolute top-20 right-0 z-20 flex flex-col items-end gap-2"
-      >
-        <span
-          class="inline-flex items-baseline gap-1.5 bg-white/80 backdrop-blur-sm border border-border-subtle shadow-sm rounded-full px-4 py-1.5 font-heading"
-        >
-          <span
-            id="workflow-progress-step"
-            class="inline-block text-sm font-black text-primary-500"
-          >
-            01
-          </span>
-          <span class="text-xs font-medium text-muted">/ {totalSteps}</span>
-        </span>
-        <div
-          class="w-36 h-1.5 rounded-full bg-border-subtle overflow-hidden"
-          aria-hidden="true"
-        >
-          <div
-            id="workflow-progress-bar"
-            class="h-full w-full origin-left rounded-full bg-linear-to-r from-primary-500 to-secondary-500"
-          >
-          </div>
-        </div>
-      </div>
-
       {/* Header */}
       <header class="flex flex-col gap-2">
-        <h2 id="workflow-title" class="text-3xl text-primary-500 font-black">
-          Mi Flujo de Trabajo
-        </h2>
+        <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+          <h2 id="workflow-title" class="text-3xl text-primary-500 font-black">
+            Mi Flujo de Trabajo
+          </h2>
+
+          {/* Indicador de progreso */}
+          <div
+            id="workflow-progress"
+            class="hidden md:flex shrink-0 flex-col items-end gap-2"
+          >
+            <span
+              class="inline-flex items-baseline gap-1.5 bg-white/80 backdrop-blur-sm border border-border-subtle shadow-sm rounded-full px-4 py-1.5 font-heading"
+            >
+              <span
+                id="workflow-progress-step"
+                class="inline-block text-sm font-black text-primary-500"
+              >
+                01
+              </span>
+              <span class="text-xs font-medium text-muted">/ {totalSteps}</span>
+            </span>
+            <div
+              class="w-36 h-1.5 rounded-full bg-border-subtle overflow-hidden"
+              aria-hidden="true"
+            >
+              <div
+                id="workflow-progress-bar"
+                class="h-full w-full origin-left rounded-full bg-linear-to-r from-primary-500 to-secondary-500"
+              >
+              </div>
+            </div>
+          </div>
+        </div>
+
         <p id="workflow-paragraph" class="text-sm text-muted font-body max-w-2xl">
           Un vistazo a mi proceso de desarrollo de software, desde la ideación
           hasta el despliegue.
@@ -75,8 +78,15 @@ const CARD_RADII = [
 
       {/* Pista horizontal */}
       <div class="relative">
+        {/* Línea vertical (móvil) */}
+        <div
+          class="absolute left-1.5 top-2 bottom-2 w-1.5 rounded-full bg-linear-to-b from-primary-500 via-primary-700 to-secondary-500 shadow-[0_0_8px_rgba(122,92,250,0.4)] md:hidden"
+          aria-hidden="true"
+        >
+        </div>
+
         <svg
-          class="absolute top-1/2 left-0 w-full -translate-y-1/2 pointer-events-none z-0"
+          class="hidden md:block absolute top-1/2 left-0 w-full -translate-y-1/2 pointer-events-none z-0"
           height="280"
           viewBox="0 0 1200 280"
           preserveAspectRatio="none"
@@ -109,13 +119,13 @@ const CARD_RADII = [
 
         <div
           id="workflow-track"
-          class="flex items-center w-max relative z-10 h-[min(55vh,26rem)] min-h-80"
+          class="relative z-10 flex flex-col items-center gap-6 w-full pl-8 md:flex-row md:gap-0 md:w-max md:h-[min(55vh,26rem)] md:min-h-80 md:pl-0"
         >
           {workflowSteps.map((step, index) => (
-            <div class="workflow-card w-[45vw] min-w-95 h-full flex items-center justify-center px-6">
+            <div class="workflow-card w-full min-w-0 h-auto flex items-center justify-center md:w-[45vw] md:min-w-95 md:h-full md:px-6">
               <article
                 class:list={[
-                  "workflow-step-card group/step relative max-w-xl w-full p-8 shadow-md overflow-hidden",
+                  "workflow-step-card group/step relative max-w-xl w-full p-6 2xl:p-8 shadow-md overflow-hidden",
                   "backdrop-blur-md transition-[translate,scale,rotate,box-shadow] duration-300 ease-out",
                   "hover:rotate-0 hover:-translate-y-2 hover:scale-[1.03] hover:shadow-[0_24px_48px_rgba(122,92,250,0.25)]",
                   CARD_ROTATIONS[index % CARD_ROTATIONS.length],
@@ -130,14 +140,14 @@ const CARD_RADII = [
                 </div>
 
                 {/* Encabezado del Card */}
-                <div class="flex items-center gap-3 mb-6">
+                <div class="flex items-center gap-3 mb-4 2xl:mb-6">
                   <span
-                    class="inline-flex items-center justify-center size-12 shrink-0 rounded-xl text-white shadow-md shadow-primary-500/25 bg-linear-to-br from-primary-500 to-secondary-500 transition-transform duration-300 group-hover/step:scale-110 group-hover/step:-rotate-6"
+                    class="inline-flex items-center justify-center size-10 2xl:size-12 shrink-0 rounded-xl text-white shadow-md shadow-primary-500/25 bg-linear-to-br from-primary-500 to-secondary-500 transition-transform duration-300 group-hover/step:scale-110 group-hover/step:-rotate-6"
                     aria-hidden="true"
                   >
                     <Icon name={step.icon} class="size-6" />
                   </span>
-                  <span class="text-4xl font-black text-primary-500 transition-colors duration-300 group-hover/step:text-secondary-600">
+                  <span class="text-3xl 2xl:text-4xl font-black text-primary-500 transition-colors duration-300 group-hover/step:text-secondary-600">
                     {step.number}
                   </span>
                   <span class="text-xs font-semibold uppercase tracking-wider bg-primary-50 text-primary-700 px-3 py-1 rounded-full border border-primary-200">
@@ -146,15 +156,15 @@ const CARD_RADII = [
                 </div>
 
                 {/* Titulo & Descripcion */}
-                <h3 class="text-2xl font-bold text-main mb-3 transition-colors duration-300 group-hover/step:text-primary-600">
+                <h3 class="text-xl 2xl:text-2xl font-bold text-main mb-2 2xl:mb-3 transition-colors duration-300 group-hover/step:text-primary-600">
                   {step.title}
                 </h3>
-                <p class="text-muted text-sm leading-relaxed mb-6">
+                <p class="text-muted text-sm leading-relaxed mb-4 2xl:mb-6">
                   {step.description}
                 </p>
 
                 {/* Entregable Clave */}
-                <div class="flex items-center justify-between gap-4 border-t border-border-subtle pt-4 mb-5">
+                <div class="flex items-center justify-between gap-4 border-t border-border-subtle pt-3 2xl:pt-4 mb-4 2xl:mb-5">
                   <span class="inline-flex items-center gap-2 text-muted">
                     <Icon
                       name="lucide:package-check"
@@ -181,6 +191,18 @@ const CARD_RADII = [
               </article>
             </div>
           ))}
+        </div>
+
+        {/* Barreras de desvanecimiento: las cards aparecen/desaparecen en los bordes */}
+        <div
+          class="hidden md:block pointer-events-none absolute -inset-y-4 left-0 z-20 w-20 sm:w-28 lg:w-40 bg-linear-to-r from-bg-main via-bg-main/70 to-transparent"
+          aria-hidden="true"
+        >
+        </div>
+        <div
+          class="hidden md:block pointer-events-none absolute -inset-y-4 right-0 z-20 w-20 sm:w-28 lg:w-40 bg-linear-to-l from-bg-main via-bg-main/70 to-transparent"
+          aria-hidden="true"
+        >
         </div>
       </div>
     </div>
@@ -210,6 +232,12 @@ const CARD_RADII = [
       linear-gradient(135deg, rgba(122, 92, 250, 0.85), rgba(163, 232, 98, 0.7))
         border-box;
   }
+
+  @media (max-width: 47.99rem) {
+    .workflow-step-card {
+      rotate: 0deg;
+    }
+  }
 </style>
 
 <script>
@@ -220,9 +248,13 @@ const CARD_RADII = [
   gsap.registerPlugin(ScrollTrigger);
 
   let ctx: gsap.Context | undefined;
+  let mm: gsap.MatchMedia | undefined;
 
   const initWorkflow = () => {
     ctx?.revert();
+    mm?.revert();
+    ctx = undefined;
+    mm = undefined;
 
     const pin = document.querySelector<HTMLElement>("#workflow-pin");
     const track = document.querySelector<HTMLElement>("#workflow-track");
@@ -242,8 +274,6 @@ const CARD_RADII = [
     const totalSteps = cards.length;
 
     const getScrollDistance = () => track.scrollWidth - pin.clientWidth + 100;
-
-    const pathLength = svgLine.getTotalLength();
 
     const setBarProgress = progressBar
       ? gsap.quickSetter(progressBar, "scaleX")
@@ -268,11 +298,8 @@ const CARD_RADII = [
       }
     };
 
+    // Reveal de cabecera: igual en todos los breakpoints
     ctx = gsap.context(() => {
-      gsap.set(svgLine, {
-        strokeDasharray: pathLength,
-        strokeDashoffset: pathLength,
-      });
       if (progressBar) gsap.set(progressBar, { scaleX: 0 });
 
       const headerTl = gsap.timeline({
@@ -314,55 +341,100 @@ const CARD_RADII = [
         },
         "-=0.3",
       );
-
-      const scrollTl = gsap.timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: {
-          trigger: pin,
-          start: "top top",
-          end: () => `+=${getScrollDistance()}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => updateProgress(self.progress),
-        },
-      });
-
-      scrollTl.to(track, { x: () => -getScrollDistance() }, 0);
-      scrollTl.to(svgLine, { strokeDashoffset: 0 }, 0);
-
-      cards.forEach((wrapper) => {
-        const card = wrapper.querySelector(".workflow-step-card");
-        if (!card) return;
-
-        gsap.fromTo(
-          card,
-          { scale: 0.92, opacity: 0.6, yPercent: 4 },
-          {
-            scale: 1,
-            opacity: 1,
-            yPercent: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: wrapper,
-              containerAnimation: scrollTl,
-              start: "left 85%",
-              end: "center 45%",
-              scrub: true,
-            },
-          },
-        );
-      });
-
-      updateProgress(0);
     });
+
+    // Comportamiento responsive
+    mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isMobile: "(max-width: 47.99rem)",
+        isDesktop: "(min-width: 48rem)",
+      },
+      (context) => {
+        const { isMobile } = context.conditions as {
+          isMobile: boolean;
+          isDesktop: boolean;
+        };
+
+        // Móvil: cards apiladas, entrada simple, sin pin ni scroll horizontal
+        if (isMobile) {
+          gsap.from(cards, {
+            opacity: 0,
+            y: 40,
+            duration: 0.5,
+            ease: "power3.out",
+            stagger: 0.12,
+            scrollTrigger: {
+              trigger: track,
+              start: "top 85%",
+              once: true,
+            },
+          });
+
+          return;
+        }
+
+        // Desktop: scroll horizontal con pin
+        const pathLength = svgLine.getTotalLength();
+
+        gsap.set(svgLine, {
+          strokeDasharray: pathLength,
+          strokeDashoffset: pathLength,
+        });
+
+        const scrollTl = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: pin,
+            start: "top top",
+            end: () => `+=${getScrollDistance()}`,
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => updateProgress(self.progress),
+          },
+        });
+
+        scrollTl.to(track, { x: () => -getScrollDistance() }, 0);
+        scrollTl.to(svgLine, { strokeDashoffset: 0 }, 0);
+
+        cards.forEach((wrapper) => {
+          const card = wrapper.querySelector(".workflow-step-card");
+          if (!card) return;
+
+          gsap.fromTo(
+            card,
+            { scale: 0.92, opacity: 0.6, yPercent: 4 },
+            {
+              scale: 1,
+              opacity: 1,
+              yPercent: 0,
+              ease: "none",
+              scrollTrigger: {
+                trigger: wrapper,
+                containerAnimation: scrollTl,
+                start: "left 85%",
+                end: "center 45%",
+                scrub: true,
+              },
+            },
+          );
+        });
+
+        updateProgress(0);
+      },
+    );
 
     ScrollTrigger.refresh();
   };
 
   document.addEventListener("astro:page-load", initWorkflow);
-  document.addEventListener("astro:before-swap", () => ctx?.revert());
+  document.addEventListener("astro:before-swap", () => {
+    mm?.revert();
+    ctx?.revert();
+  });
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
 </script>
