@@ -92,34 +92,28 @@ Un verde lima optimizado para mejorar la legibilidad y el contraste. Se utiliza 
 
 ---
 
-## 4. Configuración CSS Global (`styles.css` / Tailwind v4)
+## 4. Configuración CSS Global (`src/styles/global.css`)
 
-A continuación se muestra el código listo para incluir en tu archivo de estilos principal (`src/styles/styles.css` o `global.css`):
+Fuente de verdad de los tokens y estilos base. Se declara con la variable
+`@theme` de Tailwind v4. **Las fuentes son variables** (un único `.woff2` por
+familia, rango `100 900`), no archivos por peso:
 
 ```css
 @import "tailwindcss";
 
-/* Declaración de Fuentes Locales */
+/* Declaración de Fuentes Locales (Variable Fonts) */
 @font-face {
   font-family: "Space Grotesk";
-  src: url("/fonts/space-grotesk-bold.woff2") format("woff2");
-  font-weight: 700;
+  src: url("/fonts/space-grotesk-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Plus Jakarta Sans";
-  src: url("/fonts/plus-jakarta-sans-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Plus Jakarta Sans";
-  src: url("/fonts/plus-jakarta-sans-medium.woff2") format("woff2");
-  font-weight: 500;
+  src: url("/fonts/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -153,24 +147,14 @@ A continuación se muestra el código listo para incluir en tu archivo de estilo
 
   --color-bg-main: #faf9fe;
   --color-bg-surface: #ffffff;
-  --color-text-main: #363636;
-  --color-text-muted: #6b6b6b;
+  --color-main: #363636;
+  --color-muted: #6b6b6b;
   --color-border-subtle: #eae7f6;
 }
-
-/* Estilos Base del Documento */
-body {
-  font-family: var(--font-body);
-  background-color: var(--color-bg-main);
-  color: var(--color-text-main);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading);
-}
 ```
+
+> Nota sobre accesibilidad: para **texto** sobre fondos claros usar
+> `secondary-700`/`secondary-800` (no `secondary-500/600`, que no alcanzan el
+> contraste AA 4.5:1). Los acentos gráficos (separadores, badges, iconos
+> decorativos) sí pueden usar tonos claros. Las utilidades de texto son
+> `text-main` y `text-muted`; el fondo principal es `bg-main`.
