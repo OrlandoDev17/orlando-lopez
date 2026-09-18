@@ -33,7 +33,7 @@ import { ProjectsData } from "@/constants/projects";
       opacity: 0,
       y: 30,
       stagger: 0.15,
-      duration: 0.6,
+      duration: 0.4,
       ease: "power2.out",
       timeline: tl,
       scroll: false,
@@ -42,7 +42,7 @@ import { ProjectsData } from "@/constants/projects";
     animateFrom("#projects-paragraph", {
       opacity: 0,
       x: -30,
-      duration: 0.5,
+      duration: 0.3,
       ease: "back.out",
       timeline: tl,
       position: "-=0.2",
@@ -52,14 +52,14 @@ import { ProjectsData } from "@/constants/projects";
     tl.from("#projects-separator", {
       scaleX: 0,
       transformOrigin: "left center",
-      duration: 0.6,
+      duration: 0.4,
       ease: "power2.out",
     }, "-=0.3")
 
     animateFrom(".project-card", {
       opacity: 0,
       y: 30,
-      duration: 0.5,
+      duration: 0.3,
       ease: "power3.out",
       timeline: tl,
       scroll: false,
