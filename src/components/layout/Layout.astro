@@ -2,26 +2,39 @@
 import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import Header from "./Header.astro";
+import { CONTACT_GITHUB, CONTACT_LINKEDIN } from "@/constants/contact";
 
 interface Props {
   title: string;
   description: string;
+  ogImage?: string;
+  ogType?: "website" | "article";
+  preloadAvatar?: boolean;
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  ogType = "website",
+  preloadAvatar = false,
+} = Astro.props;
 
 const siteName = "Orlando Lopez";
 const url = Astro.url;
 const locale = "es_ES";
 const siteTitle = `${title} | ${siteName}`;
+const ogImageUrl = new URL(ogImage ?? "/og-image.png", url.origin).href;
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
 		<!-- Detectar JS de forma síncrona (evita FOUC de iconos/animaciones) -->
 		<script is:inline>
@@ -32,8 +45,16 @@ const siteTitle = `${title} | ${siteName}`;
 		<link rel="preload" href="/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 
-		<!-- Preload del avatar (hero, arriba del fold) -->
-		<link rel="preload" href="/avatar/avatar.webp" as="image" type="image/webp" />
+		<!-- Preload del avatar (solo home; el avatar está oculto en móvil) -->
+		{preloadAvatar && (
+			<link
+				rel="preload"
+				href="/avatar/avatar.webp"
+				as="image"
+				type="image/webp"
+				media="(min-width: 768px)"
+			/>
+		)}
 
 		<!-- Metadata básica -->
 		<title>{siteTitle}</title>
@@ -41,38 +62,38 @@ const siteTitle = `${title} | ${siteName}`;
 		<meta name="author" content={siteName} />
 		<meta name="robots" content="index, follow" />
 		<meta name="theme-color" content="#7a5cfa" />
+		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
 		<link rel="canonical" href={url.href} />
 
 		<!-- Open Graph -->
-		<meta property="og:type" content="website" />
+		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content={siteName} />
 		<meta property="og:title" content={siteTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={url.href} />
 		<meta property="og:locale" content={locale} />
-		<!-- TODO: generar /og-image.png (1200x630) y descomentar
-		<meta property="og:image" content={`${url.origin}/og-image.png`} />
+		<meta property="og:image" content={ogImageUrl} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
 		<meta property="og:image:alt" content={siteTitle} />
-		-->
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={siteTitle} />
 		<meta name="twitter:description" content={description} />
-		<!-- TODO: descomentar cuando exista /og-image.png
-		<meta name="twitter:image" content={`${url.origin}/og-image.png`} />
-		-->
+		<meta name="twitter:image" content={ogImageUrl} />
+		<meta name="twitter:image:alt" content={siteTitle} />
 
 		<!-- JSON-LD: Person -->
 		<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "Person",
+			"@id": `${url.origin}/#person`,
 			"name": siteName,
 			"jobTitle": "Desarrollador de Software",
 			"url": url.origin,
 			"image": `${url.origin}/avatar/avatar.webp`,
+			"sameAs": [CONTACT_GITHUB, CONTACT_LINKEDIN],
 			"knowsAbout": ["Desarrollo Web", "React", "TypeScript", "Astro", "Accesibilidad", "Rendimiento"]
 		})}></script>
 
@@ -80,17 +101,29 @@ const siteTitle = `${title} | ${siteName}`;
 		<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "WebSite",
+			"@id": `${url.origin}/#website`,
 			"name": siteName,
 			"url": url.origin,
-			"inLanguage": "es"
+			"inLanguage": "es",
+			"publisher": { "@id": `${url.origin}/#person` }
 		})}></script>
+
+		<slot name="head" />
 
 		<ClientRouter fallback="animate" />
 	</head>
 	<body>
+		<a class="skip-link" href="#main-content">Saltar al contenido</a>
 		<Header />
-		<main class="space-y-8 2xl:space-y-24 mt-16">
+		<main id="main-content" tabindex="-1" class="space-y-8 2xl:space-y-24 mt-16">
 			<slot />
 		</main>
 	</body>
 </html>
+
+<script>
+	import { revertSectionTimelines } from "@/utils/gsap";
+
+	// Limpia ScrollTriggers/timelines de la página saliente antes de cada swap
+	document.addEventListener("astro:before-swap", revertSectionTimelines);
+</script>

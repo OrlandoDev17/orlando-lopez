@@ -26,19 +26,64 @@ const metadata = [
 
 const demoUrl = project.links.find(l => l.icon.includes('rocket'))?.url;
 const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
+
+const siteUrl = Astro.url.origin;
+const projectUrl = Astro.url.href;
+
+const creativeWorkJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: project.title,
+  description: project.tagline,
+  image: new URL(project.thumbnail, siteUrl).href,
+  url: projectUrl,
+  inLanguage: "es",
+  author: { "@type": "Person", "@id": `${siteUrl}/#person` },
+  keywords: project.techs.map((tech) => tech.name).join(", "),
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: `${siteUrl}/` },
+    { "@type": "ListItem", position: 2, name: "Proyectos", item: `${siteUrl}/#projects` },
+    { "@type": "ListItem", position: 3, name: project.title, item: projectUrl },
+  ],
+};
 ---
 
-<Layout title={project.title} description={project.summary}>
-  <main class="max-w-7xl mx-auto w-full px-8">
+<Layout
+  title={project.title}
+  description={project.tagline}
+  ogImage={project.thumbnail}
+  ogType="article"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(creativeWorkJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  </Fragment>
+
+  <div class="max-w-7xl mx-auto w-full px-8">
+    <!-- Botón volver -->
+    <div id="project-back" class="pt-8">
+      <Button href="/#projects" variant="secondary" className="text-sm">
+        <Icon class="size-4" name="lucide:arrow-left" aria-hidden="true" />
+        Volver atrás
+      </Button>
+    </div>
+
     <!-- Hero: Mockup + Texto + Botones -->
-    <section id="project-hero" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center pt-8">
+    <section id="project-hero" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center pt-6">
       <article class="relative order-2 lg:order-1 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         <img 
           id="project-hero-image"
           transition:name={`${project.slug}-image`}
           src={project.thumbnail} 
-          alt={project.title}
+          alt={`Vista del proyecto ${project.title}`}
           class="w-full h-auto object-cover"
+          fetchpriority="high"
+          decoding="async"
         >
       </article>
       
@@ -164,20 +209,30 @@ const githubUrl = project.links.find(l => l.icon.includes('github'))?.url;
         </a>
       </nav>
     </section>
-  </main>
+  </div>
 </Layout>
 
 <script>
   import { animateFrom, splitTextReveal } from "gsap-presets-kit";
-  import { gsap, createSectionTimeline } from "@/utils/gsap";
+  import { gsap, createSectionTimeline, prefersReducedMotion } from "@/utils/gsap";
 
   const initProjectAnimations = () => {
+    if (prefersReducedMotion()) return;
+
     const hero = document.getElementById("project-hero");
     if (!hero || hero.dataset.animated === "true") return;
     hero.dataset.animated = "true";
 
     // Hero: entrada al cargar la vista
     const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    animateFrom("#project-back", {
+      opacity: 0,
+      y: -10,
+      duration: 0.4,
+      timeline: heroTl,
+      scroll: false,
+    });
 
     animateFrom("#project-hero-image", {
       opacity: 0,

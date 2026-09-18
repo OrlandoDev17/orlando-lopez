@@ -28,3 +28,7 @@ pnpm-debug.log*
 
 # qa screenshots
 *.png
+
+# assets generados que sí deben versionarse
+!public/og-image.png
+!public/apple-touch-icon.png
