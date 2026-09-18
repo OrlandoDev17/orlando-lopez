@@ -142,7 +142,11 @@ const isMobile = device === "mobile";
 
     const totalImages = container.children.length;
     let currentIndex = 0;
-    let autoplayInterval: ReturnType<typeof setInterval>;
+    let autoplayInterval: ReturnType<typeof setInterval> | undefined;
+    let resumeTimeout: ReturnType<typeof setTimeout> | undefined;
+
+    const AUTOPLAY_DELAY = 4000;
+    const RESUME_DELAY = 8000;
 
     // Función para ir a una imagen específica
     const goToSlide = (index: number) => {
@@ -171,35 +175,56 @@ const isMobile = device === "mobile";
     };
 
     // Autoplay
+    const clearAutoplay = () => {
+      if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+        autoplayInterval = undefined;
+      }
+    };
+
     const startAutoplay = () => {
+      clearAutoplay();
+      if (totalImages <= 1) return;
       autoplayInterval = setInterval(() => {
         goToSlide(currentIndex + 1);
-      }, 4000);
+      }, AUTOPLAY_DELAY);
     };
 
     const stopAutoplay = () => {
-      clearInterval(autoplayInterval);
+      clearAutoplay();
+      if (resumeTimeout) {
+        clearTimeout(resumeTimeout);
+        resumeTimeout = undefined;
+      }
+    };
+
+    // Pausa el autoplay y lo reanuda sólo tras un periodo de inactividad,
+    // así el tiempo no avanza mientras el usuario interactúa.
+    const pauseAutoplay = (resumeDelay = RESUME_DELAY) => {
+      stopAutoplay();
+      if (totalImages <= 1) return;
+      resumeTimeout = setTimeout(() => {
+        resumeTimeout = undefined;
+        startAutoplay();
+      }, resumeDelay);
     };
 
     // Flechas de navegación
     prevBtn?.addEventListener('click', () => {
-      stopAutoplay();
+      pauseAutoplay();
       goToSlide(currentIndex - 1);
-      startAutoplay();
     });
 
     nextBtn?.addEventListener('click', () => {
-      stopAutoplay();
+      pauseAutoplay();
       goToSlide(currentIndex + 1);
-      startAutoplay();
     });
 
     // Navegar con indicadores
     indicators.forEach((indicator, i) => {
       indicator.addEventListener('click', () => {
-        stopAutoplay();
+        pauseAutoplay();
         goToSlide(i);
-        startAutoplay();
       });
     });
 
@@ -225,9 +250,14 @@ const isMobile = device === "mobile";
       }
     });
 
-    // Pausar autoplay al hover
+    // Pausar autoplay al hover, foco o mientras se presiona/arrastra
     container.addEventListener('mouseenter', stopAutoplay);
     container.addEventListener('mouseleave', startAutoplay);
+    container.addEventListener('focusin', stopAutoplay);
+    container.addEventListener('focusout', startAutoplay);
+    container.addEventListener('pointerdown', stopAutoplay);
+    container.addEventListener('pointerup', () => pauseAutoplay());
+    container.addEventListener('pointercancel', () => pauseAutoplay());
 
     // Abrir lightbox
     triggers.forEach((trigger) => {
