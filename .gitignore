@@ -32,3 +32,5 @@ pnpm-debug.log*
 # assets generados que sí deben versionarse
 !public/og-image.png
 !public/apple-touch-icon.png
+
+.impeccable
