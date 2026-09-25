@@ -6,7 +6,7 @@ export interface HighlightedWords {
 }
 
 export const HIGHLIGHTED_WORDS: HighlightedWords = {
-	primary: ["modernas", "rápidas", "eficientes", "escalable", "elegante", "impecable"],
+	primary: ["modernas", "rápidas", "eficientes", "producción"],
 	secondary: [
 		"web",
 		"móviles",
@@ -19,5 +19,8 @@ export const HIGHLIGHTED_WORDS: HighlightedWords = {
 		"TypeScript",
 		"microservicios",
 		"QA",
+		"IA",
+		"OpenCode",
+		"arquitectura",
 	],
 };

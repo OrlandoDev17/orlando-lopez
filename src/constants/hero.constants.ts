@@ -13,7 +13,7 @@ export interface HeroTechIconConfig {
 export const CV_URL =
   "https://drive.google.com/file/d/1sSzyvu5gx-kDazn29D1YQ01b3lJpfqTT/view?usp=sharing";
 
-export const HERO_DESCRIPTION = `Desarrollador de Software especializado en crear experiencias digitales modernas, rápidas y eficientes, tanto en web como en aplicaciones móviles.<br /><br />Mi enfoque abarca desde la arquitectura frontend con React, Astro y Tailwind CSS, hasta el desarrollo backend con Node.js, TypeScript y microservicios, asegurando siempre la calidad del producto mediante buenas prácticas de QA. No solo construyo software funcional para resolver problemas reales, me aseguro de que sea escalable, elegante y con una interfaz impecable.`;
+export const HERO_DESCRIPTION = `Desarrollador de Software especializado en crear experiencias digitales modernas, rápidas y eficientes, tanto en web como en aplicaciones móviles.<br /><br />Mi enfoque abarca desde la arquitectura frontend con React, Astro y Tailwind CSS, hasta el desarrollo backend con Node.js, TypeScript y microservicios, asegurando siempre la calidad del producto mediante buenas prácticas de QA.<br /><br />Combino programación tradicional con un flujo de trabajo asistido por IA. OpenCode como entorno de ejecución, apoyado en distintos modelos según la tarea para acelerar cada etapa sin sacrificar arquitectura sólida. El resultado: software listo para producción, entregado en una fracción del tiempo que tomaría un desarrollo 100% manual.`;
 
 export const TECH_ICONS: readonly HeroTechIconConfig[] = [
   { label: "React", icon: "simple-icons:react", top: "18%", side: "left" },
