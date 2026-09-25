@@ -153,7 +153,7 @@ export const TuPrestamoData: Project = {
     "Digitalización del 100%: Eliminación total del uso de plantillas en Excel y registros manuales propensos a error.",
     "Optimización de registros: Carga y actualización de abonos en segundos directamente desde dispositivos móviles.",
     "0% pérdidas contables: Consolidación exacta de saldos pendientes, amortizaciones y cobros ejecutados en ruta.",
-    "Disponibilidad móvil: Acceso continuo para cobradores mediante empaquetado nativo móvil.",
+    "MVP en producción en 2 semanas: Del primer commit a uso activo del cliente en rutas de cobro reales, con mejoras continuas desde entonces.",
   ],
   before:
     "La contabilidad de préstamos y las rutas de cobro se llevaban de forma manual en hojas de cálculo. Calcular intereses acumulados, amortizaciones parciales y saldos pendientes requería procesos mecánicos propensos a inconsistencias de saldo.",
@@ -170,7 +170,7 @@ export const TuPrestamoData: Project = {
       problem:
         "La necesidad de adaptar el software a cambios constantes en las reglas operativas requeridas por el cliente.",
       solution:
-        "Aplicación de principios de Spec-Driven Development (SDD) y una arquitectura modular que permitió integrar modificaciones sin afectar el flujo en producción.",
+        "Introduje principios de Spec-Driven Development (SDD) a medida que el proyecto avanzaba, junto con una arquitectura modular, para integrar modificaciones sin afectar el flujo en producción.",
       result:
         "Iteraciones de código rápidas y despliegues sin interrupción del servicio.",
     },
@@ -205,7 +205,7 @@ export const ERPSaaSData: Project = {
   duracion: "1 Mes",
   client: "Proyecto propio / SaaS comercial",
   summary:
-    "Sistema de planificación de recursos empresariales (ERP) desarrollado bajo una arquitectura multi-tenant para permitir que múltiples comercios gestionen sus operaciones de forma independiente. Centraliza el control de inventarios con alertas de stock, punto de venta (POS) interactivo, módulo de compras a proveedores y reportes consolidados en tiempo real con conversión automática a tasa oficial (USD/Bs). Diseñado para escalar comercialmente e integrar facturación fiscal y manual.",
+    "Sistema de planificación de recursos empresariales (ERP) desarrollado bajo una arquitectura multi-tenant para permitir que múltiples comercios gestionen sus operaciones de forma independiente. Centraliza el control de inventarios con alertas de stock, punto de venta (POS) interactivo, módulo de compras a proveedores y reportes consolidados en tiempo real con conversión automática a tasa oficial (USD/Bs). Construido como producto propio listo para comercialización — arquitectura multi-tenant validada y preparada para onboarding de clientes reales.",
   techs: [
     { name: "TanStack Start", icon: "simple-icons:tanstack" },
     { name: "TypeScript", icon: "simple-icons:typescript" },
