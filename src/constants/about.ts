@@ -11,8 +11,8 @@ export interface AboutAchievement {
 export const ABOUT_INTRO = "Cultura de producto & Código real";
 
 export const ABOUT_PARAGRAPHS: string[] = [
-  "Tengo 20 años y llevo más de 3 programando, pero mi verdadero salto ocurrió al llevar software al mundo real. No desarrollo proyectos de laboratorio: construyo productos que resuelven problemas reales de negocios y personas, como TuPrestamo (un sistema activo para la gestión de cobros y rutas de prestamistas) o puntos de venta (POS) personalizados para comercios locales.",
-  "Viví la transición hacia la era de la IA y adopté el desarrollo guiado por especificaciones (Spec-Driven Development). Combino una sólida base teórica con herramientas avanzadas para documentar, planificar y auditar cada módulo antes de ejecutarlo. El resultado: arquitecturas sólidas, código mantenible y cero improvisación.",
+  "No uso IA para saltarme fundamentos — los tengo. La uso para ejecutar más rápido lo que ya sé hacer bien. TuPrestamo es el mejor ejemplo: pasé de primer commit a un cliente real usando la app en rutas de cobro en apenas 9 días, y desde entonces la sigo evolucionando en producción. Tengo 20 años y llevo más de 3 programando, pero mi verdadero salto ocurrió al llevar software al mundo real. No desarrollo proyectos de laboratorio: construyo productos que resuelven problemas reales de negocios y personas, como puntos de venta (POS) personalizados para comercios locales o sistemas ERP listos para escalar comercialmente.",
+  "Viví la transición hacia la era de la IA y hoy incorporo Spec-Driven Development en mis proyectos para manejar cambios de alcance sin fricción ni retrabajo. Combino una sólida base teórica con un flujo de ejecución potenciado por IA para documentar, planificar y auditar cada módulo. El resultado: arquitecturas sólidas, código mantenible y cero improvisación.",
   "Soy un apasionado de las interfaces modernas, intuitivas y vivas, donde cada animación e interacción tiene un propósito visual. Además, domino el desarrollo backend para conectar estas experiencias con sistemas robustos, seguros y eficientes.",
 ];
 
@@ -21,17 +21,21 @@ export const ABOUT_CLOSING =
 
 export const ABOUT_HIGHLIGHTED_WORDS: HighlightedWords = {
   primary: [
-    "problemas reales",
     "TuPrestamo",
+    "cliente real",
+    "producción",
     "Spec-Driven Development",
     "interfaces modernas",
+    "impacto directo",
   ],
   secondary: [
+    "IA",
     "mundo real",
-    "puntos de venta",
     "POS",
+    "ERP",
     "arquitecturas sólidas",
     "backend",
+    "animación e interacción",
   ],
 };
 
