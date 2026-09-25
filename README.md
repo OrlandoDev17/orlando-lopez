@@ -6,6 +6,8 @@ foco en accesibilidad (WCAG 2.2 AA) y rendimiento.
 
 - **Producción:** Orlando López
 - **Diseño / tokens:** ver [`DESIGN.md`](./DESIGN.md)
+- **Contexto de producto:** ver [`PRODUCT.md`](./PRODUCT.md)
+- **Guías para agentes:** ver [`AGENTS.md`](./AGENTS.md) · [`CLAUDE.md`](./CLAUDE.md)
 
 ---
 
@@ -148,6 +150,23 @@ localmente. Si cambian la marca o el avatar:
   el LCP.
 - Fuentes variables con `font-display: swap` y `preload`.
 - Sin islas de framework: JavaScript solo para las animaciones y el formulario.
+
+## Desarrollo asistido por IA
+
+El proyecto se desarrolla con un flujo asistido por IA basado en documentos de
+contexto versionados que cualquier agente (OpenCode, Claude Code, etc.) debe leer
+antes de trabajar.
+
+| Archivo               | Contenido                                                                          |
+| :-------------------- | :--------------------------------------------------------------------------------- |
+| [`AGENTS.md`](./AGENTS.md)   | Comandos, convenciones y reglas para agentes en OpenCode.                   |
+| [`CLAUDE.md`](./CLAUDE.md)   | Réplica del contexto anterior para Claude Code; mantener sincronizado con `AGENTS.md`. |
+| [`PRODUCT.md`](./PRODUCT.md) | Contexto de producto: usuarios, propósito, posicionamiento y principios.    |
+| [`DESIGN.md`](./DESIGN.md)   | Tokens y sistema de diseño (obligatorio antes de tocar UI).                 |
+| [`docs/constitution.md`](./docs/constitution.md) | Estándares y reglas inmutables del proyecto.      |
+
+Convenciones clave: código en inglés; documentación, commits y comentarios en
+español; el contenido editable vive en `src/constants/` (sin CMS).
 
 ## Despliegue
 
