@@ -27,8 +27,8 @@ importers:
         specifier: ^3.15.0
         version: 3.15.0
       gsap-presets-kit:
-        specifier: ^0.3.1
-        version: 0.3.1(gsap@3.15.0)(zod@4.4.3)
+        specifier: ^0.4.0
+        version: 0.4.0(gsap@3.15.0)(zod@4.4.3)
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -1318,8 +1318,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  gsap-presets-kit@0.3.1:
-    resolution: {integrity: sha512-t4QJjyK9lTl6hbhCIRBG5qf9cl49b3HVr77RedSJGS0CRL5+T0+FBp2w+/a3Lgi9ZAf3LNS0qcdOZ2dF4Zq8sg==}
+  gsap-presets-kit@0.4.0:
+    resolution: {integrity: sha512-kMXX1fCGzUtBJMRf+JlIYx4/MqqVS7hwZlCmmjPr0JtTg4ff2mUsNrWNA8w+ki4P9++QHHz18kWaJaTYq1sxOA==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -3441,7 +3441,7 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  gsap-presets-kit@0.3.1(gsap@3.15.0)(zod@4.4.3):
+  gsap-presets-kit@0.4.0(gsap@3.15.0)(zod@4.4.3):
     dependencies:
       gsap: 3.15.0
       zod: 4.4.3
